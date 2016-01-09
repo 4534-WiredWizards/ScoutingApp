@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Scout App</title>
+<title>Scouting App</title>
 </head>
 <body>
 	<h1>Scouting App 2016</h1>
