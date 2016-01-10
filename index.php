@@ -33,7 +33,7 @@ footer {
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav">
 					<li class="active"><a href="#">Home</a></li>
-					<li><a href="#">Messages</a></li>
+					<li><a href="#">Teams</a></li>
 				</ul>
 				<form class="navbar-form navbar-right" role="search">
 					<div class="form-group input-group">
