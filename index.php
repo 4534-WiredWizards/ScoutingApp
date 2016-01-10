@@ -20,7 +20,7 @@ footer {
 </style>
 </head>
 <body>
-	<nav class="navbar navbar-inverse">
+	<nav class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -37,8 +37,8 @@ footer {
 				</ul>
 				<form class="navbar-form navbar-right" role="search">
 					<div class="form-group input-group">
-						<input type="text" class="form-control" placeholder="Search.."> <span
-							class="input-group-btn">
+						<input type="text" class="form-control"
+							placeholder="Search Teams.."> <span class="input-group-btn">
 							<button class="btn btn-default" type="button">
 								<span class="glyphicon glyphicon-search"></span>
 							</button>
@@ -52,7 +52,7 @@ footer {
 			</div>
 		</div>
 	</nav>
-
+	<div style="margin: 4.5em;"></div>
 	<div class="container text-center">
 		<div class="row">
 			<div class="col-sm-3 well">
@@ -99,10 +99,12 @@ footer {
 					<div class="col-sm-12">
 						<div class="panel panel-default text-left">
 							<div class="panel-body">
-								<p contenteditable="true">Status: Feeling Blue</p>
-								<button type="button" class="btn btn-default btn-sm">
-									<span class="glyphicon glyphicon-thumbs-up"></span> Like
-								</button>
+								Update:
+								<textarea class="form-control" rows="1" id="update-text"
+									style="max-width: 100%;">FRC Team 1234 seems nice!</textarea>
+								<div style="text-align: right; margin-top: 0.5em;">
+									<button type="button" class="btn btn-default btn-sm">Submit</button>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -112,54 +114,6 @@ footer {
 					<div class="col-sm-3">
 						<div class="well">
 							<p>John</p>
-							<img src="bird.jpg" class="img-circle" height="55" width="55"
-								alt="Avatar">
-						</div>
-					</div>
-					<div class="col-sm-9">
-						<div class="well">
-							<p>Just Forgot that I had to mention something about someone to
-								someone about how I forgot something, but now I forgot it. Ahh,
-								forget it! Or wait. I remember.... no I don't.</p>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-sm-3">
-						<div class="well">
-							<p>Bo</p>
-							<img src="bandmember.jpg" class="img-circle" height="55"
-								width="55" alt="Avatar">
-						</div>
-					</div>
-					<div class="col-sm-9">
-						<div class="well">
-							<p>Just Forgot that I had to mention something about someone to
-								someone about how I forgot something, but now I forgot it. Ahh,
-								forget it! Or wait. I remember.... no I don't.</p>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-sm-3">
-						<div class="well">
-							<p>Jane</p>
-							<img src="bandmember.jpg" class="img-circle" height="55"
-								width="55" alt="Avatar">
-						</div>
-					</div>
-					<div class="col-sm-9">
-						<div class="well">
-							<p>Just Forgot that I had to mention something about someone to
-								someone about how I forgot something, but now I forgot it. Ahh,
-								forget it! Or wait. I remember.... no I don't.</p>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-sm-3">
-						<div class="well">
-							<p>Anja</p>
 							<img src="bird.jpg" class="img-circle" height="55" width="55"
 								alt="Avatar">
 						</div>
