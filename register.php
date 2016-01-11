@@ -49,17 +49,23 @@ footer {
 							<div class="panel-body">
 								<form>
 									<input name="teamnum" type="number" placeholder="Team Number"
-										spellchecking="false" size="4" class="form-control"
-										autofocus><br> <input name="username" type="text"
-										placeholder="Username" spellchecking="false"
-										class="form-control" autofocus><br> <input name="password"
-										type="password" placeholder="Password" spellchecking="false"
-										class="form-control"><br>
+										spellchecking="false" size="4" class="form-control" autofocus><br>
+									<input name="username" type="text" placeholder="Username"
+										spellchecking="false" class="form-control" autofocus><br>
+									<input name="password" type="password" placeholder="Password"
+										spellchecking="false" class="form-control"><br>
+									<input name="passconf" type="password" placeholder="Confirm Password"
+										spellchecking="false" class="form-control"><br>
 									<div style="text-align: right; margin-top: 0.5em;">
-										<button type="button" class="btn btn-default btn-sm">Sign In</button>
+										<button type="button" class="btn btn-default btn-sm">Sign Up</button>
 									</div>
 								</form>
 							</div>
+						</div>
+						<div style="text-align: left; margin-bottom: 1.5em;">
+							<a href="404.html">
+								<button type="button" class="btn btn-default btn-sm">New Team</button>
+							</a>
 						</div>
 					</div>
 				</div>
