@@ -46,8 +46,10 @@ footer {
 					</div>
 				</form>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#"><span class="glyphicon glyphicon-user"></span> My
-							Account</a></li>
+					<li><a href="register.php"><span class="glyphicon glyphicon-user"></span> Sign
+							Up</a></li>
+					<li><a href="signin.php"><span class="glyphicon glyphicon-log-in"></span>
+							Sign In</a></li>
 				</ul>
 			</div>
 		</div>
