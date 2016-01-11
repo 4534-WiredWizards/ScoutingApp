@@ -1,2 +1,11 @@
 @CHARSET "UTF-8";
 
+body {
+	background-image: url("http://localhost/ScoutingApp2016/background.jpg");
+}
+
+footer {
+	background-color: #555;
+	color: white;
+	padding: 15px;
+}
