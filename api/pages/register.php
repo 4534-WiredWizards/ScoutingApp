@@ -71,3 +71,5 @@ $output = array(
    "error" => $errors,
    "success" => $success
 );
+
+echo "Server Responded!";
