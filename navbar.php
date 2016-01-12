@@ -11,9 +11,10 @@
 		<div class="collapse navbar-collapse" id="myNavbar">
 			<ul class="nav navbar-nav">
 				<li><a href="index.php">Home</a></li>
-				<li><a href="teams.php">Teams</a></li>
+				<li><a href="teampage.php">Teams</a></li>
 			</ul>
-			<form class="navbar-form navbar-right" role="search">
+			<form class="navbar-form navbar-right" role="search" method="get"
+				action="searchteams.php">
 				<div class="form-group input-group">
 					<input type="text" class="form-control"
 						placeholder="Search Teams.."> <span class="input-group-btn">
