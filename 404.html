@@ -34,7 +34,7 @@ footer {
 	</nav>
 	<div style="margin: 4.5em;"></div>
 	<div style="margin:1em;">
-		<h1><b>404 Error!</b> <div id="name" style="display: inline;">Page</div> not found.</h1>
+		<h1><b>40<div id="4" style="display: inline">4</div> Error!</b> <div id="name" style="display: inline;">Page</div> not found.</h1>
 		<h3>I'm an app, not a miracle worker!</h3>
 		<script type="text/javascript">
 		change = function() {
@@ -52,6 +52,9 @@ footer {
 			}
 			console.log(newName);
 			textEl.innerHTML = newName;
+			if (Math.round(Math.random() * 100) == 0) {
+				document.getElementById("4").innerHTML = "6";
+			}
 		}
 		window.setInterval(change,1000 / 10);
 		</script>
