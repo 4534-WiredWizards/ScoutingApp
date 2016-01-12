@@ -35,19 +35,31 @@ if (isset($post) && count($post) && $_SERVER["REQUEST_METHOD"] == "POST") {
 
    if ($success) {
       global $dbh;
-      $users = new TeamUsers($dbh, $user_data["teamnum"]);
-      if ($users->getByUsername($user_data["username"])) {
-         $success = false;
-         $errors[] = array("field" => "username", "msg" => "Username already in use");
+
+      $team = $dbh->query("SELECT id FROM team WHERE team_number = ? AND team_type = ?", array($user_data["teamnum"], "FRC"));
+      $team_id = 0;
+      if (is_array($team) && count($team)) {
+         $team_id = $team[0]["id"];
       } else {
-         $res = $users->create($user_data["username"], $user_data["password"], $user_data["firstname"], $user_data["lastname"]);
-         if (isset($res["error"]) && strlen($res["error"])) {
-            $errors[] = "SQL Error: \"".$res["error"]."\"";
+         $errors[] = "Invalid team number";
+         $success = false;
+      }
+
+      if ($team_id > 0) {
+         $users = new TeamUsers($dbh, $team_id);
+         if ($users->getByUsername($user_data["username"])) {
             $success = false;
+            $errors[] = array("field" => "username", "msg" => "Username already in use");
          } else {
-            $data = array_merge($res, array(
-               "token" => Token::create($dbh, $user_data["teamnum"])
-            ));
+            $res = $users->create($user_data["username"], $user_data["password"], $user_data["firstname"], $user_data["lastname"]);
+            if (isset($res["error"]) && strlen($res["error"])) {
+               $errors[] = "SQL Error: \"".$res["error"]."\"";
+               $success = false;
+            } else {
+               $data = array_merge($res, array(
+                  "token" => Token::create($dbh, $user_data["teamnum"])
+               ));
+            }
          }
       }
    }

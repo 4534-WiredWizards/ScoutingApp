@@ -42,11 +42,13 @@ class TeamUsers {
       global $api_dir;
       require_once("$api_dir/libs/password.php");
       $user = $this->getByUsername($username, array("active", "password"));
-      $matches = ($user["password"] == password_hash($password, PASSWORD_BCRYPT));
-      if ($matches && !$user["active"]) {
-         return array("error" => "Inactive user");
-      }
-      return $matches;
+      $matches = password_verify($password, $user["password"]);
+      if ($matches) {
+         if (!$user["active"]) {
+            return array("error" => "Inactive user");
+         }
+         return $user;
+      } 
    }
 
    public function getByUsername($username, $fields = NULL, $safe_fields = false) {

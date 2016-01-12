@@ -27,5 +27,19 @@ class Token {
       ));
       return $token;
    }
+
+   // Get token from get parameter or `Authorization` header
+   public static function getToken() {
+      global $get;
+      $headers = getallheaders();
+      if (is_array($get) && isset($get["token"])) {
+         return $get["token"];
+      } else if (isset($headers["Authorization"])) {
+         preg_match("/[\\w]{10,32}/", $headers["Authorization"], $matches);
+         if (count($matches)) {
+            return $matches[0];
+         }
+      }
+   }
 }
 
