@@ -10,6 +10,8 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script
 	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script
+	src="js/register.js"></script>
 <style>
 /* Set black background color, white text and some padding */
 footer {
@@ -47,9 +49,13 @@ footer {
 					<div class="col-sm-12">
 						<div class="panel panel-default text-left">
 							<div class="panel-body">
-								<form>
+								<form id="registerForm">
 									<input name="teamnum" type="number" placeholder="Team Number"
 										spellchecking="false" size="4" class="form-control" autofocus><br>
+									<input name="firstname" type="text" placeholder="First Name"
+										spellchecking="false" class="form-control" autofocus><br>
+									<input name="lastname" type="text" placeholder="Last Name"
+										spellchecking="false" class="form-control" autofocus><br>
 									<input name="username" type="text" placeholder="Username"
 										spellchecking="false" class="form-control" autofocus><br>
 									<input name="password" type="password" placeholder="Password"
@@ -57,7 +63,7 @@ footer {
 									<input name="passconf" type="password" placeholder="Confirm Password"
 										spellchecking="false" class="form-control"><br>
 									<div style="text-align: right; margin-top: 0.5em;">
-										<button type="button" class="btn btn-default btn-sm">Sign Up</button>
+										<button type="submit" class="btn btn-default btn-sm">Sign Up</button>
 									</div>
 								</form>
 							</div>

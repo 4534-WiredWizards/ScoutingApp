@@ -10,6 +10,8 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script
 	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script
+   src="js/signin.js"></script>
 <style>
 /* Set black background color, white text and some padding */
 footer {
@@ -47,7 +49,7 @@ footer {
 					<div class="col-sm-12">
 						<div class="panel panel-default text-left">
 							<div class="panel-body">
-								<form>
+								<form id="signupForm">
 									<input name="teamnum" type="number" placeholder="Team Number"
 										spellchecking="false" size="4" class="form-control"
 										autofocus><br> <input name="username" type="text"
