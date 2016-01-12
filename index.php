@@ -79,6 +79,62 @@
 						</div>
 					</div>
 				</div>
+				<div class="row">
+					<div class="col-sm-3">
+						<div class="well">
+							<p>John</p>
+							<img src="bird.jpg" class="img-circle" height="55" width="55"
+								alt="Avatar">
+						</div>
+					</div>
+					<div class="col-sm-9">
+						<div class="well">
+							<p style="color: green">Updated Weaknesses of team 4534, The Wired Wizards</p>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-3">
+						<div class="well">
+							<p>John</p>
+							<img src="bird.jpg" class="img-circle" height="55" width="55"
+								alt="Avatar">
+						</div>
+					</div>
+					<div class="col-sm-9">
+						<div class="well">
+							<p style="color: green">Updated Strengths of team 4534, The Wired Wizards</p>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-3">
+						<div class="well">
+							<p>John</p>
+							<img src="bird.jpg" class="img-circle" height="55" width="55"
+								alt="Avatar">
+						</div>
+					</div>
+					<div class="col-sm-9">
+						<div class="well">
+							<p style="color: green">Updated Summary of team 4534, The Wired Wizards</p>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-3">
+						<div class="well">
+							<p>John</p>
+							<img src="bird.jpg" class="img-circle" height="55" width="55"
+								alt="Avatar">
+						</div>
+					</div>
+					<div class="col-sm-9">
+						<div class="well">
+							<p>Finally found The Wired Wizards! They seem nice!</p>
+						</div>
+					</div>
+				</div>
 			</div>
 			<div class="col-sm-2 well">
 				<div class="thumbnail">
