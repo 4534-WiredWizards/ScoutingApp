@@ -59,14 +59,22 @@
 								<!-- This is where the main page is. Keywords: main page -->
 								<?php 
 								// Get information about the team and store them in variables
-								$teamnum = 4534;
+								if (isset($_GET['teamnum'])) {
+									$teamnum = $_GET['teamnum'];
+								} else {
+									echo '<head><meta http-equiv="refresh" content="0; url=404.html" /></head>';
+								}
+								
+								// Now that I have $teamnum how do I, using your API, get the rest of them?
+								
 								$teamname = 'The Wired Wizards';
 								$summary = 'This is a great summary about this team, isn\'t it?';
 								$strengths = array('Best Team Ever!', 'Other Good Stuff!');
 								$weaknesses = array('No weaknesses!', 'Other Stuff');
 								$strength = 100;
+								
 								// Robot Rank Variables
-								$Spy = 4;
+								$spy = 4;
 								$Deffense = 5;
 								$Assist = 3;
 								$Shoot = 2;
@@ -128,7 +136,7 @@
 							                  </tr>
 							                  <tr>
 							                     <th scope="row">Carbon Tiger</th>
-							                     <td><?php echo $Spy; ?>000</td>
+							                     <td><?php echo $spy; ?>000</td>
 							                     <td><?php echo $Deffense; ?>000</td>
 							                     <td><?php echo $Assist; ?>000</td>
 							                     <td><?php echo $Shoot ?>000</td>

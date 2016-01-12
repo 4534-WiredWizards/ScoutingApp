@@ -10,6 +10,13 @@
 		<div class="row">
 			<div class="col-sm-3 well">
 				<div class="well">
+					<div style="width: 100%; height: 100%; margin: 0.5em;">
+						<a href="newteampage.php">
+							<button type="button" class="btn btn-default btn-sm">New Team Page</button>
+						</a>
+					</div>
+				</div>
+				<div class="well">
 					<p>
 						<a href="#">My Profile</a>
 					</p>

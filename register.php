@@ -49,7 +49,7 @@ footer {
 					<div class="col-sm-12">
 						<div class="panel panel-default text-left">
 							<div class="panel-body">
-								<form id="registerForm">
+								<form id="registerForm" action="" method="">
 									<input name="teamnum" type="number" placeholder="Team Number"
 										spellchecking="false" size="4" class="form-control" autofocus><br>
 									<input name="firstname" type="text" placeholder="First Name"
@@ -68,8 +68,9 @@ footer {
 								</form>
 							</div>
 						</div>
+						<p id="response">Server Response</p>
 						<div style="text-align: left; margin-bottom: 1.5em;">
-							<a href="404.html">
+							<a href="registerteam.php">
 								<button type="button" class="btn btn-default btn-sm">New Team</button>
 							</a>
 						</div>
