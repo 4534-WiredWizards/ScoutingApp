@@ -98,7 +98,7 @@ routes.register("/team/:teamNum/edit", {
       console.log("team edit");
    }
 });
-routes.register("/team/", {
+routes.register("/teams", {
    template: "templates/team/list.html",
    init: function() {
       console.log("team list");
