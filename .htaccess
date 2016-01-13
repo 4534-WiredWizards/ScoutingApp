@@ -1,0 +1,10 @@
+RewriteEngine on
+
+# exclude directories
+RewriteCond %{REQUEST_FILENAME} !-d
+# exclude files
+RewriteCond %{REQUEST_FILENAME} !-f
+# exclude links
+RewriteCond %{REQUEST_FILENAME} !-l
+
+RewriteRule ^(.*)$ index.html [L,QSA]
