@@ -31,6 +31,8 @@ if (is_array($post) && count($post)) {
       } else {
          $errors[] = "Invalid username/password";
       }
+   } else {
+      $errors[] = "You must pass fields `username` and `password`.";
    }
    $output = array();
    $output["success"] = $success;
@@ -38,5 +40,6 @@ if (is_array($post) && count($post)) {
    if (strlen($token)) {
       $output["token"] = $token;
    }
-}
-
+} else {
+   $output = array("success" => false, "error" => array("Must use POST method with fields `username`, `password`, and `teamnum`"));
+} 
