@@ -1,10 +1,11 @@
 // TODO: Organize these helpers.
 
 var Routes = (function() {
-   function Routes(routes, base, defaultUrl) {
+   function Routes(routes, base, defaultUrl, tokenManager) {
       this.base = base || "/";
       this.defaultUrl = defaultUrl || "";
       this.routes = routes || [];
+      this.tokenManager = tokenManager;
    }
 
    Routes.prototype.getObject = function() {
@@ -12,7 +13,10 @@ var Routes = (function() {
       var res = {};
       this.routes.forEach(function(route) {
          res[route.url] = function() {
-            console.log('i am here');
+            var router = this;
+            if (_this.checkToken(route, this.tokenManager)) {
+               return setRouteSafe(router, _this.defaultUrl);
+            }
             if (route.template || route.templateHTML) {
                function callback() {
                   var method = route.contentMethod || "html";
@@ -50,59 +54,60 @@ var Routes = (function() {
       });
    }
 
-   Routes.prototype.checkToken = function(router, token) {
-      if (this.routes.filter(function(route) {
-         return route.initialized && route.requireLogin;
-      }).length) {
-         router.setRoute(base+this.defaultUrl);
-      }
+   Routes.prototype.checkToken = function(route, token) {
+      return route.requireSignin && !this.tokenManager.get();
    }
    
    return Routes;
 }())
 
-var routes = new Routes([], "", "home");
+var token = new TokenManager("ww-scouting");
+var routes = new Routes([], "", "home", token);
 routes.register("/home", {
    template: "templates/index.html",
    init: function() {
       console.log("home");
-   }
+   },
 });
 routes.register("/register", {
    template: "templates/register.html",
    init: function() {
       console.log("register");
-   }
+   },
 });
 routes.register("/signin", {
    template: "templates/signin.html",
    init: function() {
       console.log("signin");
-   }
+   },
 });
 routes.register("/team/new", {
    template: "templates/team/new.html",
    init: function() {
       console.log("team");
-   }
+   },
+   requireSignin: true
 });
 routes.register("/team/:teamNum", {
    template: "templates/team/display.html",
    init: function() {
       console.log("team display");
-   }
+   },
+   requireSignin: true
 });
 routes.register("/team/:teamNum/edit", {
    template: "templates/team/edit.html",
    init: function() {
       console.log("team edit");
-   }
+   },
+   requireSignin: true
 });
 routes.register("/teams", {
    template: "templates/team/list.html",
    init: function() {
       console.log("team list");
-   }
+   },
+   requireSignin: true
 });
 routes.register("/not-found", {
    template: "templates/not-found.html",
@@ -111,12 +116,23 @@ routes.register("/not-found", {
    },
    destroy: function() {
       clearInterval(this.interval);
-   }
+   },
+   requireSignin: false
 });
 
-var router;
+function setRouteSafe(router, route) {
+   if (window.onpopstate) {
+      router.setRoute(base+route);
+   } else {
+      setTimeout(function() {
+         router.setRoute(base+route);
+      }, 500);
+   }
+}
+
+var router, base;
 $(document).ready(function() {
-   var base = $("base").attr("href");
+   base = $("base").attr("href");
    
    var baseRoute = {};
    baseRoute[base] = routes.getObject();
@@ -127,60 +143,19 @@ $(document).ready(function() {
       html5history: true,
       before: routes.destroyExisting.bind(routes),
       notfound: (function() {
-         var _this = this;
-         if (!window.onpopstate) {
-            setTimeout(function() {
-               _this.setRoute(base+"not-found");
-            }, 500);
-         }
-      }).bind(router)
+         setRouteSafe(this, "not-found");
+      }).bind(router),
    });
 
    router.init();
    if (!router.getRoute()[routes.base.split("/").length-2]) {
-      if (!window.onpopstate) {
-         setTimeout(function() {
-            router.setRoute(routes.base+routes.defaultUrl);
-         }, 500);
-      }
+      setRouteSafe(router, routes.defaultUrl);
    }
 
    $("body").on("click", "[href]:not([href*=\"http\"]):not([href*=\"#\"])", function() {
       var href = $(this).attr("href");
       if (href.charAt(0) == "/") href = href.slice(1);
-      router.setRoute(href);
+      setRouteSafe(router, href);
       return false;
    });
 });
-
-var TokenHandler = (function() {
-   function TokenHandler(ns) {
-      this.ns = ns || "";
-   }
-
-   TokenHandler.prototype.get = function() {
-      return localStorage.getItem(this.ns+".token") || "";
-   }
-
-   TokenHandler.prototype.set = function(token) {
-      return localStorage.setItem(this.ns+".token", token || "");
-   }
-
-   TokenHandler.prototype.auth = function(data) {
-      var _this = this;
-
-      return $.ajax({
-         url: "api/auth",
-         data: data,
-         method: "POST"
-      }).then(function(res) {
-         if (res.success && res.token) {
-            _this.set(res.token);
-         }
-      });
-   }
-
-   return TokenHandler;
-})();
-
-var token = new TokenHandler();
