@@ -49,7 +49,7 @@ footer {
 					<div class="col-sm-12">
 						<div class="panel panel-default text-left">
 							<div class="panel-body">
-								<form id="registerForm" action="" method="">
+								<form id="registerForm">
 									<input name="teamnum" type="number" placeholder="Team Number"
 										spellchecking="false" size="4" class="form-control" autofocus><br>
 									<input name="firstname" type="text" placeholder="First Name"
