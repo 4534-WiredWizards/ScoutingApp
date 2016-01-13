@@ -3,7 +3,8 @@ $('#signinForm').on('submit', function() {
       if (res.success && res.token && token.get()) {
          setRouteSafe(router, "home");
       } else {
-         
+         // TODO: Display error messages http://getbootstrap.com/components/#alerts
+         console.log('errors:', res.error);
       }
    });
    return false;
