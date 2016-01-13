@@ -86,6 +86,15 @@ routes.register("/team/:teamNum", {
       console.log("team");
    }
 });
+routes.register("/not-found", {
+   template: "templates/not-found.html",
+   init: function() {
+      this.interval = window.setInterval(notFoundChange,1000 / 10);
+   },
+   destroy: function() {
+      clearInterval(this.interval);
+   }
+});
 
 var router;
 $(document).ready(function() {
@@ -95,17 +104,27 @@ $(document).ready(function() {
    baseRoute[base] = routes.getObject();
    routes.base = base;
 
-   router = Router(baseRoute).configure({
+   router = Router(baseRoute);
+   router.configure({
       html5history: true,
       before: routes.destroyExisting.bind(routes),
-      on: routes.checkToken()
+      notfound: (function() {
+         var _this = this;
+         if (!window.onpopstate) {
+            setTimeout(function() {
+               _this.setRoute(base+"not-found");
+            }, 500);
+         }
+      }).bind(router)
    });
 
    router.init();
    if (!router.getRoute()[routes.base.split("/").length-2]) {
-      setTimeout(function() {
-         router.setRoute(routes.base+routes.defaultUrl);
-      }, 500);
+      if (!window.onpopstate) {
+         setTimeout(function() {
+            router.setRoute(routes.base+routes.defaultUrl);
+         }, 500);
+      }
    }
 
    $("body").on("click", "[href]:not([href*=\"http\"]):not([href*=\"#\"])", function() {
