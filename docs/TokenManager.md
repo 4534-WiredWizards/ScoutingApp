@@ -2,23 +2,25 @@
 
 Simple helper for storing and retrieving an auth token from the API
 
-### Usage:
+### Usage
+
+#### Initialize new token
 ```javascript
 var token = new TokenManager("namespace");
 ```
 
-**Set the token**
+#### Set the token
 ```javascript
 token.set("superlongtokengoeshere");
 ```
 
-**Get the token**
+#### Get the token
 ```javascript
 token.get();
 // => "superlongtokengoeshere"
 ```
 
-**Retrieve auth token from API**
+#### Retrieve auth token from API
 ```javascript
 token.auth({
   teamnum: 4534,
