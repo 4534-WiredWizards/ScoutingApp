@@ -22,6 +22,7 @@ var TokenManager = (function() {
          if (res.success && res.token) {
             _this.set(res.token);
          }
+         return res;
       });
    }
 

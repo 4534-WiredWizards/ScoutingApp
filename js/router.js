@@ -6,6 +6,7 @@ routes.register("/home", {
    init: function() {
       console.log("home");
    },
+   requireSignin: true
 });
 routes.register("/register", {
    template: "templates/register.html",
@@ -15,9 +16,6 @@ routes.register("/register", {
 });
 routes.register("/signin", {
    template: "templates/signin.html",
-   init: function() {
-      console.log("signin");
-   },
 });
 routes.register("/team/new", {
    template: "templates/team/new.html",
@@ -87,7 +85,11 @@ $(document).ready(function() {
 
    router.init();
    if (!router.getRoute()[routes.base.split("/").length-2]) {
-      setRouteSafe(router, routes.defaultUrl);
+      if (token.get()) {
+         setRouteSafe(router, routes.defaultUrl);
+      } else {
+         setRouteSafe(router, "signin");
+      }
    }
 
    $("body").on("click", "[href]:not([href*=\"http\"]):not([href*=\"#\"])", function() {
