@@ -15,7 +15,7 @@ var RoutesManager = (function() {
          res[route.url] = function() {
             var router = this;
             if (_this.checkToken(route, this.tokenManager)) {
-               return setRouteSafe(router, _this.defaultUrl);
+               return setRouteSafe(router, "signin");
             }
             if (route.template || route.templateHTML) {
                function callback() {
