@@ -80,10 +80,28 @@ routes.register("/signin", {
       console.log("signin");
    }
 });
-routes.register("/team/:teamNum", {
-   template: "templates/teampage.html",
+routes.register("/team/new", {
+   template: "templates/team/new.html",
    init: function() {
       console.log("team");
+   }
+});
+routes.register("/team/:teamNum", {
+   template: "templates/team/display.html",
+   init: function() {
+      console.log("team display");
+   }
+});
+routes.register("/team/:teamNum/edit", {
+   template: "templates/team/edit.html",
+   init: function() {
+      console.log("team edit");
+   }
+});
+routes.register("/team/", {
+   template: "templates/team/list.html",
+   init: function() {
+      console.log("team list");
    }
 });
 routes.register("/not-found", {
