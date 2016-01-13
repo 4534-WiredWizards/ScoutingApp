@@ -1,4 +1,4 @@
-# TokenManager.js
+# [TokenManager.js](https://github.com/4534-WiredWizards/ScoutingApp2016/blob/master/js/TokenManager.js)
 
 Simple helper for storing and retrieving an auth token from the API
 
