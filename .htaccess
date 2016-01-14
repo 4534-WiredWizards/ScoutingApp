@@ -8,3 +8,5 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-l
 
 RewriteRule ^(.*)$ index.html [L,QSA]
+
+AddType application/x-httpd-php .html .htm
