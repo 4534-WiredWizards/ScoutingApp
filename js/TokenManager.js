@@ -5,7 +5,7 @@
 var TokenManager = (function() {
    /**
     * Constructor
-    * @example https://github.com/4534-WiredWizards/ScoutingApp2016/blob/master/docs/TokenManager.md#initialize-new-token 
+    * @example https://github.com/4534-WiredWizards/ScoutingApp2016/blob/master/docs/TokenManager.md#initialize-new-token
     *
     * @param string ns The key you would like to store the token in in localStorage
     */
@@ -40,11 +40,18 @@ var TokenManager = (function() {
    TokenManager.prototype.auth = function(data) {
       var _this = this;
 
+      /*
+      Make an ajax call to the api with the provided data
+      The data can be in one of the following formats:
+      As a string: "teamnum=4534&username=someuser&password=somepass"
+      As JSON: {"teamnum":4534,"username":"someuser","password":"somepass"}
+      */
       return $.ajax({
          url: "api/auth",
          data: data,
          method: "POST"
       }).then(function(res) {
+         // Save the token if the user is authenticated
          if (res.success && res.token) {
             _this.set(res.token);
          }

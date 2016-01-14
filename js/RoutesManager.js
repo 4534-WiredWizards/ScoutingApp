@@ -1,6 +1,7 @@
 /**
  * Helper class for registering routes for director
  * @class
+ * @example https://github.com/4534-WiredWizards/ScoutingApp2016/blob/297931edda53dfbda3d67c4b8e66cc677ad9eb2b/js/router.js
  */
 var RoutesManager = (function() {
    /**
