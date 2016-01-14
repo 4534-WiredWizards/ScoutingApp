@@ -4,10 +4,9 @@ You can expect every API call to output valid JSON.
 
 ## (Planned) API Calls
 
-### Getting authenticated
+### API Authentication (`api/auth` or `api/authenticate`)
 
 - `api/auth`
-   - `intent`: Provide an API authorization token
    - `method`: `POST`
    - `fields`:
       - `teamnum` (`int`)
@@ -45,8 +44,30 @@ Example error response:
 }
 ```
 
+
+#### Using your token
+
+Once you have acquired your token you will use it in all other API calls (except for `api/register`).
+
+##### Here are the ways to include the token in an API call:
+`superlongtokengoeshere` is the token used in these examples.
+1. As a header:
+```
+Authorization: Bearer superlongtokengoeshere
+```
+
+2. Using `t` or `token` GET parameter:
+```
+/api/some-api-call?t=superlongtokengoeshere
+/api/some-api-call?token=superlongtokengoeshere
+```
+
+
+------
+
+### Register a user (`api/register`)
+
 - `api/register` (complete!)
-   - `intent`: Register a new user
    - `method`: `POST`
    - `fields`:
       - `token` (str)
@@ -60,6 +81,8 @@ Example error response:
       - `success` (bool)
       - `error` (arr)
       - `token` (str)
+
+
 
 - `api/feed`, `api/user/:userID/feed`, `api/team/:teamID/feed`
    - `intent`: Get a feed of recent events
