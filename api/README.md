@@ -1,21 +1,12 @@
 # WW Scouting API
 -------------
-
-## Key Tables
-
-- `team` - The team that you authenticate under (e.g. *4534*). Parent for `team_user`, `scouting_domain`, `scouting_entry`, and `feed_entry`.
-- `scouting_domain` - Container for separating scouting results for years or events (e.g. *Palmetto Regional* or *2016 Season*). Parent for `scouting_entry`, and `feed_entry`.
-- `scouting_entry` - Stores scouting information about a team.
-   - `team_id`
-   - `scouting_domain_id`
-   - `id`
-
-- `feed_entry` - Stores an entry for the `team` or `scouting_domain` feeds.
-
+You can expect every API call to output valid JSON.
 
 ## (Planned) API Calls
 
-- `api/auth` (complete!)
+### Getting authenticated
+
+- `api/auth`
    - `intent`: Provide an API authorization token
    - `method`: `POST`
    - `fields`:
@@ -23,6 +14,36 @@
       - `username` (`string`)
       - `password` (`string`)
    - `response`:
+
+Example request data:
+```json
+{
+   "teamnum": 4534,
+   "username": "someuser",
+   "password": "somepass"
+}
+```
+
+Example success response:
+```json
+{
+  "status": "200 OK",
+  "success": true,
+  "error": [],
+  "token": "bf0417770848bf7b44bb30abfacdcebe"
+}
+```
+
+Example error response:
+```json
+{
+  "status": "200 OK",
+  "success": false,
+  "error": [
+    "Invalid username/password"
+  ]
+}
+```
 
 - `api/register` (complete!)
    - `intent`: Register a new user
@@ -40,7 +61,7 @@
       - `error` (arr)
       - `token` (str)
 
-- `api/feed`, `api/user/:userID/feed`, , `api/team/:teamID/feed`
+- `api/feed`, `api/user/:userID/feed`, `api/team/:teamID/feed`
    - `intent`: Get a feed of recent events
    - `method`: `GET`
    - `fields`:
@@ -91,3 +112,16 @@
          - `team_number` (int)
          - `team_name` (str)
          - `team_type` (str "FRC")
+
+
+
+## Key Tables
+
+- `team` - The team that you authenticate under (e.g. *4534*). Parent for `team_user`, `scouting_domain`, `scouting_entry`, and `feed_entry`.
+- `scouting_domain` - Container for separating scouting results for years or events (e.g. *Palmetto Regional* or *2016 Season*). Parent for `scouting_entry`, and `feed_entry`.
+- `scouting_entry` - Stores scouting information about a team.
+   - `team_id`
+   - `scouting_domain_id`
+   - `id`
+
+- `feed_entry` - Stores an entry for the `team` or `scouting_domain` feeds.
