@@ -1,6 +1,17 @@
-// TODO: Organize these helpers.
-
+/**
+ * Helper class for registering routes for director
+ * @class
+ */
 var RoutesManager = (function() {
+   /**
+    * Constructor
+    * @example https://github.com/4534-WiredWizards/ScoutingApp2016/blob/master/js/router.js#L2
+    *
+    * @param {array}        routes
+    * @param {string}       base
+    * @param {string}       defaultUrl
+    * @param {TokenManager} tokenManager
+    */
    function RoutesManager(routes, base, defaultUrl, tokenManager) {
       this.base = base || "/";
       this.defaultUrl = defaultUrl || "";
@@ -8,6 +19,11 @@ var RoutesManager = (function() {
       this.tokenManager = tokenManager;
    }
 
+   /**
+    * Get a director.js compatible object of routes
+    *
+    * @return {object} director.js compatible object of routes
+    */
    RoutesManager.prototype.getObject = function() {
       var _this = this;
       var res = {};
@@ -40,13 +56,26 @@ var RoutesManager = (function() {
       return res;
    }
 
+   /**
+    * Register a route
+    * @example https://github.com/4534-WiredWizards/ScoutingApp2016/blob/master/js/router.js#L4
+    *
+    * @param {string} url   The route url
+    * @param {object} route Route options
+    */
    RoutesManager.prototype.register = function(url, route) {
       route.url = url;
       this.routes.push(route);
    }
 
+   /**
+    * Call `destroy` on all initialized routes
+    * @example https://github.com/4534-WiredWizards/ScoutingApp2016/blob/297931edda53dfbda3d67c4b8e66cc677ad9eb2b/js/router.js#L80
+    *
+    * @return {array} Routes that were "destroyed"
+    */
    RoutesManager.prototype.destroyExisting = function() {
-      this.routes.filter(function(route) {
+      return this.routes.filter(function(route) {
          return route.initialized && typeof route.destroy == "function";
       }).forEach(function(route) {
          route.initialized = false;
@@ -54,9 +83,14 @@ var RoutesManager = (function() {
       });
    }
 
+   /**
+    * Determines whether the user has access to a route
+    * @example https://github.com/4534-WiredWizards/ScoutingApp2016/blob/297931edda53dfbda3d67c4b8e66cc677ad9eb2b/js/RoutesManager.js#L17
+    * @return {boolean} The user doesn't have access
+    */
    RoutesManager.prototype.checkToken = function(route, token) {
       return route.requireSignin && !this.tokenManager.get();
    }
-   
+
    return RoutesManager;
 }());
