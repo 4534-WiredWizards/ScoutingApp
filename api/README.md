@@ -2,7 +2,7 @@
 -------------
 You can expect every API call to output valid JSON.
 
-## API Calls
+## (Planned) API Calls
 
 ### API Authentication (`api/auth` or `api/authenticate`)
 - Method: `POST`
@@ -368,6 +368,69 @@ token: "superlongtokengoeshere"
 ```
 
 ------
+### Add a Team (`api/user/:teamID/new`)
+
+Update a team's information
+
+- Method: `POST`
+- Fields:
+   - `token` (str)
+   - `team_number` (int)
+   - `team_name` (str)
+- Optional Fields:
+   - `summary` (str)
+   - `strengths` (str)
+   - `weaknesses` (str)
+   - `use_markdown` (bool)
+
+
+##### Example request data:
+```
+token: "superlongtokengoeshere"
+team_number: 4534
+team_name: "Wired Wizards"
+summary: "Some team"
+strengths: ""
+weaknesses: ""
+use_markdown: 1
+```
+
+##### Example success response:
+```json
+{
+  "status": "200 OK",
+  "success": true,
+  "data": {
+    "id": 1,
+    "team_number": 4534,
+    "team_name": "Wired Wizards",
+    "team_type": "FRC",
+    "summary": "Some team",
+    "strengths": "",
+    "weaknesses": "",
+    "use_markdown": 1,
+    "date_added": "2016-01-17 14:20:00"
+  }
+}
+```
+
+
+##### Error Messages:
+- `team_number is required` - *Team number is required*
+- `Invalid team_number` - *Team number isn't a number*
+- `team_name is required` - *Team name is required*
+
+##### Example error response:
+```json
+{
+  "status": "404 Not Found",
+  "success": false,
+  "error": [
+    "Team not found"
+  ]
+}
+```
+------
 
 ### Update Team Information (`api/user/:teamID/edit`)
 
@@ -484,7 +547,6 @@ sort_dir: "down"
 ```
 
 ------
-
 
 ## Key Tables
 
