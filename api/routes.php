@@ -11,6 +11,11 @@ $pages = array(
    "team/new" => new Page("pages/team/new.php"),
    "team/:teamID" => new Page("pages/team/get.php"),
    "team/:teamID/edit" => new Page("pages/team/edit.php"),
+
+   "feed" => new Page("pages/feed/feed.php"),
+   "team/:teamID/feed" => new Page("pages/feed/team.php"),
+   "user/:userID/feed" => new Page("pages/feed/user.php"),
+
 );
 
 $routes = array(
