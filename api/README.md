@@ -368,7 +368,7 @@ token: "superlongtokengoeshere"
 ```
 
 ------
-### Add a Team (`api/user/:teamID/new`)
+### Add a Team (`api/team/:teamID/new`)
 
 Update a team's information
 
@@ -432,7 +432,7 @@ use_markdown: 1
 ```
 ------
 
-### Update Team Information (`api/user/:teamID/edit`)
+### Update Team Information (`api/team/:teamID/edit`)
 
 Update a team's information
 
