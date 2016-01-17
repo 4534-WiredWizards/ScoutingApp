@@ -2,7 +2,7 @@
 -------------
 You can expect every API call to output valid JSON.
 
-## (Planned) API Calls
+## API Calls
 
 ### API Authentication (`api/auth` or `api/authenticate`)
 - Method: `POST`
