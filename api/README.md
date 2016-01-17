@@ -27,6 +27,11 @@ password: "somepass"
 }
 ```
 
+##### Error Messages:
+- `Invalid username/passwword` - *The username/password combination was incorrect for the team*
+- `Invalid team number` - *The team number was blank or isn't set up with the scouting API*
+- `You must use POST method with fields username, password, and teamnum` - *Invalid HTTP Method or not all required fields were passed*
+
 ##### Example error response:
 ```json
 {
@@ -102,6 +107,36 @@ lastname: "Doe"
 }
 ```
 
+##### Error Messages:
+- *$field is required:*
+```json
+{
+  "field": "$field",
+  "msg": "$fieldlabel is required"
+}
+```
+- *Passwords don't match*
+```json
+{
+  "field": "password",
+  "msg": "Password and Confirm Password do not match."
+}
+```
+- *Invalid Username:*
+```json
+{
+  "field": "username",
+  "msg": "Usernames can only contain letters, numbers, underscores, and dashes, and must start with a letter."
+}
+```
+- *Username already in use:*
+```json
+{
+  "field": "username",
+  "msg": "Username already in use"
+}
+```
+
 ##### Example error response:
 ```json
 {
@@ -109,10 +144,6 @@ lastname: "Doe"
   "success": false,
   "data": [],
   "error": [
-    {
-      "field": "lastname",
-      "msg": "Last Name is required"
-    },
     {
       "field": "username",
       "msg": "Username is required"
@@ -129,6 +160,12 @@ Get a feed of recent events
 - Fields:
    - `token` (`str`)
    - `sort_dir` (`str`) (choices `up`|`down`) (default `up`)
+
+##### Example request data:
+```
+token: "superlongtokengoeshere"
+sort_dir: "up"
+```
 
 ##### Example success response:
 ```json
@@ -163,97 +200,287 @@ Get a feed of recent events
 Get a user's information
 - Method: `GET`
 - Fields:
+   - `token` (`str`)
+
+##### Example request data:
+```
+token: "superlongtokenhere"
+```
+
+##### Example success response:
+```json
+{
+  "status": "200 OK",
+  "success": true,
+  "data": {
+    "id": 31415,
+    "firstname": "John",
+    "lastname": "Doe",
+    "username": "john-doe",
+    "active": 1
+  }
+}
+```
+
+##### Example error response:
+```json
+{
+  "status": "404 Not Found",
+  "success": false,
+  "error": [
+    "User not found"
+  ]
+}
+```
+
+------
+
+### Modify User (`api/user/:userID/edit`)
+Update a user's information
+Use `api/user/me/edit` to update the authenticated user's information
+
+- Method: `POST`
+- Fields:
+   - `token` (`str`)
+- Optional Fields:
+   - `password` (paired with `passconf`)
+   - `passconf` (paired with `password`)
+   - `firstname`
+   - `lastname`
+
+##### Example request data:
+```json
+token: "superlongtokengoeshere"
+password: "sup3rpa55w0rd"
+passconf: "sup3rpa55w0rd"
+firstname: "John"
+lastname: "Goat"
+```
+
+##### Example success response:
+```json
+{
+  "status": "200 OK",
+  "success": true,
+  "data": {
+    "id": 31415,
+    "firstname": "John",
+    "lastname": "Goat",
+    "username": "some-new-user",
+    "active": 1
+  },
+  "error": []
+}
+```
+
+##### Example error response:
+```json
+{
+  "status": "404 Not Found",
+  "success": false,
+  "error": [
+    "User not found"
+  ]
+}
+```
+
+------
+
+### All Users' Information (`api/users`)
+
+Get all users
+
+- Method: `GET`
+- Fields:
    - `token` (str)
 
-### `api/user/:userID/edit`
-Update a user's information
-- `method`: `POST`
-- `fields`:
-- `token` (str)
-
 ##### Example request data:
-```json
+```
+token: "superlongtokengoeshere"
 ```
 
 ##### Example success response:
 ```json
-```
-
-##### Example error response:
-```json
+{
+  "status": "200 OK",
+  "success": true,
+  "data": [
+    {
+      "id": 31415,
+      "firstname": "John",
+      "lastname": "Do",
+      "username": "some-user",
+      "active": 1
+    },
+    {
+      "id": 31416,
+      "firstname": "John",
+      "lastname": "Don't",
+      "username": "another-user",
+      "active": 1
+    }
+  ]
+}
 ```
 
 ------
 
-- `api/users`
-   - `intent`: Get all users
+### Team Information (`api/team/:teamID`)
+Get a team's information
    - `method`: `GET`
    - `fields`:
       - `token` (str)
 
-
 ##### Example request data:
-```json
+```
+token: "superlongtokengoeshere"
 ```
 
 ##### Example success response:
+
 ```json
+{
+  "status": "200 OK",
+  "success": true,
+  "data": {
+    "id": 1,
+    "team_number": 4534,
+    "team_name": "Wired Wizards"
+    "team_type": "FRC",
+    "summary": "summary goes here",
+    "strengths": "",
+    "weaknesses": "",
+    "use_markdown": 1,
+    "date_added": "2016-01-17 13:50:00"
+  }
+}
 ```
 
 ##### Example error response:
 ```json
+{
+  "status": "404 Not Found",
+  "success": false,
+  "error": [
+    "Team not found"
+  ]
+}
 ```
 
 ------
 
-- `api/team/:teamID`
-   - `intent`: Get a team's information
-   - `method`: `GET`
-   - `fields`:
-      - `token` (str)
-   - `api/user/:teamID/edit`
-      - `intent`: Update a team's information
-      - `method`: `POST`
-      - `fields`:
-         - `token` (str)
+### Update Team Information (`api/user/:teamID/edit`)
+
+Update a team's information
+
+- Method: `POST`
+- Fields:
+   - `token` (str)
+- Optional Fields:
+   - `team_name` (str)
+   - `summary` (str)
+   - `strengths` (str)
+   - `weaknesses` (str)
+   - `use_markdown` (bool)
 
 
 ##### Example request data:
-```json
+```
+token: "superlongtokengoeshere"
+team_name: "Wired Wizards in Wilmington"
 ```
 
 ##### Example success response:
 ```json
+{
+  "status": "200 OK",
+  "success": true,
+  "data": {
+    "id": 1,
+    "team_number": 4534,
+    "team_name": "Wired Wizards in Wilmington",
+    "team_type": "FRC",
+    "summary": "summary goes here",
+    "strengths": "",
+    "weaknesses": "",
+    "use_markdown": 1,
+    "date_added": "2016-01-17 13:50:00"
+  }
+}
 ```
 
 ##### Example error response:
 ```json
+{
+  "status": "404 Not Found",
+  "success": false,
+  "error": [
+    "Team not found"
+  ]
+}
 ```
 
 ------
 
-- `api/teams`
-   - `intent`: Get all teams
-   - `method`: `GET`
-   - `fields`:
-      - `token` (str)
-   - `respose`:
-      - `data` (arr):
-         - `id` (int)
-         - `team_number` (int)
-         - `team_name` (str)
-         - `team_type` (str "FRC")
+### Get all teams (`api/teams`)
+
+Get all teams
+
+- Method: `GET`
+- Fields:
+   - `token` (str)
+   - `sort_col` (str)
+   - `sort_dir` (str "up"|"down")
+- Response Fields:
+   - `data` (arr):
+      - `id` (int)
+      - `team_number` (int)
+      - `team_name` (str)
+      - `team_type` (str "FRC")
+      - `summary` (str)
+      - `strengths` (str)
+      - `weaknesses` (str)
+      - `use_markdown` (bool)
+      - `date_added` (str)
 
 ##### Example request data:
-```json
+```
+token: "superlongtokengoeshere"
+sort_col: "id"
+sort_dir: "down"
 ```
 
 ##### Example success response:
 ```json
-```
-
-##### Example error response:
-```json
+{
+  "status": "200 OK",
+  "success": true,
+  "data": [
+    {
+      "id": 1,
+      "team_number": 4534,
+      "team_name": "Wired Wizards"
+      "team_type": "FRC",
+      "summary": "summary goes here",
+      "strengths": "",
+      "weaknesses": "",
+      "use_markdown": 1,
+      "date_added": "2016-01-17 13:50:00"
+    },
+    {
+      "id": 2,
+      "team_number": 1,
+      "team_name": "Juggernauts"
+      "team_type": "FRC",
+      "summary": "summary goes here",
+      "strengths": "",
+      "weaknesses": "",
+      "use_markdown": 1,
+      "active": 1,
+      "date_added": "2016-01-17 13:51:00"
+    }
+  ]
+}
 ```
 
 ------

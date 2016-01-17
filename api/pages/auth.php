@@ -1,5 +1,7 @@
 <?php
 
+$required_fields_err = "You must use POST method with fields `username`, `password`, and `teamnum`";
+
 if (is_array($post) && count($post)) {
    $success = false;
    $username = $post["username"];
@@ -32,7 +34,7 @@ if (is_array($post) && count($post)) {
          $errors[] = "Invalid username/password";
       }
    } else {
-      $errors[] = "You must pass fields `username` and `password`.";
+      $errors[] = $required_fields_err;
    }
    $output = array();
    $output["success"] = $success;
@@ -41,5 +43,5 @@ if (is_array($post) && count($post)) {
       $output["token"] = $token;
    }
 } else {
-   $output = array("success" => false, "error" => array("Must use POST method with fields `username`, `password`, and `teamnum`"));
-} 
+   $output = array("success" => false, "error" => array($required_fields_err));
+}
