@@ -2,9 +2,9 @@
 
 $pages = array(
    "index" => new Page("pages/index.php"),
-   "register" => new Page("pages/register.php"),
-   "auth" => new Page("pages/auth.php"),
-   "authenticate" => new Page("pages/auth.php"),
+   "register" => new Page("pages/user/register.php"),
+   "auth" => new Page("pages/user/auth.php"),
+   "authenticate" => new Page("pages/user/auth.php"),
    "not-found" => new Page("pages/not-found.php"),
 
    "team" => new Page("pages/team/list.php"),
