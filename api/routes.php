@@ -6,6 +6,11 @@ $pages = array(
    "auth" => new Page("pages/auth.php"),
    "authenticate" => new Page("pages/auth.php"),
    "not-found" => new Page("pages/not-found.php"),
+
+   "team" => new Page("pages/team/list.php"),
+   "team/new" => new Page("pages/team/new.php"),
+   "team/:teamID" => new Page("pages/team/get.php"),
+   "team/:teamID/edit" => new Page("pages/team/edit.php"),
 );
 
 $routes = array(
