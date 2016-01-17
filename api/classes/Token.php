@@ -8,7 +8,7 @@ class Token {
       }
       $fields = $dbh->createFieldString($fields, "", $safe_fields);
 
-      $res = $dbh->query("SELECT $fields FROM auth_token WHERE date_expires >= NOW() active = 'y' AND token = ?", array($token));
+      $res = $dbh->query("SELECT $fields FROM auth_token WHERE date_expires >= NOW() AND active IS TRUE AND token = ?", array($token));
 
       if (count($res)) {
          return $res[0];
@@ -30,10 +30,13 @@ class Token {
 
    // Get token from get parameter or `Authorization` header
    public static function getToken() {
-      global $get;
+      global $args;
+      extract($args);
       $headers = getallheaders();
       if (is_array($get) && isset($get["token"])) {
          return $get["token"];
+      } else if (is_array($post) && isset($post["token"])) {
+         return $post["token"];
       } else if (isset($headers["Authorization"])) {
          preg_match("/[\\w]{10,32}/", $headers["Authorization"], $matches);
          if (count($matches)) {
@@ -42,4 +45,3 @@ class Token {
       }
    }
 }
-

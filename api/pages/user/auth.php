@@ -1,7 +1,6 @@
 <?php
 
 $required_fields_err = "You must use POST method with fields `username`, `password`, and `teamnum`";
-
 if (is_array($post) && count($post)) {
    $success = false;
    $username = $post["username"];

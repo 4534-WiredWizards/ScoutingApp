@@ -41,14 +41,14 @@ class TeamUsers {
    public function authUsernamePassword($username, $password) {
       global $api_dir;
       require_once("$api_dir/libs/password.php");
-      $user = $this->getByUsername($username, array("active", "password"));
+      $user = $this->getByUsername($username, array("id", "active", "password"));
       $matches = password_verify($password, $user["password"]);
       if ($matches) {
          if (!$user["active"]) {
             return array("error" => "Inactive user");
          }
          return $user;
-      } 
+      }
    }
 
    public function getByUsername($username, $fields = NULL, $safe_fields = false) {
@@ -90,5 +90,28 @@ class TeamUsers {
          $this->team_id
       ));
    }
-}
 
+   static function authAPICall($dbh, $output_on_error = true, $output_type = "json") {
+      require_once("Token.php");
+      $token_data = Token::check($dbh, Token::getToken());
+      if (isset($token_data["team_user_id"])) {
+         $user = $dbh->query("SELECT * FROM team_user WHERE id = ?", array($token_data["team_user_id"]));
+         if (count($user)) {
+            $user = $user[0];
+            $user["token_data"] = $token_data;
+            return $user;
+         }
+      }
+      if ($output_on_error) {
+         $status = "401 Unauthorized";
+         output($output_type, array(
+            "status" => $status,
+            "success" => false,
+            "error" => array(
+               "Invalid token"
+            )
+         ), $status);
+         exit;
+      }
+   }
+}

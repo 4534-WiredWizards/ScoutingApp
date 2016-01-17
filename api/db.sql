@@ -123,15 +123,13 @@ INSERT INTO team_user (
    1,
    "Daniel",
    "Wilson",
-   "daniel",
-   "1111"
+   "daniel"
 ), (
    1,
    2,
    "Brandon",
    "Dyer",
-   "bdn",
-   "1111"
+   "bdn"
 );
 
 INSERT INTO scouting_domain (
