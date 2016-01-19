@@ -345,7 +345,7 @@ token: "superlongtokengoeshere"
   "data": {
     "id": 1,
     "team_number": 4534,
-    "team_name": "Wired Wizards"
+    "team_name": "Wired Wizards",
     "team_type": "FRC",
     "summary": "summary goes here",
     "strengths": "",
@@ -522,7 +522,7 @@ sort_dir: "down"
     {
       "id": 1,
       "team_number": 4534,
-      "team_name": "Wired Wizards"
+      "team_name": "Wired Wizards",
       "team_type": "FRC",
       "summary": "summary goes here",
       "strengths": "",
@@ -533,7 +533,7 @@ sort_dir: "down"
     {
       "id": 2,
       "team_number": 1,
-      "team_name": "Juggernauts"
+      "team_name": "Juggernauts",
       "team_type": "FRC",
       "summary": "summary goes here",
       "strengths": "",
