@@ -56,7 +56,7 @@ class TeamUsers {
          $fields = $this->default_fields;
          $safe_fields = true;
       }
-      $fields = $this->dbh->createFieldString($fields, "", $safe_fields);
+      $fields = DBHandler::createFieldString($fields, "", $safe_fields);
       $res = $this->dbh->query("SELECT $fields FROM team_user WHERE team_id = ? AND username = ?", array(
          $this->team_id,
          $username
@@ -71,7 +71,7 @@ class TeamUsers {
          $fields = $this->default_fields;
          $safe_fields = true;
       }
-      $fields = $this->dbh->createFieldString($fields, "", $safe_fields);
+      $fields = DBHandler::createFieldString($fields, "", $safe_fields);
       $res = $this->dbh->query("SELECT $fields FROM team_user WHERE team_id = ? AND id = ?", array(
          $this->team_id,
          $id
@@ -86,7 +86,8 @@ class TeamUsers {
          $fields = "id, firstname, lastname, username, active";
          $safe_fields = true;
       }
-      return $this->dbh->query("SELECT $fields FROM team_user WHERE team_id = ?", array(
+      $limit = (int) $limit;
+      return $this->dbh->query("SELECT $fields FROM team_user WHERE team_id = ? LIMIT $limit", array(
          $this->team_id
       ));
    }

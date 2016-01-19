@@ -30,7 +30,7 @@ class DBHandler extends PDO {
       return $res;
    }
 
-   public function createFieldString($fields = array(), $table_prefix = "", $safe_fields = FALSE) {
+   static function createFieldString($fields = array(), $table_prefix = "", $safe_fields = FALSE) {
       if (strlen($table_prefix)) $table_prefix .= ".";
       if (is_array($fields) && !count($fields)) return "1";
       if ($safe_fields) {
@@ -48,5 +48,11 @@ class DBHandler extends PDO {
          }
       }
       return $fields;
+   }
+
+   static function createLimitString($page = 0, $limit = 100) {
+      $page = (int) $page;
+      $limit = (int) $limit;
+      return ($page * $limit) . ", " . ($limit);
    }
 }

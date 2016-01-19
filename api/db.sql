@@ -46,11 +46,15 @@ CREATE TABLE scouting_entry (
    scouting_domain_id INT UNSIGNED NOT NULL,
    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 
-   name VARCHAR(255),
+   team_number VARCHAR(255),
+   team_name VARCHAR(255),
+   team_type VARCHAR(255),
+
    api_url VARCHAR(255),
    summary TEXT,
    strengths TEXT,
    weaknesses TEXT,
+
 
    use_markdown BOOLEAN NOT NULL DEFAULT 1,
    active BOOLEAN NOT NULL DEFAULT 1,
