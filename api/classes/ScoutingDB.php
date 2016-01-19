@@ -15,24 +15,23 @@ class ScoutingDB {
       $this->user_id = $user_id;
    }
 
-   public function getEntries($sort_col = "team_number", $sort_dir = "up", $page = 0, $limit = 100, $fields = NULL, $safe_fields = false) {
+   public function getList($table, $sort_col = "id", $sort_dir = "up", $page = 0, $limit = 100, $fields = NULL, $safe_fields = false) {
+      $table_whitelist = array("scouting_entry", "team_user");
+
+      if (!in_array($table, $table_whitelist)) return array();
+
       if (is_null($fields)) {
-         $fields = array(
-            "id",
-            "team_number",
-            "team_name",
-            "team_type",
-            "summary",
-            "strengths",
-            "weaknesses",
-            "use_markdown",
-            "date_added"
-         );
+         $fields = "t.*";
          $safe_fields = true;
       }
-      $fields = DBHandler::createFieldString($fields, "se", $safe_fields);
+
+      $fields = DBHandler::createFieldString($fields, "t", $safe_fields);
       $sort_dir = ($sort_dir == "up") ? "ASC" : "DESC";
       $limit = DBHandler::createLimitString($page, $limit);
-      return $this->dbh->query("SELECT $fields FROM scouting_entry se ORDER BY se.`$sort_col` $sort_dir LIMIT $limit");
+      return $this->dbh->query("SELECT $fields FROM `$table` t ORDER BY t.`$sort_col` $sort_dir LIMIT $limit");
+   }
+
+   public function getTeams() {
+
    }
 }
