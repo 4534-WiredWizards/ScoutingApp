@@ -1,3 +1,6 @@
+
+
+
 # WW Scouting API
 -------------
 You can expect every API call to output valid JSON.
@@ -286,7 +289,7 @@ lastname: "Goat"
 
 ------
 
-### All Users' Information (`api/users`)
+### All Users' Information (`api/user`)
 
 Get all users
 
@@ -485,7 +488,7 @@ team_name: "Wired Wizards in Wilmington"
 
 ------
 
-### Get all teams (`api/teams`)
+### Get all teams (`api/team`)
 
 Get all teams
 

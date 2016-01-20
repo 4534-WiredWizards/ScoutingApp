@@ -7,9 +7,9 @@ $pages = array(
    "authenticate" => new Page("pages/user/auth.php"),
    "not-found" => new Page("pages/not-found.php"),
 
-   "users" => new Page("pages/user/list.php"),
+   "user" => new Page("pages/user/list.php"),
 
-   "teams" => new Page("pages/team/list.php"),
+   "team" => new Page("pages/team/list.php"),
    "team/new" => new Page("pages/team/new.php"),
    "team/:teamID" => new Page("pages/team/get.php"),
    "team/:teamID/edit" => new Page("pages/team/edit.php"),
