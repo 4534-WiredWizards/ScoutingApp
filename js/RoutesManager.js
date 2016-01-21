@@ -23,7 +23,15 @@ var RoutesManager = (function() {
    /**
     * Get a director.js compatible object of routes
     *
-    * @return {object} director.js compatible object of routes
+    * @return {object} director.js compatible object of routes in this format:
+    * {
+          "/some-route": function() {
+             // This is a callback
+          },
+          "/another-route": function() {
+             // This is another callback
+          }
+      }
     */
    RoutesManager.prototype.getObject = function() {
       var _this = this;
@@ -70,7 +78,7 @@ var RoutesManager = (function() {
    }
 
    /**
-    * Call `destroy` on all initialized routes
+    * Call `destroy` callback on all initialized routes
     * @example https://github.com/4534-WiredWizards/ScoutingApp2016/blob/297931edda53dfbda3d67c4b8e66cc677ad9eb2b/js/router.js#L80
     *
     * @return {array} Routes that were "destroyed"
@@ -87,7 +95,7 @@ var RoutesManager = (function() {
    /**
     * Determines whether the user has access to a route
     * @example https://github.com/4534-WiredWizards/ScoutingApp2016/blob/297931edda53dfbda3d67c4b8e66cc677ad9eb2b/js/RoutesManager.js#L17
-    * @return {boolean} The user doesn't have access
+    * @return {boolean} `true` if the user is denied access, `false` if the user has access
     */
    RoutesManager.prototype.checkToken = function(route, token) {
       return route.requireSignin && !this.tokenManager.get();
