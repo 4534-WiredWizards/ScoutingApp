@@ -1,5 +1,6 @@
 <?php
 
+// Helper class for handling user authentication in a team.
 class TeamUsers {
    public $team_id = 0;
    public $dbh = NULL;

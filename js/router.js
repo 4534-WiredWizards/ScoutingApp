@@ -1,6 +1,9 @@
+// Initialize token manager
 var token = new TokenManager("ww-scouting");
+// Initialize app url route manager
 var routes = new RoutesManager([], "", "home", token);
 
+// Register app routes
 routes.register("/home", {
    template: "templates/index.html",
    init: function() {
@@ -56,6 +59,7 @@ routes.register("/not-found", {
    requireSignin: false
 });
 
+// Account for director.js bug (https://github.com/flatiron/director/issues/324) where changing the route 500 ms after page load will throw error
 function setRouteSafe(router, route) {
    if (window.onpopstate) {
       router.setRoute(base+route);
@@ -66,14 +70,17 @@ function setRouteSafe(router, route) {
    }
 }
 
+// We want router and base to be in global scope
 var router, base;
 $(document).ready(function() {
+   // get <base href="..."> element value
    base = $("base").attr("href");
-   
+
    var baseRoute = {};
    baseRoute[base] = routes.getObject();
    routes.base = base;
 
+   // Initialize director.js router
    router = Router(baseRoute);
    router.configure({
       html5history: true,
@@ -85,6 +92,7 @@ $(document).ready(function() {
 
    router.init();
    if (!router.getRoute()[routes.base.split("/").length-2]) {
+      // Set default route or signin if url route isn't set.
       if (token.get()) {
          setRouteSafe(router, routes.defaultUrl);
       } else {
@@ -93,6 +101,7 @@ $(document).ready(function() {
    }
 
    $("body").on("click", "[href]:not([href*=\"http\"]):not([href*=\"#\"])", function() {
+      // Override links and set route without leaving page
       var href = $(this).attr("href");
       if (href.charAt(0) == "/") href = href.slice(1);
       setRouteSafe(router, href);

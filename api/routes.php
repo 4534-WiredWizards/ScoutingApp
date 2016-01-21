@@ -1,5 +1,6 @@
 <?php
 
+// Setup routes
 $pages = array(
    "index" => new Page("pages/index.php"),
    "register" => new Page("pages/user/register.php"),
@@ -17,7 +18,6 @@ $pages = array(
    "feed" => new Page("pages/feed/feed.php"),
    "team/:teamID/feed" => new Page("pages/feed/team.php"),
    "user/:userID/feed" => new Page("pages/feed/user.php"),
-
 );
 
 $routes = array(
@@ -39,4 +39,5 @@ foreach($routes as &$route) {
    }
 }
 
+// Init API router
 $router = new Router($routes);

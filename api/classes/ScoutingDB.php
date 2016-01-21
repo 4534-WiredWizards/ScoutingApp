@@ -2,6 +2,7 @@
 
 require_once("DBHandler.php");
 
+// Helper class for accessing team/scouting domain specific information/rows
 class ScoutingDB {
    public $dbh = NULL;
    public $team_id = 0;

@@ -1,5 +1,7 @@
 <?php
 
+// Helper class for matching a url with predefined url routes.
+// I'm not going to comment the rest of this
 class Router {
    public function __construct($routes = array()) {
       $this->routes = $routes;

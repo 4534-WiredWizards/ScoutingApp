@@ -1,5 +1,6 @@
 <?php
 
+// Helper for inclduing a page/api call
 class Page {
    public function __construct($script, $display_block = TRUE) {
       $this->script = $script;

@@ -1,9 +1,14 @@
 <?php
 
+// List users route (api/user/)
+
 global $dbh;
+// Auth user
 $user = TeamUsers::authAPICall($dbh);
+// Initialize scouting db
 $sdb = new ScoutingDB($dbh, $user["team_id"], 0, $user["id"]);
 
+// Default user fields
 $default_fields = array(
    "id",
    "username",
@@ -23,4 +28,6 @@ $options = array_merge(array(
 ), $get);
 
 $safe_fields = ($options["fields"] === $default_fields);
+
+// Output results
 $output = array("data" => $sdb->getList("team_user", $options["sort_col"], $options["sort_dir"], $options["page"], $options["limit"], $options["fields"], $safe_fields));

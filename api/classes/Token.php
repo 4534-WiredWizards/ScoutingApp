@@ -1,6 +1,8 @@
 <?php
 
+// Helper class for creating and authenticating API authorization tokens
 class Token {
+   // Check that a token exists and has not expired
    public static function check($dbh, $token, $fields = NULL, $safe_fields = false) {
       if (is_null($fields)) {
          $fields = "team_user_id, data";
@@ -17,6 +19,7 @@ class Token {
       return false;
    }
 
+   // Create/save a token
    public static function create($dbh, $team_user_id, $data = "", $expire_time = 12 /*Hours*/) {
       $token = md5(uniqid($team_user_id, true));
       $expire_time = (float) $expire_time;
@@ -33,6 +36,7 @@ class Token {
       global $args;
       extract($args);
       $headers = getallheaders();
+      // Try to find token
       if (is_array($get) && isset($get["token"])) {
          return $get["token"];
       } else if (is_array($post) && isset($post["token"])) {
