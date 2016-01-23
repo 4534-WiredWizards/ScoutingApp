@@ -64,4 +64,25 @@ class DBHandler extends PDO {
       $limit = (int) $limit;
       return ($page * $limit) . ", " . ($limit);
    }
+
+   static function createWhereString($where = array(), $table_prefix = "") {
+      $where_q = "1";
+      $operators = array("=", ">=", "<=", "LIKE");
+      $fields = array();
+      foreach($where as $filter_key => $filter_val) {
+         if (is_array($filter_val)) {
+            $fields[] = $filter_val["value"];
+            if (in_array($filter_val["operator"], $operators)) {
+               $op = $filter_val["operator"];
+            } else {
+               $op = $operators[0];
+            }
+         } else {
+            $fields[] = $filter_val;
+            $op = $operators[0];
+         }
+         $where_q .= " AND `$table_prefix`.`$filter_key` $op ?";
+      }
+      return array("($where_q)", $fields);
+   }
 }

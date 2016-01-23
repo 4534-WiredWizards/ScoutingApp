@@ -1,1 +1,16 @@
-List of teams goes here.
+<div>
+   {{#if loading}}
+      <h4>Loading...</h4>
+   {{/if}}
+
+   {{#each teams}}
+      <a href='team/{{team_number}}'>
+         <div class="well">
+            {{team_type}} Team #{{team_number}} - {{team_name}}<br/>
+            Summary: {{summary || "None"}}<br/>
+            Strengths: {{strengths || "None"}}<br/>
+            Weaknesses: {{weaknesses || "None"}}<br/>
+         </div>
+      </a>
+   {{/each}}
+</div>

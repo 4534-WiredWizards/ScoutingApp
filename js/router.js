@@ -1,7 +1,7 @@
 // Initialize token manager
 var token = new TokenManager("ww-scouting");
 // Initialize app url route manager
-var routes = new RoutesManager([], "", "home", token);
+var routes = new RoutesManager([], "", "team", token);
 
 // Register app routes
 routes.register("/home", {
@@ -21,37 +21,102 @@ routes.register("/signin", {
    template: "templates/signin.html",
 });
 routes.register("/team/new", {
-   template: "templates/team/new.html",
-   init: function() {
-      console.log("team");
+   template: "templates/team/form.html",
+   init: function(data) {
+      ractive = new Ractive({
+         el: ".main",
+         template: data.template,
+         data: {
+            action: "team/new"
+         }
+      })
+      $(".main-title").html("Add a Team");
    },
    requireSignin: true
 });
 routes.register("/team/:teamNum", {
    template: "templates/team/display.html",
-   init: function() {
-      console.log("team display");
+   dataCallbacks: {
+      team: function(_this, callback, teamNum) {
+         API.get("team/"+teamNum, {}, function(res) {
+            res.data.summary = res.data.summary || "";
+            res.data.strengths = res.data.strengths || "";
+            res.data.weaknesses = res.data.weaknesses || "";
+            callback(res.data);
+         });
+      }
+   },
+   init: function(data, teamNum) {
+      ractive = new Ractive({
+         el: ".main",
+         template: data.template,
+         data: {
+            splitLine: function(val) {
+               return (val || "").split(/\s*\n\s*/g).filter(Boolean);
+            }
+         }
+      })
+      ractive.set(data.team);
+      $(".main-title").html(new Ractive({
+         template: "{{team_type}} Team #{{team_number}} - {{team_name}}",
+         data: data.team
+      }).toHTML());
    },
    requireSignin: true
 });
 routes.register("/team/:teamNum/edit", {
-   template: "templates/team/edit.html",
-   init: function() {
-      console.log("team edit");
+   template: "templates/team/form.html",
+   dataCallbacks: {
+      team: function(_this, callback, teamNum) {
+         API.get("team/"+teamNum, {}, function(res) {
+            res.data.summary = res.data.summary || "";
+            res.data.strengths = res.data.strengths || "";
+            res.data.weaknesses = res.data.weaknesses || "";
+            callback(res.data);
+         });
+      }
+   },
+   init: function(data, teamNum) {
+      ractive = new Ractive({
+         el: ".main",
+         template: data.template,
+         data: {
+            action: "team/"+teamNum+"/edit"
+         }
+      })
+      ractive.set(data.team);
+      $(".main-title").html(new Ractive({
+         template: "{{team_type}} Team #{{team_number}} - {{team_name}} - Edit",
+         data: data.team
+      }).toHTML());
    },
    requireSignin: true
 });
-routes.register("/teams", {
+routes.register("/team", {
    template: "templates/team/list.html",
-   init: function() {
-      console.log("team list");
+   dataCallbacks: {
+      teams: function(_this, callback) {
+         API.get("team", {}, function(res) {
+            callback(res.data);
+         });
+      }
+   },
+   init: function(data) {
+      var ractive = new Ractive({
+         el: ".main",
+         template: data.template,
+         data: {
+            teams: data.teams
+         }
+      });
+      $(this.titleElem).html("Teams");
    },
    requireSignin: true
 });
 routes.register("/not-found", {
    template: "templates/not-found.html",
    init: function() {
-      this.interval = window.setInterval(notFoundChange,1000 / 10);
+      this.interval = window.setInterval(notFoundChange, 1000 / 10);
    },
    destroy: function() {
       clearInterval(this.interval);
@@ -66,7 +131,7 @@ function setRouteSafe(router, route) {
    } else {
       setTimeout(function() {
          router.setRoute(base+route);
-      }, 500);
+      }, 550);
    }
 }
 
@@ -84,7 +149,9 @@ $(document).ready(function() {
    router = Router(baseRoute);
    router.configure({
       html5history: true,
-      before: routes.destroyExisting.bind(routes),
+      before: [routes.destroyExisting.bind(routes), function() {
+         $(window).scrollTop(0);
+      }],
       notfound: (function() {
          setRouteSafe(this, "not-found");
       }).bind(router),
@@ -105,6 +172,27 @@ $(document).ready(function() {
       var href = $(this).attr("href");
       if (href.charAt(0) == "/") href = href.slice(1);
       setRouteSafe(router, href);
+      return false;
+   });
+
+   function parseDataString(str) {
+      var result = {};
+      var str = str || "";
+      str.split("&").forEach(function(part) {
+         var item = part.split("=");
+         result[item[0]] = decodeURIComponent(item[1]);
+      });
+      return result;
+   }
+
+   $("body").on("submit", "form[method=async][action]", function() {
+      var $form = $(this).is("form") ? $(this) : $(this).closest("form");
+      var data = parseDataString($form.serialize());
+
+      API.post($form.attr("action").trim(), data, function(res) {
+         console.dir(data);
+         console.dir(res);
+      });
       return false;
    });
 });

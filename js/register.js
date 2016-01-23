@@ -7,7 +7,7 @@ $(document).ready(function() {
 		 data: $('#registerForm').serialize(),
 		 method: "POST"
       }).done(function(){
-         
+
       });
 	  return false;
    });

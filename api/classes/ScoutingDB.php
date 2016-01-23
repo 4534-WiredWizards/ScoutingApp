@@ -32,7 +32,54 @@ class ScoutingDB {
       return $this->dbh->query("SELECT $fields FROM `$table` t ORDER BY t.`$sort_col` $sort_dir LIMIT $limit");
    }
 
-   public function getTeams() {
+   public function getItem($table, $where = array(), $fields = NULL, $safe_fields = false) {
+      $table_whitelist = array("scouting_entry", "team_user");
 
+      if (!in_array($table, $table_whitelist)) return array();
+
+      if (is_null($fields)) {
+         $fields = "t.*";
+         $safe_fields = true;
+      }
+
+      $fields = DBHandler::createFieldString($fields, "t", $safe_fields);
+      $where = DBHandler::createWhereString($where, "t");
+
+      $query = "SELECT $fields FROM $table WHERE $where";
+      $res = $this->dbh->query("SELECT $fields FROM `$table` t WHERE {$where[0]}", $where[1]);
+      return isset($res[0]) ? $res[0] : array();
+   }
+
+   public function addTeam($data) {
+      $default_fields = array(
+         "team_number" => 0,
+         "team_name" => "",
+         "team_type" => "FRC",
+         "summary" => "",
+         "strengths" => "",
+         "weaknesses" => ""
+      );
+      $team_data = array_merge($default_fields, $data);
+      if (!$team_data["team_number"]) {
+         return array();
+      }
+      $data = array();
+      foreach(array_keys($default_fields) as $field) {
+         $data[$field] = $team_data[$field];
+      }
+      $query = "
+         INSERT INTO
+         scouting_entry
+
+         (team_id, scouting_domain_id, team_number, team_name, team_type, summary, strengths, weaknesses, use_markdown, active, date_added)
+         VALUES
+         (:team_id, :scouting_domain_id, :team_number, :team_name, :team_type, :summary, :strengths, :weaknesses, TRUE, TRUE, NOW())
+      ";
+      $team_data["team_id"] = $this->team_id;
+      $team_data["scouting_domain_id"] = $this->scouting_domain_id;
+      $this->dbh->query($query, $team_data);
+      return $this->getItem("scouting_entry", array(
+         "team_number" => $team_data["team_number"]
+      ));
    }
 }
