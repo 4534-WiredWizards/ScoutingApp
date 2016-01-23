@@ -37,29 +37,68 @@ var RoutesManager = (function() {
       var _this = this;
       var res = {};
       this.routes.forEach(function(route) {
+         route.titleElem = route.titleElem || ".main-title";
+         route.elem = route.elem || ".main";
+         route.dataCallbacks = route.dataCallbacks || {};
+         route.contentMethod = route.contentMethod || "html";
+         route.data = route.data || {};
+         if (!route.dataCallbacks.template && route.template) {
+            route.dataCallbacks.template = function(_this, callback) {
+               if (_this.templateHTML) {
+                  callback(_this.templateHTML)
+               } else {
+                  $.get(_this.template, function(contents) {
+                     _this.templateHTML = contents;
+                     callback(contents);
+                  });
+               }
+            }
+         }
+         route.dataCallback = function(args, done) {
+            var methods = [];
+            for(var key in this.dataCallbacks) {
+               methods.push([key, this.dataCallbacks[key], this]);
+            }
+            var n = methods.length;
+            if (n === 0) {
+               return done({});
+            }
+            var _this = this;
+            var data = {};
+            methods.forEach(function(method) {
+               method[1].apply(method, [_this, function(res) {
+                  data[method[0]] = res;
+                  n--;
+                  if (n === 0) {
+                     done(data);
+                  }
+               }].concat(args));
+            });
+         }
          res[route.url] = function() {
+            var args = Array.prototype.slice.call(arguments);
             var router = this;
+
+            $(route.titleElem).html("Loading...");
+            $(route.elem).html("");
+
             if (_this.checkToken(route, this.tokenManager)) {
                return setRouteSafe(router, "signin");
             }
-            if (route.template || route.templateHTML) {
-               function callback() {
-                  var method = route.contentMethod || "html";
-                  var elem = route.elem || ".main";
-                  $(elem)[method](route.templateHTML);
-                  if (typeof route.init == "function") {
-                     route.init.call(route);
-                     route.initialized = true;
+
+            route.dataCallback(args, function(data) {
+               data.template = data.template || "";
+               $(route.elem)[route.contentMethod](route.templateHTML);
+               if (typeof route.init == "function") {
+                  route.init.apply(route, [data].concat(args));
+                  route.initialized = true;
+                  if ($(route.titleElem).html() == "Loading...") {
+                     $(route.titleElem).html(route.url.split("/").map(function(word) {
+                        return word.charAt(0).toUpperCase() + word.slice(1);
+                     }).join(" "));
                   }
                }
-               if (route.templateHTML) {
-                  callback();
-               } else {
-                  $.get(route.template, function(contents) {
-                     route.templateHTML = contents;
-                  }).then(callback);
-               }
-            }
+            });
          }
       });
       return res;
@@ -103,3 +142,12 @@ var RoutesManager = (function() {
 
    return RoutesManager;
 }());
+
+function afterN(n, callback) {
+   return function() {
+      n--;
+      if (n === 0) {
+         callback();
+      }
+   }
+}

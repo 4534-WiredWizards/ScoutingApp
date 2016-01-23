@@ -371,7 +371,7 @@ token: "superlongtokengoeshere"
 ```
 
 ------
-### Add a Team (`api/team/:teamID/new`)
+### Add a Team (`api/team/new`)
 
 Update a team's information
 

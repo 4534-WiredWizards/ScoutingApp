@@ -10,19 +10,26 @@ var API = {
          data: data
       })
       .error(function(res) {
-         if (res.status == 401) alert("need new token")
-         return;
+         if (res.status == 401) {
+            setRouteSafe(router, "signin");
+            return;
+         }
+         return res;
+      })
+      .then(function(res) {
+         console.log(res.data)
+         return res;
       })
       .done(callback || Function())
    },
    get: function(url) {
       var args = Array.prototype.slice.call(arguments).slice(1);
       args = [url, "GET"].concat(args);
-      this.ajax.apply(this, args);
+      return this.ajax.apply(this, args);
    },
    post: function(url) {
       var args = Array.prototype.slice.call(arguments).slice(1);
       args = [url, "POST"].concat(args);
-      this.ajax.apply(this, args);
+      return this.ajax.apply(this, args);
    },
 };
