@@ -1,11 +1,9 @@
 <div>
    <form role="form" method="async" action="{{action}}">
-      {{#if !id}}
-         <div class="form-group">
-            <label for="team_number">Team Number</label>
-            <input type="number" min="1" max="9999" class="form-control" id="team_number" name="team_number" placeholder="(e.g. 4534)" value="{{team_number}}" required>
-         </div>
-      {{/if}}
+      <div class="form-group">
+         <label for="team_number">Team Number</label>
+         <input type="number" min="1" max="9999" class="form-control" id="team_number" name="team_number" placeholder="(e.g. 4534)" value="{{team_number}}" twoway="false" required {{#if id}}disabled{{/if}}>
+      </div>
       <div class="form-group">
          <label for="team_name">Team Name</label>
          <input type="text" class="form-control" id="team_name" name="team_name" placeholder="(e.g. Wired Wizards)" value="{{team_name}}" required>
@@ -22,6 +20,13 @@
          <label for="weaknesses">Weaknesses</label>
          <textarea type="text" class="form-control" id="weaknesses" name="weaknesses" value="{{weaknesses}}"></textarea>
       </div>
-      <button type="submit" class="btn btn-default">Submit</button>
+      <button type="submit" class="btn btn-default btn-sm">Submit</button>
+      <a class="btn btn-danger btn-sm"
+         {{#if id}}
+            href="team/{{team_number}}"
+         {{else}}
+            href="team"
+         {{/if}}
+         >Cancel</a>
    </form>
 </div>

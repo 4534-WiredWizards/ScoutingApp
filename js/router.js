@@ -1,5 +1,25 @@
 // Initialize token manager
-var token = new TokenManager("ww-scouting");
+var token = new TokenManager("ww-scouting", setLoggedin, setNotLoggedin);
+
+function setLoggedin() {
+   if (document.readyState === "complete") {
+      $("body").addClass("loggedin");
+   } else {
+      $(document).ready(function() {
+         $("body").addClass("loggedin");
+      });
+   }
+}
+function setNotLoggedin() {
+   if (document.readyState === "complete") {
+      $("body").removeClass("loggedin");
+   } else {
+      $(document).ready(function() {
+         $("body").removeClass("loggedin");
+      });
+   }
+}
+
 // Initialize app url route manager
 var routes = new RoutesManager([], "", "team", token);
 
@@ -19,6 +39,9 @@ routes.register("/register", {
 });
 routes.register("/signin", {
    template: "templates/signin.html",
+   init: function() {
+      $(".main-title").html("Sign In");
+   }
 });
 routes.register("/team/new", {
    template: "templates/team/form.html",
@@ -39,6 +62,7 @@ routes.register("/team/:teamNum", {
    dataCallbacks: {
       team: function(_this, callback, teamNum) {
          API.get("team/"+teamNum, {}, function(res) {
+            res.data = res.data || {};
             res.data.summary = res.data.summary || "";
             res.data.strengths = res.data.strengths || "";
             res.data.weaknesses = res.data.weaknesses || "";
@@ -107,6 +131,28 @@ routes.register("/team", {
          template: data.template,
          data: {
             teams: data.teams
+         }
+      });
+      $(this.titleElem).html("Teams");
+   },
+   requireSignin: true
+});
+routes.register("/team/search/:query", {
+   template: "templates/team/list.html",
+   dataCallbacks: {
+      teams: function(_this, callback, query) {
+         API.get("team", {query: query}, function(res) {
+            callback(res.data);
+         });
+      }
+   },
+   init: function(data, query) {
+      var ractive = new Ractive({
+         el: ".main",
+         template: data.template,
+         data: {
+            teams: data.teams,
+            query: query
          }
       });
       $(this.titleElem).html("Teams");
@@ -193,6 +239,16 @@ $(document).ready(function() {
          console.dir(data);
          console.dir(res);
       });
+      return false;
+   });
+   $("body").on("submit", "form[method=redirect][action]", function() {
+      var $form = $(this).is("form") ? $(this) : $(this).closest("form");
+      var data = parseDataString($form.serialize());
+      var url = (new Ractive({
+         template: $form.attr("action"),
+         data: data
+      })).toHTML();
+      setRouteSafe(router, url);
       return false;
    });
 });

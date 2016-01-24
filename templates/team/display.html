@@ -23,7 +23,7 @@
 {{#if loading}}
    <h4>Loading...</h4>
 {{else}}
-   <a class="btn btn-default" href="team/{{id}}/edit">Edit</a>
+   <p><a class="btn btn-default" href="team/{{team_number}}/edit">Edit</a></p>
 	<p>
 		<b>Summary:</b>
 		{{summary || "None"}}
@@ -59,7 +59,8 @@
 	<p style="margin-bottom: 0;">
 		<b>Should we consider them? Score: {{score || "0"}}/100</b>
 	</p>
-	<div class="progress">
+   <!--
+   <div class="progress">
       <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{score}}" aria-valuemin="0" aria-valuemax="100" style="width: {{score}}%">
 		</div>
 	</div>
@@ -111,19 +112,19 @@
 			<b>Photos</b>
 		</p>
 		<div id="myCarousel" class="carousel slide" data-ride="carousel">
-			<!-- Indicators -->
+			<!-- Indicators --
 			<ol class="carousel-indicators">
 				<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
 			</ol>
 
-			<!-- Wrapper for slides -->
+			<!-- Wrapper for slides --
 			<div class="carousel-inner" role="listbox">
 				<div class="item active">
 					<img src="thereisnoimage.jpg" alt="Chania">
 				</div>
 			</div>
 
-			<!-- Left and right controls -->
+			<!-- Left and right controls --
 			<a class="left carousel-control" href="#myCarousel" role="button"
 				data-slide="prev"> <span
 				class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
@@ -134,6 +135,6 @@
 				<span class="sr-only">Next</span>
 			</a>
 		</div>
-	</div>
+	</div> -->
 
 {{/if}}

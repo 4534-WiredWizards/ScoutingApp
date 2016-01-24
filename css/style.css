@@ -3,6 +3,7 @@
 body {
 	background-image: url("img/background.jpg");
    margin-top: 5em;
+   overflow-y: scroll;
 }
 
 footer {
@@ -16,4 +17,9 @@ footer {
 .panel-heading h3,
 .panel-heading h4 {
    margin: 0 auto;
+}
+
+
+body:not(.loggedin) .user-only {
+   display: none !important;
 }
