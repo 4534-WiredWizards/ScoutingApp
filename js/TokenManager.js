@@ -9,8 +9,15 @@ var TokenManager = (function() {
     *
     * @param string ns The key you would like to store the token in in localStorage
     */
-   function TokenManager(ns) {
+   function TokenManager(ns, hasTokenCallback, noTokenCallback) {
       this.ns = ns || "token";
+      this.hasTokenCallback = (hasTokenCallback || Function()).bind(this);
+      this.noTokenCallback = (noTokenCallback || Function()).bind(this);
+      if (this.get()) {
+         this.hasTokenCallback();
+      } else {
+         this.noTokenCallback();
+      }
    }
 
    /**
@@ -28,7 +35,15 @@ var TokenManager = (function() {
     * @param string token The token you would like to store
     */
    TokenManager.prototype.set = function(token) {
-      return localStorage.setItem(this.ns, token || "");
+      var token = token || "";
+      var curToken = this.get();
+      res = localStorage.setItem(this.ns, token);
+      if (curToken && !token) {
+         this.noTokenCallback();
+      } else if (!curToken && token) {
+         this.hasTokenCallback();
+      }
+      return res;
    }
 
    /**

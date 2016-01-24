@@ -23,7 +23,8 @@ $default_fields = array(
 
 
 $options = array_merge(array(
-   "fields" => $default_fields
+   "fields" => $default_fields,
+   "query" => ""
 ), $get);
 
 $safe_fields = $options["fields"] === $default_fields;
