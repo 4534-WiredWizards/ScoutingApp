@@ -19,7 +19,29 @@ footer {
    margin: 0 auto;
 }
 
+.teams-list .panel a {
+   text-decoration: none;
+}
+.teams-list .panel a h4 {
+   margin-top: 0;
+}
+.teams-list .panel a:hover h4 {
+   text-decoration: underline;
+}
+.teams-list .panel p {
+   margin-bottom: 0;
+}
 
 body:not(.loggedin) .user-only {
    display: none !important;
+}
+
+@media (max-width: 768px) {
+   body {
+      margin-top: 4em   ;
+   }
+   body > .container > .row > .panel .panel-heading {
+      border-top-left-radius: 0px;
+      border-top-right-radius: 0px;
+   }
 }

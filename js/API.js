@@ -11,6 +11,9 @@ var API = {
       })
       .error(function(res) {
          if (res.status == 401) {
+            if (window.token && window.token.get && window.token.get()) {
+               window.token.set("");
+            }
             setRouteSafe(router, "signin");
             return;
          }
