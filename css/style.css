@@ -36,6 +36,16 @@ body:not(.loggedin) .user-only {
    display: none !important;
 }
 
+.overlay {
+   position: fixed;
+   z-index: 1030;
+   left: 0px;
+   right: 0px;
+   width: 100%;
+   height: 100%;
+   background: rgba(0, 0, 0, 0.1);
+}
+
 @media (max-width: 768px) {
    body {
       margin-top: 4em   ;
