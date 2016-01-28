@@ -184,7 +184,7 @@ function setRouteSafe(router, route) {
 }
 
 // We want router and base to be in global scope
-var router, base;
+var router, base, $overlay;
 $(document).ready(function() {
    // get <base href="..."> element value
    base = $("base").attr("href");
@@ -198,6 +198,10 @@ $(document).ready(function() {
    router.configure({
       html5history: true,
       before: [routes.destroyExisting.bind(routes), function() {
+         if ($('.collapse.in').length > 0) {
+            // Close the navbar on mobile when clicking nav link
+            $('.navbar-toggle').click();
+         }
          $(window).scrollTop(0);
       }],
       notfound: (function() {
@@ -252,5 +256,26 @@ $(document).ready(function() {
       })).toHTML();
       setRouteSafe(router, url);
       return false;
+   });
+
+   $overlay = $("<div>", {
+      class: "overlay",
+      css: {
+         "display": "none"
+      }
+   }).click(function() {
+      if ($('.collapse.in').length > 0) {
+         $('.navbar-toggle').click();
+      }
+   });
+
+   $overlay.prependTo("html");
+
+   $('.navbar-toggle').click(function() {
+      if ($('.collapse.in').length > 0) {
+         $overlay.hide();
+      } else {
+         $overlay.show();
+      }
    });
 });
