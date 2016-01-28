@@ -1,0 +1,79 @@
+var MessageManager = (function() {
+   var icons = {
+      danger: "exclamation-sign",
+      success: "ok-sign",
+      info: "info-sign",
+      warning: "warning-sign"
+   };
+
+   function MessageManager(el, messages) {
+      var _this = this;
+      this.$el = $("<div />");
+      if (document.readyState == "complete") {
+         $(el).append(this.$el);
+      } else {
+         $(document).ready(function() {
+            $(el).append(_this.$el);
+         });
+      }
+      this.messages = [];
+      this.concat(messages);
+      this.render();
+      this.$baseAlert = $("<div />", {
+         role: "alert",
+         text: "",
+         class: "alert alert-dismissable"
+      })
+      .append('<span><span class="glyphicon"></span>&nbsp;</span>')
+      .append('<span class="text"></span>')
+      .append('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>');
+   }
+
+   MessageManager.prototype.concat = function(newMessages) {
+      this.messages = this.messages.concat(newMessages)
+      return this;
+   }
+
+   MessageManager.prototype.render = function() {
+      var _this = this;
+      _this.$el.find(".alert").remove();
+      _this.messages.forEach(function(message) {
+         if (!message) {
+            return;
+         }
+         var type = "success",
+             text = "";
+         if (typeof message == "string") {
+            text = message;
+         } else {
+            if (message.type) {
+               type = String(message.type);
+            }
+            if (message.text) {
+               text = String(message.text);
+            }
+         }
+         if (type && text) {
+            _this.addMessage(text, type);
+         }
+      });
+      return _this;
+   }
+
+   MessageManager.prototype.addMessage = function(text, type) {
+      var type = type || "success";
+      var $message = this.$baseAlert.clone().addClass("alert-"+type);
+      $message.find(".text").text(text);
+      $message.find(".glyphicon").addClass("glyphicon-"+icons[type]);
+      $message.appendTo(this.$el);
+      return $message;
+   }
+
+   MessageManager.prototype.reset = function() {
+      this.messages = [];
+      this.render();
+      return this;
+   }
+
+   return MessageManager;
+})();

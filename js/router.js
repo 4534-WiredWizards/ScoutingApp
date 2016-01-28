@@ -1,5 +1,6 @@
 // Initialize token manager
 var token = new TokenManager("ww-scouting", setLoggedin, setNotLoggedin);
+var messages = new MessageManager(".alerts", []);
 
 function setLoggedin() {
    if (document.readyState === "complete") {
@@ -36,6 +37,7 @@ routes.register("/register", {
    init: function() {
       console.log("register");
    },
+   requireSignin: true
 });
 routes.register("/signin", {
    template: "templates/signin.html",
