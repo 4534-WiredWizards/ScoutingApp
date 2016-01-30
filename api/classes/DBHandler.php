@@ -85,4 +85,17 @@ class DBHandler extends PDO {
       }
       return array("($where_q)", $fields);
    }
+
+   static function createSetString($data = array(), $table_prefix = "") {
+      if (!is_array($data)) {
+         return "";
+      }
+      $set_arr = array();
+      $set_vals = array();
+      foreach($data as $field => $value) {
+         $set_arr[] = "`$table_prefix`.`$field` = ?";
+         $set_vals[] = $value;
+      }
+      return array(implode(", ", $set_arr), $set_vals);
+   }
 }

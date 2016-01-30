@@ -23,7 +23,7 @@
 {{#if loading}}
    <h4>Loading...</h4>
 {{else}}
-   <p><a class="btn btn-default" href="team/{{team_number}}/edit">Edit</a></p>
+   <p intro="fade"><a class="btn btn-default" href="team/{{team_number}}/edit">Edit</a></p>
 	<p>
 		<b>Summary:</b>
 		{{summary || "None"}}
@@ -59,11 +59,11 @@
 	<p style="margin-bottom: 0;">
 		<b>Should we consider them? Score: {{score || "0"}}/100</b>
 	</p>
-   <!--
    <div class="progress">
       <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{score}}" aria-valuemin="0" aria-valuemax="100" style="width: {{score}}%">
 		</div>
 	</div>
+   <!--
 	<div id="wrapper">
 		<div class="chart">
 			<table id="data-table" border="1" cellpadding="10" cellspacing="0"

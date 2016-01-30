@@ -37,12 +37,15 @@ routes.register("/register", {
    init: function() {
       console.log("register");
    },
+   formSuccess: function(res) {
+      setRouteSafe(router, "user/"+res.data.id);
+   },
    requireSignin: true
 });
 routes.register("/signin", {
    template: "templates/signin.html",
    init: function() {
-      $(".main-title").html("Sign In");
+      this.updateTitle("Sign In");
    }
 });
 routes.register("/team/new", {
@@ -55,7 +58,10 @@ routes.register("/team/new", {
             action: "team/new"
          }
       })
-      $(".main-title").html("Add a Team");
+      this.updateTitle("Add a Team");
+   },
+   formSuccess: function(res) {
+      setRouteSafe(router, "team/"+res.data.team_number);
    },
    requireSignin: true
 });
@@ -79,14 +85,70 @@ routes.register("/team/:teamNum", {
          data: {
             splitLine: function(val) {
                return (val || "").split(/\s*\n\s*/g).filter(Boolean);
-            }
+            },
+            score: 0
          }
       })
       ractive.set(data.team);
-      $(".main-title").html(new Ractive({
-         template: "{{team_type}} Team #{{team_number}} - {{team_name}}",
-         data: data.team
-      }).toHTML());
+      setTimeout(function() {
+         ractive.set("score", 50)
+      }, 100);
+      this.updateTitle("{{team_type}} Team #{{team_number}} - {{team_name}}", data.team);
+   },
+   requireSignin: true
+});
+routes.register("/user/:userID", {
+   template: "templates/user/display.html",
+   dataCallbacks: {
+      user: function(_this, callback, userID) {
+         API.get("user/"+userID, {}, function(res) {
+            res.data = res.data || {};
+            callback(res.data);
+         });
+      }
+   },
+   init: function(data, userID) {
+      ractive = new Ractive({
+         el: ".main",
+         template: data.template,
+         data: {
+            splitLine: function(val) {
+               return (val || "").split(/\s*\n\s*/g).filter(Boolean);
+            },
+            score: 0
+         }
+      })
+      ractive.set(data.user);
+      this.updateTitle("{{firstname}} {{lastname}} ({{username}})", data.user);
+   },
+   requireSignin: true
+});
+routes.register("/user/:userID/edit", {
+   template: "templates/user/edit.html",
+   dataCallbacks: {
+      user: function(_this, callback, userID) {
+         API.get("user/"+userID, {}, function(res) {
+            res.data.summary = res.data.summary || "";
+            res.data.strengths = res.data.strengths || "";
+            res.data.weaknesses = res.data.weaknesses || "";
+            callback(res.data);
+         });
+      }
+   },
+   init: function(data, userID) {
+      ractive = new Ractive({
+         el: ".main",
+         template: data.template,
+         data: {
+            action: "user/"+userID+"/edit"
+         }
+      })
+      ractive.set(data.user);
+      this.updateTitle("{{firstname}} {{lastname}} ({{username}})", data.user);
+      $("textarea").each(function() {
+         $(this).height(1);
+         $(this).height(this.scrollHeight);
+      })
    },
    requireSignin: true
 });
@@ -111,10 +173,7 @@ routes.register("/team/:teamNum/edit", {
          }
       })
       ractive.set(data.team);
-      $(".main-title").html(new Ractive({
-         template: "{{team_type}} Team #{{team_number}} - {{team_name}} - Edit",
-         data: data.team
-      }).toHTML());
+      this.updateTitle("{{team_type}} Team #{{team_number}} - {{team_name}} - Edit", data.team);
    },
    requireSignin: true
 });
@@ -135,7 +194,28 @@ routes.register("/team", {
             teams: data.teams
          }
       });
-      $(this.titleElem).html("Teams");
+      this.updateTitle("Teams");
+   },
+   requireSignin: true
+});
+routes.register("/user", {
+   template: "templates/user/list.html",
+   dataCallbacks: {
+      users: function(_this, callback) {
+         API.get("user", {}, function(res) {
+            callback(res.data);
+         });
+      }
+   },
+   init: function(data) {
+      var ractive = new Ractive({
+         el: ".main",
+         template: data.template,
+         data: {
+            users: data.users
+         }
+      });
+      this.updateTitle("Users");
    },
    requireSignin: true
 });
@@ -157,7 +237,7 @@ routes.register("/team/search/:query", {
             query: query
          }
       });
-      $(this.titleElem).html("Teams");
+      this.updateTitle("Teams");
    },
    requireSignin: true
 });
@@ -198,6 +278,7 @@ $(document).ready(function() {
    router.configure({
       html5history: true,
       before: [routes.destroyExisting.bind(routes), function() {
+         messages.reset().render();
          if ($('.collapse.in').length > 0) {
             // Close the navbar on mobile when clicking nav link
             $('.navbar-toggle').click();
@@ -227,29 +308,76 @@ $(document).ready(function() {
       return false;
    });
 
-   function parseDataString(str) {
+   function parseDataArray(arr) {
       var result = {};
-      var str = str || "";
-      str.split("&").forEach(function(part) {
-         var item = part.split("=");
-         result[item[0]] = decodeURIComponent(item[1]);
+      arr.forEach(function(obj) {
+         result[obj.name] = decodeURIComponent(obj.value);
       });
       return result;
    }
 
    $("body").on("submit", "form[method=async][action]", function() {
+      var route = routes.routes.filter(function(route) {
+         return route.initialized
+      })[0] || {};
+
+      route.formSubmit = (route.formSubmit || Function()).bind(route);
+      route.formError = (route.formError || Function()).bind(route);
+      route.formSuccess = (route.formSuccess || Function()).bind(route);
+
       var $form = $(this).is("form") ? $(this) : $(this).closest("form");
-      var data = parseDataString($form.serialize());
+      var data = parseDataArray($form.serializeArray());
+
+      route.formSubmit($form, data);
+
+      messages.reset();
+      messages.concat([{
+         text: "Loading...",
+         type: "info"
+      }]);
+      messages.render();
+      $(window).scrollTop(0);
+      $form.find(".has-error").removeClass(".has-error");
+
+      function getErrorMessageObj(message) {
+         if (typeof message == "string") {
+            message = {
+               msg: message
+            };
+         }
+         if (message.field) {
+            $form.find('[name="'+message.field+'"]').closest('.form-group').addClass('has-error');
+         }
+         return {
+            text: message.msg,
+            type: "danger"
+         };
+      }
 
       API.post($form.attr("action").trim(), data, function(res) {
-         console.dir(data);
-         console.dir(res);
+         messages.reset();
+         if (typeof res.error == "object" && res.error.filter) {
+            messages.concat(res.error.map(getErrorMessageObj));
+         }
+         if (typeof res.errors == "object" && res.errors.filter) {
+            messages.concat(res.errors.map(getErrorMessageObj));
+         }
+         if (messages.messages.length) {
+            route.formError(res);
+         } else {
+            messages.concat([{
+               text: "Your information has been updated!",
+               type: "success"
+            }]);
+            route.formSuccess(res);
+         }
+         messages.render();
       });
       return false;
    });
    $("body").on("submit", "form[method=redirect][action]", function() {
       var $form = $(this).is("form") ? $(this) : $(this).closest("form");
-      var data = parseDataString($form.serialize());
+      var data = parseDataArray($form.serializeArray());
       var url = (new Ractive({
          template: $form.attr("action"),
          data: data
@@ -277,5 +405,10 @@ $(document).ready(function() {
       } else {
          $overlay.show();
       }
+   });
+
+   $("body").on("keyup", "textarea", function() {
+      $(this).height(1);
+      $(this).height(this.scrollHeight);
    });
 });

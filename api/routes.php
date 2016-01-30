@@ -3,12 +3,14 @@
 // Setup routes
 $pages = array(
    "index" => new Page("pages/index.php"),
-   "register" => new Page("pages/user/register.php"),
    "auth" => new Page("pages/user/auth.php"),
    "authenticate" => new Page("pages/user/auth.php"),
    "not-found" => new Page("pages/not-found.php"),
 
    "user" => new Page("pages/user/list.php"),
+   "user/new" => new Page("pages/user/register.php"),
+   "user/:userID" => new Page("pages/user/get.php"),
+   "user/:userID/edit" => new Page("pages/user/edit.php"),
 
    "team" => new Page("pages/team/list.php"),
    "team/new" => new Page("pages/team/new.php"),

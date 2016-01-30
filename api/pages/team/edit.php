@@ -6,7 +6,7 @@ global $dbh;
 // Auth user
 $user = TeamUsers::authAPICall($dbh);
 // Initialize scouting db
-$sdb = new ScoutingDB($dbh, $user["team_id"], 0, $user["id"]);
+$sdb = new ScoutingDB($dbh, $user["team_id"], 1, $user["id"]);
 
 $required_fields = array(
    "team_name" => "Team Name",
@@ -49,14 +49,13 @@ if (isset($post) && count($post) && $_SERVER["REQUEST_METHOD"] == "POST") {
    }
 
    if ($success) {
-      $data = $sdb->addTeam($team_data);
-      if (!isset($data["id"]) || !$data["id"]) {
+      $data = $sdb->updateTeam($data["teamID"], $team_data);
+      if (!isset($data["id"]) || !$data["id"] && !$data["error"]) {
          $success = false;
          $data = array();
          $errors[] = "Database error";
       }
    }
-
 }
 
 $output = array(

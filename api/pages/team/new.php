@@ -6,7 +6,7 @@ global $dbh;
 // Auth user
 $user = TeamUsers::authAPICall($dbh);
 // Initialize scouting db
-$sdb = new ScoutingDB($dbh, $user["team_id"], 0, $user["id"]);
+$sdb = new ScoutingDB($dbh, $user["team_id"], 1, $user["id"]);
 
 $required_fields = array(
    "team_number" => "Team Number",

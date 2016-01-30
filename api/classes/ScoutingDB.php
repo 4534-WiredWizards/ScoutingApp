@@ -29,7 +29,15 @@ class ScoutingDB {
       $fields = DBHandler::createFieldString($fields, "t", $safe_fields);
       $sort_dir = ($sort_dir == "up") ? "ASC" : "DESC";
       $limit = DBHandler::createLimitString($page, $limit);
-      return $this->dbh->query("SELECT $fields FROM `$table` t WHERE t.`team_id` = '{$this->team_id}' AND t.`scouting_domain_id` = '{$this->scouting_domain_id}' ORDER BY t.`$sort_col` $sort_dir LIMIT $limit");
+
+      $where = array();
+      $where["team_id"] = $this->team_id;
+      if ($table !== "team_user") {
+         $where["scouting_domain_id"] = $this->scouting_domain_id;
+      }
+      $where = DBHandler::createWhereString($where, "t");
+
+      return $this->dbh->query("SELECT $fields FROM `$table` t WHERE {$where[0]} ORDER BY t.`$sort_col` $sort_dir LIMIT $limit", $where[1]);
    }
 
    public function getItem($table, $where = array(), $fields = NULL, $safe_fields = false) {
@@ -43,7 +51,9 @@ class ScoutingDB {
       }
 
       $where["team_id"] = $this->team_id;
-      $where["scouting_domain_id"] = $this->scouting_domain_id;
+      if ($table !== "team_user") {
+         $where["scouting_domain_id"] = $this->scouting_domain_id;
+      }
 
       $fields = DBHandler::createFieldString($fields, "t", $safe_fields);
       $where = DBHandler::createWhereString($where, "t");
@@ -86,11 +96,36 @@ class ScoutingDB {
       ));
    }
 
-   public function updateTeam($id, $data) {
+   public function updateTeam($team_number, $data) {
+      if (!($team_number > 0)) {
+         return array(
+            "error" => "Invalid team number"
+         );
+      }
       $where = array(
          "team_id" => $this->team_id,
-         "scouting_domain_id" => $this->scouting_domain_id
+         "scouting_domain_id" => $this->scouting_domain_id,
+         "team_number" => $team_number
       );
-      $query = "UPDATE scouting_entry SET $update_s WHERE ";
+      $where_q = DBHandler::createWhereString($where, "e");
+      $allowed_fields = array(
+         "team_name",
+         "summary",
+         "strengths",
+         "weaknesses",
+         "use_markdown"
+      );
+      $set_data = array();
+      foreach($allowed_fields as $field) {
+         if (in_array($field, $allowed_fields) && isset($data[$field])) {
+            $set_data[$field] = $data[$field];
+         }
+      }
+      $set_q = DBHandler::createSetString($set_data, "e");
+      $query = "UPDATE scouting_entry e SET {$set_q[0]} WHERE {$where_q[0]}";
+      $this->dbh->query($query, array_merge($set_q[1], $where_q[1]));
+      return $this->getItem("scouting_entry", array(
+         "team_number" => $team_number
+      ));
    }
 }

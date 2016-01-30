@@ -1,7 +1,10 @@
 <?php
 
+global $dbh;
+// Auth user
+$user = TeamUsers::authAPICall($dbh);
+
 $required_fields = array(
-   "teamnum" => "Team Number",
    "firstname" => "First Name",
    "lastname" => "Last Name",
    "username" => "Username",
@@ -36,14 +39,7 @@ if (isset($post) && count($post) && $_SERVER["REQUEST_METHOD"] == "POST") {
    if ($success) {
       global $dbh;
 
-      $team = $dbh->query("SELECT id FROM team WHERE team_number = ? AND team_type = ?", array($user_data["teamnum"], "FRC"));
-      $team_id = 0;
-      if (is_array($team) && count($team)) {
-         $team_id = $team[0]["id"];
-      } else {
-         $errors[] = "Invalid team number";
-         $success = false;
-      }
+      $team_id = $user["team_id"];
 
       if ($team_id > 0) {
          $users = new TeamUsers($dbh, $team_id);
@@ -63,7 +59,7 @@ if (isset($post) && count($post) && $_SERVER["REQUEST_METHOD"] == "POST") {
          }
       }
    }
-   
+
 }
 
 $output = array(

@@ -42,6 +42,22 @@ var RoutesManager = (function() {
          route.dataCallbacks = route.dataCallbacks || {};
          route.contentMethod = route.contentMethod || "html";
          route.data = route.data || {};
+
+         route.updateTitle = (route.updateTitle || function(template, data) {
+            var _this = this;
+            var contents = (new Ractive({
+               template: (template || ""),
+               data: (data || {})
+            })).toHTML();
+            if (template.toLowerCase().search("loading") === -1 && contents.length > 0) {
+               $("title").html("Scouting App - " + contents);
+            } else {
+               $("title").html("Scouting App");
+            }
+            $(this.titleElem).html(contents);
+            return contents;
+         });
+
          if (!route.dataCallbacks.template && route.template) {
             route.dataCallbacks.template = function(_this, callback) {
                if (_this.templateHTML) {
@@ -79,7 +95,7 @@ var RoutesManager = (function() {
             var args = Array.prototype.slice.call(arguments);
             var router = this;
 
-            $(route.titleElem).html("Loading...");
+            route.updateTitle("Loading...");
             $(route.elem).html("");
 
             if (_this.checkToken(route, this.tokenManager)) {
@@ -93,7 +109,7 @@ var RoutesManager = (function() {
                   route.init.apply(route, [data].concat(args));
                   route.initialized = true;
                   if ($(route.titleElem).html() == "Loading...") {
-                     $(route.titleElem).html(route.url.split("/").map(function(word) {
+                     route.updateTitle(route.url.split("/").map(function(word) {
                         return word.charAt(0).toUpperCase() + word.slice(1);
                      }).join(" "));
                   }
