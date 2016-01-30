@@ -1,6 +1,4 @@
-<form id="registerForm">
-   <input name="teamnum" type="number" placeholder="Team Number"
-      spellchecking="false" size="4" class="form-control" autofocus><br>
+<form id="registerForm" method="async" action="user/new">
    <input name="firstname" type="text" placeholder="First Name"
       spellchecking="false" class="form-control" autofocus><br>
    <input name="lastname" type="text" placeholder="Last Name"
@@ -15,9 +13,3 @@
       <button type="submit" class="btn btn-default btn-sm">Sign Up</button>
    </div>
 </form>
-<p id="response">Server Response</p>
-<div style="text-align: left; margin-bottom: 1.5em;">
-   <a href="registerteam.php">
-      <button type="button" class="btn btn-default btn-sm">New Team</button>
-   </a>
-</div>

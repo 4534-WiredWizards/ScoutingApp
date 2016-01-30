@@ -1,0 +1,17 @@
+{{#if loading}}
+   <h4>Loading...</h4>
+{{else}}
+   <p intro="fade"><a class="btn btn-default" href="user/{{id}}/edit">Edit</a></p>
+	<p>
+		<b>Firstname:</b>
+		{{firstname || "None"}}
+	</p>
+	<p>
+		<b>Lastname:</b>
+		{{lastname || "None"}}
+	</p>
+	<p>
+		<b>Username:</b>
+		{{username || "None"}}
+	</p>
+{{/if}}

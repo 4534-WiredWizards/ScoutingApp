@@ -20,7 +20,6 @@ var API = {
          return res;
       })
       .then(function(res) {
-         console.log(res.data)
          return res;
       })
       .done(callback || Function())
