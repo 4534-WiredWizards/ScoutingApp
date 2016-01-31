@@ -1,28 +1,10 @@
-// Account for director.js bug (https://github.com/flatiron/director/issues/324) where changing the route 500 ms after page load will throw error
-function setRouteSafe(router, route) {
-   if (window.onpopstate) {
-      router.setRoute(base+route);
-   } else {
-      setTimeout(function() {
-         router.setRoute(base+route);
-      }, 550);
-   }
-}
-
-// We want router and base to be in global scope
-var router, base, $overlay;
+// We want router to be in global scope
+var router, $overlay;
 $(document).ready(function() {
-   // get <base href="..."> element value
-   base = $("base").attr("href");
-
-   var baseRoute = {};
-   baseRoute[base] = routes.getObject();
-   routes.base = base;
-
    // Initialize director.js router
-   router = Router(baseRoute);
+   router = Router(routes.getObject());
    router.configure({
-      html5history: true,
+      html5history: false,
       before: [routes.destroyExisting.bind(routes), function() {
          messages.reset().render();
          if ($('.collapse.in').length > 0) {
@@ -32,17 +14,17 @@ $(document).ready(function() {
          $(window).scrollTop(0);
       }],
       notfound: (function() {
-         setRouteSafe(this, "not-found");
+         this.setRoute("not-found");
       }).bind(router),
    });
 
    router.init();
-   if (!router.getRoute()[routes.base.split("/").length-2]) {
+   if (!router.getRoute()[0]) {
       // Set default route or signin if url route isn't set.
       if (token.get()) {
-         setRouteSafe(router, routes.defaultUrl);
+         router.setRoute(routes.defaultUrl);
       } else {
-         setRouteSafe(router, "signin");
+         router.setRoute("signin");
       }
    }
 });

@@ -3,7 +3,7 @@ $(document).ready(function() {
       // Override links and set route without leaving page
       var href = $(this).attr("href");
       if (href.charAt(0) == "/") href = href.slice(1);
-      setRouteSafe(router, href);
+      router.setRoute(href);
       return false;
    });
 
@@ -81,7 +81,7 @@ $(document).ready(function() {
          template: $form.attr("action"),
          data: data
       })).toHTML();
-      setRouteSafe(router, url);
+      router.setRoute(url);
       return false;
    });
 

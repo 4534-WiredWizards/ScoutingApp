@@ -14,7 +14,7 @@ var API = {
             if (window.token && window.token.get && window.token.get()) {
                window.token.set("");
             }
-            setRouteSafe(router, "signin");
+            router.setRoute("signin");
             return;
          }
          return res;

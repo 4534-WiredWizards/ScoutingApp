@@ -30,7 +30,7 @@ routes.register("/register", {
       console.log("register");
    },
    formSuccess: function(res) {
-      setRouteSafe(router, "user/"+res.data.id);
+      router.setRoute("user/"+res.data.id);
    },
    requireSignin: true
 });
@@ -53,7 +53,7 @@ routes.register("/team/new", {
       this.updateTitle("Add a Team");
    },
    formSuccess: function(res) {
-      setRouteSafe(router, "team/"+res.data.team_number);
+      router.setRoute("team/"+res.data.team_number);
    },
    requireSignin: true
 });
