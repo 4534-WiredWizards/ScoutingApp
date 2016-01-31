@@ -99,7 +99,7 @@ var RoutesManager = (function() {
             $(route.elem).html("");
 
             if (_this.checkToken(route, this.tokenManager)) {
-               return setRouteSafe(router, "signin");
+               return router.setRoute("signin");
             }
 
             route.dataCallback(args, function(data) {
