@@ -1,22 +1,15 @@
 // Initialize token manager
-var token = new TokenManager("ww-scouting", setLoggedin, setNotLoggedin);
+var token = new TokenManager("ww-scouting", setLoggedin.bind(this, true), setLoggedin.bind(this, false));
+// Bootstrap .alert manager
 var messages = new MessageManager(".alerts", []);
 
-function setLoggedin() {
+function setLoggedin(loggedIn) {
+   var method = loggedIn ? "addClass" : "removeClass";
    if (document.readyState === "complete") {
-      $("body").addClass("loggedin");
+      $("body")[method]("loggedin");
    } else {
       $(document).ready(function() {
-         $("body").addClass("loggedin");
-      });
-   }
-}
-function setNotLoggedin() {
-   if (document.readyState === "complete") {
-      $("body").removeClass("loggedin");
-   } else {
-      $(document).ready(function() {
-         $("body").removeClass("loggedin");
+         $("body")[method]("loggedin");
       });
    }
 }
@@ -331,7 +324,7 @@ $(document).ready(function() {
       route.formSubmit($form, data);
 
       messages.reset();
-      messages.concat([{
+      messages.addMessages([{
          text: "Loading...",
          type: "info"
       }]);
@@ -357,10 +350,10 @@ $(document).ready(function() {
       API.post($form.attr("action").trim(), data, function(res) {
          messages.reset();
          if (typeof res.error == "object" && res.error.filter) {
-            messages.concat(res.error.map(getErrorMessageObj));
+            messages.addMessages(res.error.map(getErrorMessageObj));
          }
          if (typeof res.errors == "object" && res.errors.filter) {
-            messages.concat(res.errors.map(getErrorMessageObj));
+            messages.addMessages(res.errors.map(getErrorMessageObj));
          }
          if (messages.messages.length) {
             route.formError(res);
