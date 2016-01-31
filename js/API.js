@@ -1,11 +1,12 @@
 var API = {
+   baseUrl: "http://maj-daniel.majanit.com/projects/ScoutingApp2016/api/", // needs trailing backslash
    ajax: function(url, method, data, callback) {
       var data = data || {};
       if (window.token && window.token.get && (data.token === undefined || data.token === null)) {
          data.token = window.token.get();
       }
       return $.ajax({
-         url: "api/" + url,
+         url: this.baseUrl + url,
          method: method || "GET",
          data: data
       })
