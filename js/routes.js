@@ -24,10 +24,10 @@ routes.register("/home", {
    },
    requireSignin: true
 });
-routes.register("/register", {
-   template: "templates/register.html",
+routes.register("/invite", {
+   template: "templates/invite.html",
    init: function() {
-      console.log("register");
+      this.updateTitle("Invite");
    },
    formSuccess: function(res) {
       router.setRoute("user/"+res.data.id);
