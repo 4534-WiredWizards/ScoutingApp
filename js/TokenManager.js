@@ -61,11 +61,7 @@ var TokenManager = (function() {
       As a string: "teamnum=4534&username=someuser&password=somepass"
       As JSON: {"teamnum":4534,"username":"someuser","password":"somepass"}
       */
-      return $.ajax({
-         url: "api/auth",
-         data: data,
-         method: "POST"
-      }).then(function(res) {
+      API.post("auth", data, function(res) {
          // Save the token if the user is authenticated
          if (res.success && res.token) {
             _this.set(res.token);

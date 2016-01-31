@@ -11,6 +11,9 @@ if (isset($_GET['headers'])) {
    die(print_r($headers));
 }
 
+// Allow other domains to connect to api (e.g. 4534-WiredWizards.github.io or localhost)
+header('Access-Control-Allow-Origin: *');
+
 function clean_data($data, $levels = 5) {
    if ($levels > 0 && is_array($data) && count($data)) {
       foreach($data as $key => &$row) {

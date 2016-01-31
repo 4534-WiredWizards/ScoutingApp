@@ -38,6 +38,12 @@ routes.register("/signin", {
    template: "templates/signin.html",
    init: function() {
       this.updateTitle("Sign In");
+   },
+   formSuccess: function(res) {
+      if (res.success && res.token) {
+         token.set(res.token);
+         router.setRoute(routes.defaultUrl);
+      }
    }
 });
 routes.register("/team/new", {
