@@ -17,7 +17,7 @@ var MessageManager = (function() {
          });
       }
       this.messages = [];
-      this.concat(messages);
+      this.addMessages(messages);
       this.render();
 
       var $button = $("<button>", {
@@ -38,7 +38,7 @@ var MessageManager = (function() {
       .append('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>');
    }
 
-   MessageManager.prototype.concat = function(newMessages) {
+   MessageManager.prototype.addMessages = function(newMessages) {
       this.messages = this.messages.concat(newMessages)
       return this;
    }
@@ -75,13 +75,13 @@ var MessageManager = (function() {
             }
          }
          if (type && text) {
-            _this.addMessage(text, type, message.key);
+            _this.renderMessage(text, type, message.key);
          }
       });
       return _this;
    }
 
-   MessageManager.prototype.addMessage = function(text, type, key) {
+   MessageManager.prototype.renderMessage = function(text, type, key) {
       var _this = this;
       var type = type || "success";
       var $message = this.$baseAlert.clone().addClass("alert-"+type);
