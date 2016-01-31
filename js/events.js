@@ -1,12 +1,4 @@
 $(document).ready(function() {
-   $("body").on("click", "[href]:not([href*=\"http\"]):not([href*=\"#\"])", function() {
-      // Override links and set route without leaving page
-      var href = $(this).attr("href");
-      if (href.charAt(0) == "/") href = href.slice(1);
-      router.setRoute(href);
-      return false;
-   });
-
    function parseDataArray(arr) {
       var result = {};
       arr.forEach(function(obj) {
@@ -64,7 +56,7 @@ $(document).ready(function() {
          if (messages.messages.length) {
             route.formError(res);
          } else {
-            messages.concat([{
+            messages.addMessages([{
                text: "Your information has been updated!",
                type: "success"
             }]);
