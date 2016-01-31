@@ -3,8 +3,35 @@
 <head>
 <title>Scouting App</title>
 <!-- Eventually all of the imports will be moved back to this file -->
-<?php include 'base.html'; ?>
-<?php include 'imports.html'; ?>
+<base href="/ScoutingApp2016/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="css/style.css">
+<script
+	src="lib/jquery.min.js"></script>
+<script
+	src="lib/bootstrap.min.js"></script>
+<script
+   src='lib/ractive.min.js'></script>
+<script
+	src="lib/director.min.js"></script>
+<script
+	src="js/TokenManager.js"></script>
+<script
+	src="js/API.js"></script>
+<script
+	src="js/RoutesManager.js"></script>
+<script
+	src="js/MessageManager.js"></script>
+<script
+	src="js/routes.js"></script>
+<script
+	src="js/router.js"></script>
+<script
+	src="js/events.js"></script>
 </head>
 <body>
 	<?php include 'templates/navbar.html'; ?>
@@ -70,9 +97,5 @@
          <a href="#" onclick="history.go(-1); return false" class="btn btn-default">Go Back</a>
 		</div>
 	</div>
-
-	<?php include 'footer.html';?>
-
-
 </body>
 </html>
