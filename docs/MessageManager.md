@@ -10,7 +10,7 @@ Helper class for displaying user error/success messages with [bootstrap alerts](
 var messages = new MessageManager(".alerts", []);
 ```
 
-#### reset
+#### Reset (remove all messages)
 ```javascript
 messages.reset(doRender);
 ```

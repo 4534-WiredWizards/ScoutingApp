@@ -13,13 +13,26 @@ var routes = new RoutesManager();
 ```javascript
 routes.register("/some-route", {
   elem: ".main",
-  init: function() {
+  init: function(data) {
     alert("Route opened");
+    console.log(data.someData)
   },
   destroy: function() {
     alert("Leaving route");
   },
-  template: "templates/some-template.html"
+  formSubmit: function() { alert("A form was submitted") },
+  formSuccess: function(res) { alert("A form was submitted and the API response was successful") },
+  formError: function(res) { alert("A form was submitted and the API response was unsuccessful") },
+  template: "templates/some-template.html",
+  dataCallbacks: {
+    // Methods to retrieve data from the API asynchronously
+    someData: function(_this, callback) {
+      API.get("some/api/call", {}, function(res) {
+         callback(res.data);
+      });
+    }
+  },
+  requireSignin: true // or false
 });
 ```
 
