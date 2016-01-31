@@ -1,0 +1,1 @@
+uglifyjs TokenManager.js API.js RoutesManager.js MessageManager.js routes.js router.js events.js -o pack.min.js

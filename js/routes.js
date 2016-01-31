@@ -25,7 +25,7 @@ routes.register("/home", {
    requireSignin: true
 });
 routes.register("/invite", {
-   template: "templates/invite.html",
+   template: "templates/user/invite.html",
    init: function() {
       this.updateTitle("Invite");
    },
