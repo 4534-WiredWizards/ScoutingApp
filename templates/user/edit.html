@@ -1,1 +1,21 @@
-Edit user page goes here
+<form id="registerForm" method="async" action="user/new">
+   <input name="firstname" value="{{firstname}}" type="text" placeholder="First Name"
+      spellchecking="false" class="form-control" autofocus><br>
+   <input name="lastname" value="{{lastname}}" type="text" placeholder="Last Name"
+      spellchecking="false" class="form-control" autofocus><br>
+   <input name="username" value="{{username}}" type="text" placeholder="Username"
+      spellchecking="false" class="form-control" autofocus><br>
+   <input name="passcurr" value="{{password}}" type="password" placeholder="Current Password"
+      spellchecking="false" class="form-control"><br>
+   <input name="password" type="password" placeholder="Password"
+      spellchecking="false" class="form-control"><br>
+   <input name="passconf" type="password" placeholder="Confirm Password"
+      spellchecking="false" class="form-control"><br>
+   <div style="text-align: right; margin-top: 0.5em;">
+      <button type="submit" class="btn btn-default btn-sm">Save</button>
+   </div>
+   <br/>
+   <div style="text-align: right; margin-top: 0.5em;">
+      <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+   </div>
+</form>
