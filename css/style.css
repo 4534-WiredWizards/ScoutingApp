@@ -1,7 +1,7 @@
 @CHARSET "UTF-8";
 
 body {
-	background-image: url("img/background.jpg");
+   background-image: url("../img/background.jpg");
    margin-top: 5em;
    overflow-y: scroll;
 }
