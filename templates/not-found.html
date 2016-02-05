@@ -1,5 +1,5 @@
 <div style="margin:1em;">
-   <h1><b>40<div id="4" style="display: inline">4</div> Error!</b> <div id="name" style="display: inline;">Page</div> not found.</h1>
+   <h1><b><div id="4" style="display: inline">404</div> Error!</b> <div id="name" style="display: inline;">Page</div> not found.</h1>
    <h3>I'm an app, not a miracle worker!</h3>
    <script type="text/javascript">
    function notFoundChange() {
@@ -17,18 +17,20 @@
       }
       console.log(newName);
       textEl.innerHTML = newName;
-      if (Math.round(Math.random() * 100) == 0) {
-         document.getElementById("4").innerHTML = "6";
+      if (Math.round(Math.random() * 10) == 0) {
+         document.getElementById("4").innerHTML = '<div style="color: red; display:inline;">406</div>';
+      } else {
+    	  document.getElementById("4").innerHTML = '404';
       }
    }
    </script>
 </div>
-<form class="navbar-form navbar-left" role="search" method="get"
-   action="searchteams.php">
+<form style="width: 256px;"role="search" method="redirect"
+   action="team/search/{{query}}">
    <div class="form-group input-group">
-      <input type="text" class="form-control"
-         placeholder="But this search bar is.."> <span class="input-group-btn">
-         <button class="btn btn-default" type="button">
+      <input type="search" class="form-control"
+         placeholder="But This Search Bar is.." name="query"> <span class="input-group-btn">
+         <button class="btn btn-default" type="submit">
             <span class="glyphicon glyphicon-search"></span>
          </button>
       </span>
