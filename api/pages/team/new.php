@@ -16,6 +16,8 @@ $other_fields = array(
    "weaknesses",
    "summary",
    "strengths",
+   "questions_json",
+   "scores_json",
 );
 
 $errors = array();
