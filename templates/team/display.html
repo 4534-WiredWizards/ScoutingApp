@@ -100,13 +100,14 @@
       				<tbody>
       					<tr>
       						<th scope="row">null</th>
-      						<td>0</td>
-      						<td>0</td>
-      						<td>0</td>
-      						<td>0</td>
+
+                        {{#each scores}}
+                           <td>0</td>
+                        {{/each}}
       					</tr>
       					<tr>
       						<th scope="row">Testing This</th>
+                        
                         {{#each scores}}
                            <td>
                               {{. * 100}}

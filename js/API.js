@@ -5,6 +5,7 @@ var API = {
       if (window.token && window.token.get && (data.token === undefined || data.token === null)) {
          data.token = window.token.get();
       }
+      data.debug = "";
       return $.ajax({
          url: this.baseUrl + url,
          method: method || "GET",
