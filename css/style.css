@@ -1,7 +1,7 @@
 @CHARSET "UTF-8";
 
 body {
-	background-image: url("img/background.jpg");
+   background-image: url("../img/background.jpg");
    margin-top: 5em;
    overflow-y: scroll;
 }
@@ -54,4 +54,24 @@ body:not(.loggedin) .user-only {
       border-top-left-radius: 0px;
       border-top-right-radius: 0px;
    }
+}
+
+#data-table {
+	display: block;
+}
+
+.bar span {
+	background: #fefefe url(lib/info-bg.gif) 0 100% repeat-x;
+}
+
+.fig0 {
+	background: #747474 url(../lib/bar-01-bg.gif) 0 0 repeat-y;
+}
+
+.fig1 {
+	background: #65c2e8 url(../lib/bar-01-bg.gif) 0 0 repeat-y;
+}
+
+.fig2 {
+	background: #eea151 url(../lib/bar-01-bg.gif) 0 0 repeat-y;
 }
