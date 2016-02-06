@@ -1,32 +1,16 @@
-<script src="lib/teampagelib.js"></script>
-<style type="text/css">
-#data-table {
-	display: block;
-}
-
-.bar span {
-	background: #fefefe url(lib/info-bg.gif) 0 100% repeat-x;
-}
-
-.fig0 {
-	background: #747474 url(lib/bar-01-bg.gif) 0 0 repeat-y;
-}
-
-.fig1 {
-	background: #65c2e8 url(lib/bar-01-bg.gif) 0 0 repeat-y;
-}
-
-.fig2 {
-	background: #eea151 url(lib/bar-01-bg.gif) 0 0 repeat-y;
-}
-</style>
 {{#if loading}}
    <h4>Loading...</h4>
 {{else}}
    <p intro="fade"><a class="btn btn-default" href="#/team/{{team_number}}/edit">Edit</a></p>
 	<p>
 		<b>Summary:</b>
-		{{summary || "None"}}
+		{{#unless splitLine(summary).length}}
+           None
+        {{/unless}}
+        <br/>
+		{{#each splitLine(summary)}}
+           {{.}}<br />
+        {{/each}}
 	</p>
 	<div class="row">
 		<div class="col-sm-5">
@@ -57,14 +41,14 @@
 		</div>
 	</div>
 	<p style="margin-bottom: 0;">
-		<b>Should we consider them? Score: {{score || "0"}}/100</b>
+		<b>Should we consider them?</b>
 	</p>
-   <div class="progress">
-      <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{score}}" aria-valuemin="0" aria-valuemax="100" style="width: {{score}}%">
-		</div>
-	</div>
-   <!--
-	<div id="wrapper">
+   <div class="progress" style="height: 20px;">
+       <div class="progress-bar progress-bar-{{#if score < 30}}warning{{else}}success{{/if}}" role="progressbar" aria-valuenow="{{score}}" aria-valuemin="1" aria-valuemax="100" style="font-size:20px; padding:4px; width: {{score}}%;">
+          Strength: {{score || "0"}}%
+       </div>
+   </div>
+   <div id="wrapper">
 		<div class="chart">
 			<table id="data-table" border="1" cellpadding="10" cellspacing="0"
 				summary="The effects of the zombie outbreak on the populations
@@ -74,7 +58,7 @@
 					<tr>
 						<td>&nbsp;</td>
 						<th scope="col">Spy</th>
-						<th scope="col">Deffense</th>
+						<th scope="col">Defense</th>
 						<th scope="col">Assist</th>
 						<th scope="col">Shoot</th>
 					</tr>
@@ -90,16 +74,16 @@
 					<tr>
 						<th scope="row">Carbon Tiger</th>
 						<td>
-							1000
-						</td>
-						<td>
 							2000
 						</td>
 						<td>
-							3000
+							4000
 						</td>
 						<td>
-							4000
+							6000
+						</td>
+						<td>
+							10000
 						</td>
 					</tr>
 				</tbody>
@@ -108,6 +92,7 @@
 		<script>
 			buildBarGraph('data-table');
 		</script>
+		<!-- 
 		<p style="margin-bottom: 0;">
 			<b>Photos</b>
 		</p>
@@ -134,7 +119,7 @@
 				class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
 				<span class="sr-only">Next</span>
 			</a>
-		</div>
-	</div> -->
+		</div>-->
+	</div>
 
 {{/if}}
