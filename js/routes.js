@@ -98,15 +98,21 @@ routes.register("/team/:teamNum", {
       });
       delete data.team.scores_json;
       delete data.team.questions_json;
+      
       ractive.set(data.team);
       if (typeof data.team.scores === "object") {
          ractive.set("showChart", true);
          buildBarGraph('data-table');
       }
       this.updateTitle("{{team_type}} Team #{{team_number}} - {{team_name}}", data.team);
-      setTimeout(function() {
-         ractive.set("score", 50);
-      }, 100);
+
+      var score = data.team.score;
+      if (score > 0) {
+         ractive.set("score", 0);
+         setTimeout(function() {
+            ractive.set("score", score);
+         }, 100);
+      }
    },
    requireSignin: true
 });
@@ -196,9 +202,6 @@ routes.register("/team/:teamNum/edit", {
       delete data.team.scores_json;
       delete data.team.questions_json;
       ractive.set(data.team);
-      setTimeout(function() {
-         ractive.set("score", 50)
-      }, 100);
       this.updateTitle("{{team_type}} Team #{{team_number}} - {{team_name}} - Edit", data.team);
    },
    requireSignin: true
