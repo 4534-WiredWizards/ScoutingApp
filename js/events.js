@@ -103,7 +103,7 @@ $('.navbar-toggle').click(function() {
    }
 });
 
-$("body").on("keyup", "textarea", function() {
+$("body").on("focus keyup", "textarea", function() {
    $(this).height(1);
    $(this).height(this.scrollHeight);
 });

@@ -70,7 +70,10 @@ class ScoutingDB {
          "team_type" => "FRC",
          "summary" => "",
          "strengths" => "",
-         "weaknesses" => ""
+         "weaknesses" => "",
+         "score" => 50,
+         "scores_json" => "{}",
+         "questions_json" => "[]",
       );
       $team_data = array_merge($default_fields, $data);
       if (!$team_data["team_number"]) {

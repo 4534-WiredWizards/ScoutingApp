@@ -53,7 +53,26 @@ routes.register("/team/new", {
          el: ".main",
          template: data.template,
          data: {
-            action: "team/new"
+            action: "team/new",
+            scores: {
+               "Spy": 50,
+               "Defense": 50,
+               "Assist": 50,
+               "Shoot": 50,
+            },
+            questions: {
+               "can you do this thing?": false,
+               "can you do this other thing?": true
+            },
+            score: 50
+         },
+         computed: {
+            scores_json: function() {
+               return JSON.stringify(this.get('scores'));
+            },
+            questions_json: function() {
+               return JSON.stringify(this.get('questions'));
+            },
          }
       })
       this.updateTitle("Add a Team");
@@ -98,7 +117,7 @@ routes.register("/team/:teamNum", {
       });
       delete data.team.scores_json;
       delete data.team.questions_json;
-      
+
       ractive.set(data.team);
       if (typeof data.team.scores === "object") {
          ractive.set("showChart", true);
