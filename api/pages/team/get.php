@@ -15,6 +15,7 @@ $default_fields = array(
    "team_name",
    "team_type",
    "summary",
+   "score",
    "strengths",
    "weaknesses",
    "questions_json",

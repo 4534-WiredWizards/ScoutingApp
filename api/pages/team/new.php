@@ -18,6 +18,7 @@ $other_fields = array(
    "strengths",
    "questions_json",
    "scores_json",
+   "score",
 );
 
 $errors = array();

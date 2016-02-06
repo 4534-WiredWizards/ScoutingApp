@@ -52,6 +52,7 @@ CREATE TABLE scouting_entry (
 
    api_url VARCHAR(255),
    summary TEXT,
+   score DECIMAL(2),
    strengths TEXT,
    weaknesses TEXT,
 

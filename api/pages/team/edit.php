@@ -14,6 +14,7 @@ $required_fields = array(
 $other_fields = array(
    "weaknesses",
    "summary",
+   "score",
    "strengths",
    "questions_json",
    "scores_json",

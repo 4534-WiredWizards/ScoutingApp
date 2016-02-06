@@ -113,6 +113,7 @@ class ScoutingDB {
          "summary",
          "strengths",
          "weaknesses",
+         "score",
          "questions_json",
          "scores_json",
          "use_markdown",
