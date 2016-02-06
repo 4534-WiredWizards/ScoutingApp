@@ -113,7 +113,9 @@ class ScoutingDB {
          "summary",
          "strengths",
          "weaknesses",
-         "use_markdown"
+         "questions_json",
+         "scores_json",
+         "use_markdown",
       );
       $set_data = array();
       foreach($allowed_fields as $field) {
