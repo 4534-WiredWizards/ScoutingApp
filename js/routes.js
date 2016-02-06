@@ -171,6 +171,9 @@ routes.register("/team/:teamNum/edit", {
          }
       })
       ractive.set(data.team);
+      setTimeout(function() {
+         ractive.set("score", 50)
+      }, 100);
       this.updateTitle("{{team_type}} Team #{{team_number}} - {{team_name}} - Edit", data.team);
    },
    requireSignin: true
