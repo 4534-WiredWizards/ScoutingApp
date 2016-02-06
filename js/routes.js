@@ -196,6 +196,9 @@ routes.register("/team/:teamNum/edit", {
       delete data.team.scores_json;
       delete data.team.questions_json;
       ractive.set(data.team);
+      setTimeout(function() {
+         ractive.set("score", 50)
+      }, 100);
       this.updateTitle("{{team_type}} Team #{{team_number}} - {{team_name}} - Edit", data.team);
    },
    requireSignin: true

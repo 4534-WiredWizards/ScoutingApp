@@ -22,7 +22,7 @@
       </div>
       <div class="form-group">
          <label for="team_number">Strength</label>
-         <input type="number" min="1" max="100" class="form-control" id="score" name="score" placeholder="(e.g. 84)" value="{{score}}" required>
+         <input type="range" min="1" max="100" class="range" id="score" name="score" placeholder="(e.g. 84)" value="{{score}}" required>
       </div>
 
       {{#each scores:field}}
