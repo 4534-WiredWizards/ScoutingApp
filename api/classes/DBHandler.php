@@ -33,6 +33,19 @@ class DBHandler extends PDO {
             return array();
          }
       }
+      if (is_array($res)) {
+         foreach($res as $key => &$val) {
+            if (substr($key, -5) == "_json") {
+               $res[substr($key, 0, -5)] = json_decode($val, 1);
+            } else if (is_array($val)) {
+               foreach($val as $subkey => $subval) {
+                  if (substr($subkey, -5) == "_json") {
+                     $val[substr($subkey, 0, -5)] = json_decode($subval, 1);;
+                  }
+               }
+            }
+         }
+      }
       return $res;
    }
 

@@ -55,6 +55,9 @@ CREATE TABLE scouting_entry (
    strengths TEXT,
    weaknesses TEXT,
 
+   questions_json TEXT,
+   scores_json TEXT,
+
 
    use_markdown BOOLEAN NOT NULL DEFAULT 1,
    active BOOLEAN NOT NULL DEFAULT 1,

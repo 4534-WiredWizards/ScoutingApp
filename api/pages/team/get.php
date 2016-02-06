@@ -17,6 +17,8 @@ $default_fields = array(
    "summary",
    "strengths",
    "weaknesses",
+   "questions_json",
+   "scores_json",
    "use_markdown",
    "date_added"
 );
