@@ -31,6 +31,12 @@
             <input type="range" min="1" max="100" value="{{scores[field]}}" />
          </div>
       {{/each}}
+      {{#each defenses:field}}
+         <div class="form-group">
+            <label>{{field}} Defense: {{defenses[field]}}</label>
+            <input type="checkbox" value="{{defenses[field]}}" />
+         </div>
+      {{/each}}
       <input name="scores_json" value="{{scores_json}}" twoway="false" type="hidden" readonly />
 
       <button type="submit" class="btn btn-default btn-sm">Submit</button>
