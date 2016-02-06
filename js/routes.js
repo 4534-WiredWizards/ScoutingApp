@@ -84,14 +84,29 @@ routes.register("/team/:teamNum", {
             splitLine: function(val) {
                return (val || "").split(/\s*\n\s*/g).filter(Boolean);
             },
-            score: 0
+            score: 0,
+            showChart: false
+         },
+         computed: {
+            scores_json: function() {
+               return JSON.stringify(this.get('scores'));
+            },
+            questions_json: function() {
+               return JSON.stringify(this.get('questions'));
+            },
          }
-      })
+      });
+      delete data.team.scores_json;
+      delete data.team.questions_json;
       ractive.set(data.team);
-      setTimeout(function() {
-         ractive.set("score", 50)
-      }, 100);
+      if (typeof data.team.scores === "object") {
+         ractive.set("showChart", true);
+         buildBarGraph('data-table');
+      }
       this.updateTitle("{{team_type}} Team #{{team_number}} - {{team_name}}", data.team);
+      setTimeout(function() {
+         ractive.set("score", 50);
+      }, 100);
    },
    requireSignin: true
 });
@@ -168,8 +183,18 @@ routes.register("/team/:teamNum/edit", {
          template: data.template,
          data: {
             action: "team/"+teamNum+"/edit"
+         },
+         computed: {
+            scores_json: function() {
+               return JSON.stringify(this.get('scores'));
+            },
+            questions_json: function() {
+               return JSON.stringify(this.get('questions'));
+            },
          }
       })
+      delete data.team.scores_json;
+      delete data.team.questions_json;
       ractive.set(data.team);
       this.updateTitle("{{team_type}} Team #{{team_number}} - {{team_name}} - Edit", data.team);
    },

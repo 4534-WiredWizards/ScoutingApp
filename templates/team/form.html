@@ -24,6 +24,14 @@
          <label for="team_number">Strength</label>
          <input type="number" min="1" max="100" class="form-control" id="score" name="score" placeholder="(e.g. 84)" value="{{score}}" required>
       </div>
+
+      {{#each scores:field}}
+         <div class="form-group">
+            <label>{{field}} Score: <input value="{{scores[field]}}" type="number"/></label>
+         </div>
+      {{/each}}
+      <textarea name="scores_json" value="{{scores_json}}" twoway='false' readonly></textarea><br/>
+
       <button type="submit" class="btn btn-default btn-sm">Submit</button>
       <a class="btn btn-danger btn-sm" href="#" onclick="history.go(-1); return false">Cancel</a>
    </form>
