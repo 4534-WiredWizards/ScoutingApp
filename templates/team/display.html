@@ -48,78 +48,77 @@
           Strength: {{score || "0"}}%
        </div>
    </div>
-   <div id="wrapper">
-		<div class="chart">
-			<table id="data-table" border="1" cellpadding="10" cellspacing="0"
-				summary="The effects of the zombie outbreak on the populations
-            of endangered species from 2012 to 2016">
-				<caption>Robot Ranking</caption>
-				<thead>
-					<tr>
-						<td>&nbsp;</td>
-						<th scope="col">Spy</th>
-						<th scope="col">Defense</th>
-						<th scope="col">Assist</th>
-						<th scope="col">Shoot</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<th scope="row">null</th>
-						<td>0</td>
-						<td>0</td>
-						<td>0</td>
-						<td>0</td>
-					</tr>
-					<tr>
-						<th scope="row">Carbon Tiger</th>
-						<td>
-							2000
-						</td>
-						<td>
-							4000
-						</td>
-						<td>
-							6000
-						</td>
-						<td>
-							10000
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<script>
-			buildBarGraph('data-table');
-		</script>
-		<!-- 
-		<p style="margin-bottom: 0;">
-			<b>Photos</b>
-		</p>
-		<div id="myCarousel" class="carousel slide" data-ride="carousel">
-			<!-- Indicators --
-			<ol class="carousel-indicators">
-				<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-			</ol>
 
-			<!-- Wrapper for slides --
-			<div class="carousel-inner" role="listbox">
-				<div class="item active">
-					<img src="thereisnoimage.jpg" alt="Chania">
-				</div>
-			</div>
+   <p class="scores">
+      {{#if showChart}}
+         <div id="wrapper">
+      		<div class="chart">
+      			<table id="data-table" border="1" cellpadding="10" cellspacing="0"
+      				summary="The effects of the zombie outbreak on the populations
+                  of endangered species from 2012 to 2016">
+      				<caption>Scores</caption>
+      				<thead>
+      					<tr>
+      						<td>&nbsp;</td>
 
-			<!-- Left and right controls --
-			<a class="left carousel-control" href="#myCarousel" role="button"
-				data-slide="prev"> <span
-				class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-				<span class="sr-only">Previous</span>
-			</a> <a class="right carousel-control" href="#myCarousel"
-				role="button" data-slide="next"> <span
-				class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-				<span class="sr-only">Next</span>
-			</a>
-		</div>-->
-	</div>
+                        {{#each scores:field}}
+                           <th scope="col">
+                              {{field}}
+                           </th>
+                        {{/each}}
+      					</tr>
+      				</thead>
+      				<tbody>
+      					<tr>
+      						<th scope="row">null</th>
+      						<td>0</td>
+      						<td>0</td>
+      						<td>0</td>
+      						<td>0</td>
+      					</tr>
+      					<tr>
+      						<th scope="row">Testing This</th>
+                        {{#each scores}}
+                           <td>
+                              {{.}}
+                           </td>
+                        {{/each}}
+      					</tr>
+      				</tbody>
+      			</table>
+      		</div>
+      		<!--
+      		<p style="margin-bottom: 0;">
+      			<b>Photos</b>
+      		</p>
+      		<div id="myCarousel" class="carousel slide" data-ride="carousel">
+      			<!-- Indicators --
+      			<ol class="carousel-indicators">
+      				<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+      			</ol>
 
+      			<!-- Wrapper for slides --
+      			<div class="carousel-inner" role="listbox">
+      				<div class="item active">
+      					<img src="thereisnoimage.jpg" alt="Chania">
+      				</div>
+      			</div>
+
+      			<!-- Left and right controls --
+      			<a class="left carousel-control" href="#myCarousel" role="button"
+      				data-slide="prev"> <span
+      				class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+      				<span class="sr-only">Previous</span>
+      			</a> <a class="right carousel-control" href="#myCarousel"
+      				role="button" data-slide="next"> <span
+      				class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+      				<span class="sr-only">Next</span>
+      			</a>
+      		</div>-->
+      	</div>
+      {{else}}
+         <b>Scores:</b>
+         None
+      {{/if}}
+   </p>
 {{/if}}
