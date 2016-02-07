@@ -7,15 +7,15 @@ body {
 }
 
 footer {
-   z-index: 10;
+   /*z-index: 10;*/
 	background-color: #555;
 	color: white;
 	padding: 15px;
 
-   position: fixed;
-   bottom: 0;
-   left: 0;
-   right: 0;
+   /*position: fixed;*/
+   /*bottom: 0;*/
+   /*left: 0;*/
+   /*right: 0;*/
 }
 footer > p {
    margin: 0;
