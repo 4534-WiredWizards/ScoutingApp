@@ -5,7 +5,7 @@ class Token {
    // Check that a token exists and has not expired
    public static function check($dbh, $token, $fields = NULL, $safe_fields = false) {
       if (is_null($fields)) {
-         $fields = "team_user_id, data";
+         $fields = "organization_user_id, data";
          $safe_fields = true;
       }
       $fields = $dbh->createFieldString($fields, "", $safe_fields);
@@ -20,11 +20,11 @@ class Token {
    }
 
    // Create/save a token
-   public static function create($dbh, $team_user_id, $data = "", $expire_time = 12 /*Hours*/) {
-      $token = md5(uniqid($team_user_id, true));
+   public static function create($dbh, $organization_user_id, $data = "", $expire_time = 12 /*Hours*/) {
+      $token = md5(uniqid($organization_user_id, true));
       $expire_time = (float) $expire_time;
-      $dbh->query("INSERT INTO auth_token (team_user_id, token, data, date_added, date_expires) VALUES (:team_user_id, :token, :data, NOW(), DATE_ADD(NOW(), INTERVAL $expire_time HOUR))", array(
-         "team_user_id" => $team_user_id,
+      $dbh->query("INSERT INTO auth_token (organization_user_id, token, data, date_added, date_expires) VALUES (:organization_user_id, :token, :data, NOW(), DATE_ADD(NOW(), INTERVAL $expire_time HOUR))", array(
+         "organization_user_id" => $organization_user_id,
          "token" => $token,
          "data" => (is_string($data)) ? $data : json_encode($data)
       ));

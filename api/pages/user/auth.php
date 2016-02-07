@@ -10,16 +10,16 @@ if (is_array($post) && count($post)) {
 
    global $dbh;
    if ($team_num > 0) {
-      $team = $dbh->query("SELECT id FROM team WHERE team_number = ? AND team_type = ?", array($team_num, "FRC"));
-      $team_id = 0;
-      if (is_array($team) && count($team)) {
-         $team_id = $team[0]["id"];
+      $organization = $dbh->query("SELECT id FROM organization WHERE organization_number = ? AND organization_type = ?", array($team_num, "FRC"));
+      $organization_id = 0;
+      if (is_array($organization) && count($organization)) {
+         $organization_id = $organization[0]["id"];
       } else {
          $errors[] = "Invalid team number";
       }
    }
-   if (strlen($username) && strlen($password) && $team_id > 0) {
-      $users = new OrgUsers($dbh, $team_id);
+   if (strlen($username) && strlen($password) && $organization_id > 0) {
+      $users = new OrgUsers($dbh, $organization_id);
       $user = $users->authUsernamePassword($username, $password);
       if (is_array($user)) {
          if (isset($user["error"])) {

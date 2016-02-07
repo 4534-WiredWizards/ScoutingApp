@@ -39,10 +39,10 @@ if (isset($post) && count($post) && $_SERVER["REQUEST_METHOD"] == "POST") {
    if ($success) {
       global $dbh;
 
-      $team_id = $user["team_id"];
+      $organization_id = $user["organization_id"];
 
-      if ($team_id > 0) {
-         $users = new OrgUsers($dbh, $team_id);
+      if ($organization_id > 0) {
+         $users = new OrgUsers($dbh, $organization_id);
          if ($users->getByUsername($user_data["username"])) {
             $success = false;
             $errors[] = array("field" => "username", "msg" => "Username already in use");

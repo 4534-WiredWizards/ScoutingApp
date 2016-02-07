@@ -6,7 +6,7 @@ global $dbh;
 // Auth user
 $user = OrgUsers::authAPICall($dbh);
 // Initialize scouting db
-$sdb = new ScoutingDB($dbh, $user["team_id"], 1, $user["id"]);
+$sdb = new ScoutingDB($dbh, $user["organization_id"], 1, $user["id"]);
 
 $required_fields = array(
    "team_number" => "Team Number",
@@ -42,7 +42,7 @@ if (isset($post) && count($post) && $_SERVER["REQUEST_METHOD"] == "POST") {
    }
 
    if ($success) {
-      $existing = $sdb->getItem("scouting_entry", array(
+      $existing = $sdb->getItem("team", array(
          "team_number" => $team_data["team_number"]
       ));
       if (count($existing)) {

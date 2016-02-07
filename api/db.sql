@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS scouting_domain;
-CREATE TABLE scouting_domain (
-   team_id INT UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS organization_domain;
+CREATE TABLE organization_domain (
+   organization_id INT UNSIGNED NOT NULL,
    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
    domain_key VARCHAR(255) NOT NULL,
    domain_name VARCHAR(255) NOT NULL,
@@ -9,13 +9,13 @@ CREATE TABLE scouting_domain (
    PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS team;
-CREATE TABLE team (
+DROP TABLE IF EXISTS organization;
+CREATE TABLE organization (
    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 
-   team_number VARCHAR(255) NOT NULL,
-   team_name VARCHAR(255) NOT NULL,
-   team_type VARCHAR(255) NOT NULL,
+   organization_number VARCHAR(255) NOT NULL,
+   organization_name VARCHAR(255) NOT NULL,
+   organization_type VARCHAR(255) NOT NULL,
    owner_id INT UNSIGNED NOT NULL,
 
    active BOOLEAN NOT NULL DEFAULT 1,
@@ -24,9 +24,9 @@ CREATE TABLE team (
    PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS team_user;
-CREATE TABLE team_user (
-   team_id INT UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS organization_user;
+CREATE TABLE organization_user (
+   organization_id INT UNSIGNED NOT NULL,
    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 
    firstname VARCHAR(255) NOT NULL,
@@ -40,10 +40,10 @@ CREATE TABLE team_user (
    PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS scouting_entry;
-CREATE TABLE scouting_entry (
-   team_id INT UNSIGNED NOT NULL,
-   scouting_domain_id INT UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS team;
+CREATE TABLE team (
+   organization_id INT UNSIGNED NOT NULL,
+   organization_domain_id INT UNSIGNED NOT NULL,
    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 
    team_number VARCHAR(255),
@@ -69,8 +69,8 @@ CREATE TABLE scouting_entry (
 
 DROP TABLE IF EXISTS feed_entry;
 CREATE TABLE feed_entry (
-   team_id INT UNSIGNED NOT NULL,
-   scouting_domain_id INT UNSIGNED NOT NULL,
+   organization_id INT UNSIGNED NOT NULL,
+   organization_domain_id INT UNSIGNED NOT NULL,
    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 
    name VARCHAR(255),
@@ -87,7 +87,7 @@ CREATE TABLE feed_entry (
 DROP TABLE IF EXISTS auth_token;
 CREATE TABLE auth_token (
    token VARCHAR(32) NOT NULL,
-   team_user_id INT UNSIGNED NOT NULL,
+   organization_user_id INT UNSIGNED NOT NULL,
    data TEXT NOT NULL,
    date_expires DATETIME,
 
@@ -99,15 +99,15 @@ CREATE TABLE auth_token (
 
 /* SETUP SQL */
 
-TRUNCATE team;
-TRUNCATE team_user;
-TRUNCATE scouting_domain;
+TRUNCATE organization;
+TRUNCATE organization_user;
+TRUNCATE organization_domain;
 
-INSERT INTO team (
+INSERT INTO organization (
    id,
-   team_number,
-   team_name,
-   team_type,
+   organization_number,
+   organization_name,
+   organization_type,
    owner_id,
    date_added
 ) VALUES (
@@ -119,13 +119,12 @@ INSERT INTO team (
    NOW()
 );
 
-INSERT INTO team_user (
-   team_id,
+INSERT INTO organization_user (
+   organization_id,
    id,
    firstname,
    lastname,
-   username,
-   password
+   username
 ) VALUES (
    1,
    1,
@@ -140,8 +139,8 @@ INSERT INTO team_user (
    "bdn"
 );
 
-INSERT INTO scouting_domain (
-   team_id,
+INSERT INTO organization_domain (
+   organization_id,
    domain_key,
    domain_name
 ) VALUES (

@@ -6,7 +6,7 @@ global $dbh;
 // Auth user
 $user = OrgUsers::authAPICall($dbh);
 // Initialize scouting db
-$sdb = new ScoutingDB($dbh, $user["team_id"], 1, $user["id"]);
+$sdb = new ScoutingDB($dbh, $user["organization_id"], 1, $user["id"]);
 
 $default_fields = array(
    "id",
@@ -30,7 +30,7 @@ if (is_numeric($data["userID"])) {
 }
 
 $output = array(
-   "data" => $sdb->getItem("team_user", $where, $options["fields"], $safe_fields)
+   "data" => $sdb->getItem("organization_user", $where, $options["fields"], $safe_fields)
 );
 
 if (!is_array($output["data"]) || !count($output["data"])) {
