@@ -4,7 +4,7 @@
 
 global $dbh;
 // Auth user
-$user = TeamUsers::authAPICall($dbh);
+$user = OrgUsers::authAPICall($dbh);
 // Initialize scouting db
 $sdb = new ScoutingDB($dbh, $user["team_id"], 1, $user["id"]);
 

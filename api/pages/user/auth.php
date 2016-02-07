@@ -19,7 +19,7 @@ if (is_array($post) && count($post)) {
       }
    }
    if (strlen($username) && strlen($password) && $team_id > 0) {
-      $users = new TeamUsers($dbh, $team_id);
+      $users = new OrgUsers($dbh, $team_id);
       $user = $users->authUsernamePassword($username, $password);
       if (is_array($user)) {
          if (isset($user["error"])) {

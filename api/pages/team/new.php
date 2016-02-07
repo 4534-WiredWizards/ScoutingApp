@@ -4,7 +4,7 @@
 
 global $dbh;
 // Auth user
-$user = TeamUsers::authAPICall($dbh);
+$user = OrgUsers::authAPICall($dbh);
 // Initialize scouting db
 $sdb = new ScoutingDB($dbh, $user["team_id"], 1, $user["id"]);
 
@@ -15,10 +15,10 @@ $required_fields = array(
 $other_fields = array(
    "weaknesses",
    "summary",
+   "score",
    "strengths",
    "questions_json",
    "scores_json",
-   "score",
 );
 
 $errors = array();
@@ -55,7 +55,7 @@ if (isset($post) && count($post) && $_SERVER["REQUEST_METHOD"] == "POST") {
       $data = $sdb->addTeam($team_data);
       if (!isset($data["id"]) || !$data["id"]) {
          $success = false;
-         $data = array();
+         // $data = array();
          $errors[] = "Database error";
       }
    }

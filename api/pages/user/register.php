@@ -2,7 +2,7 @@
 
 global $dbh;
 // Auth user
-$user = TeamUsers::authAPICall($dbh);
+$user = OrgUsers::authAPICall($dbh);
 
 $required_fields = array(
    "firstname" => "First Name",
@@ -42,7 +42,7 @@ if (isset($post) && count($post) && $_SERVER["REQUEST_METHOD"] == "POST") {
       $team_id = $user["team_id"];
 
       if ($team_id > 0) {
-         $users = new TeamUsers($dbh, $team_id);
+         $users = new OrgUsers($dbh, $team_id);
          if ($users->getByUsername($user_data["username"])) {
             $success = false;
             $errors[] = array("field" => "username", "msg" => "Username already in use");

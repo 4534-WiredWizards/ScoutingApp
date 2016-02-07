@@ -1,7 +1,7 @@
 <?php
 
 // Helper class for handling user authentication in a team.
-class TeamUsers {
+class OrgUsers {
    public $team_id = 0;
    public $dbh = NULL;
    public $default_fields = "id, firstname, lastname, username, password, active";

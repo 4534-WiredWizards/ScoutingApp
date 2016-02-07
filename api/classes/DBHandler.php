@@ -28,6 +28,7 @@ class DBHandler extends PDO {
       if (is_array($res) && !count($res)) {
          $err = $sth->errorInfo();
          if (strlen($err[2])) {
+            die("$query ".print_r($res,1)." ".print_r($data,1));
             return array("error" => $err[2]);
          } else {
             return array();
