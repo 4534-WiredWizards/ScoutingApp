@@ -45,7 +45,7 @@
 	</p>
    <div class="progress" style="height: 20px;">
        <div class="progress-bar progress-bar-{{#if score < 30}}warning{{else}}success{{/if}}" role="progressbar" aria-valuenow="{{score}}" aria-valuemin="1" aria-valuemax="100" style="font-size:20px; padding:4px; width: {{score}}%;">
-          Overall Score: {{score || "0"}}%
+          {{#if score > 15}}Overall Score: {{/if}}{{#if score > 3}}{{score || "0"}}%{{/if}}
        </div>
    </div>
 
@@ -82,9 +82,7 @@
       {{#if showChart}}
          <div id="wrapper">
       		<div class="chart">
-      			<table id="data-table" border="1" cellpadding="10" cellspacing="0"
-      				summary="The effects of the zombie outbreak on the populations
-                  of endangered species from 2012 to 2016">
+      			<table id="data-table" border="1" cellpadding="10" cellspacing="0">
       				<caption>Scores</caption>
       				<thead>
       					<tr>
