@@ -72,9 +72,10 @@ class DBHandler extends PDO {
       return $fields;
    }
 
-   static function createLimitString($page = 0, $limit = 100) {
+   static function createLimitString($page = 1, $limit = 100) {
       // Helper for creating SQL limit with paging
       $page = (int) $page;
+      $page--;
       $limit = (int) $limit;
       return ($page * $limit) . ", " . ($limit);
    }

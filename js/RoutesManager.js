@@ -128,8 +128,12 @@ var RoutesManager = (function() {
     * @param {object} route Route options
     */
    RoutesManager.prototype.register = function(url, route) {
-      route.url = url;
-      this.routes.push(route);
+      var routeObj = {};
+      for(var key in route) {
+         routeObj[key] = route[key];
+      }
+      routeObj.url = url;
+      this.routes.push(routeObj);
    }
 
    /**

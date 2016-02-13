@@ -30,6 +30,10 @@ class ScoutingDB {
       $where = DBHandler::createWhereString($where, "t");
       return $this->dbh->query("SELECT $fields FROM `$table` t WHERE {$where[0]} ORDER BY t.`$sort_col` $sort_dir LIMIT $limit", $where[1]);
    }
+   public function getNumPages($table, $limit = 100) {
+      $res = $this->dbh->query("SELECT COUNT(t.id) as count FROM `$table` t");
+      return ceil($res[0]["count"] / $limit);
+   }
    public function getItem($table, $where = array(), $fields = NULL, $safe_fields = false) {
       $table_whitelist = array("team", "organization_user");
       if (!in_array($table, $table_whitelist)) return array();

@@ -33,4 +33,7 @@ $options = array_merge(array(
 $safe_fields = $options["fields"] === $default_fields;
 
 // Output results
-$output = array("data" => $sdb->getList("team", $options["sort_col"], $options["sort_dir"], $options["page"], $options["limit"], $options["fields"], $safe_fields));
+$output = array(
+   "data" => $sdb->getList("team", $options["sort_col"], $options["sort_dir"], $options["page"], $options["limit"], $options["fields"], $safe_fields),
+   "numPages" => $sdb->getNumPages("team", $options["limit"])
+);
