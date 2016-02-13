@@ -133,3 +133,9 @@ body:not(.loggedin) .user-only {
 .navbar input:focus {
    border-color: #95a5a6;
 }
+
+.btn-move {
+   background-color: white;
+}
+   
+   
