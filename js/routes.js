@@ -14,7 +14,7 @@ var token = new TokenManager("ww-scouting", setLoggedin.bind(this, true), setLog
 var messages = new MessageManager(".alerts", []);
 
 // Initialize app url route manager
-var routes = new RoutesManager([], "", "teams", token);
+var routes = new RoutesManager([], "", "team", token);
 
 ractiveMethods = ({
    setParam: (function(key, value) {
@@ -288,13 +288,18 @@ routes.register("/team", {
    requireSignin: true
 });
 
+var userParams = ({
+   page: 1,
+   limit: 10,
+   // q: ""
+});
 routes.register("/user", {
    template: "templates/user/list.html",
    dataCallbacks: {
       users: function(_this, callback) {
-         API.get("user", {}, function(res) {
+         var params = getParams(userParams);
+         API.get("user", params, function(res) {
             res.data.numPages = res.numPages;
-            console.log(res.data)
             callback(res.data);
          });
       }
@@ -302,32 +307,12 @@ routes.register("/user", {
    init: function(data) {
       ractive = RactiveCustom({
          data: data
-      }, data);
+      }, data, userParams);
       this.updateTitle("Users");
    },
    requireSignin: true
 });
 
-routes.register("/team/search/:query", {
-   template: "templates/team/list.html",
-   dataCallbacks: {
-      teams: function(_this, callback, query) {
-         API.get("team", {query: query}, function(res) {
-            callback(res.data);
-         });
-      }
-   },
-   init: function(data, query) {
-      ractive = RactiveCustom({
-         data: {
-            teams: data.teams,
-            query: query
-         }
-      }, data);
-      this.updateTitle("Teams");
-   },
-   requireSignin: true
-});
 routes.register("/not-found", {
    template: "templates/not-found.html",
    init: function() {
