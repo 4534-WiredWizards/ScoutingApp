@@ -2,11 +2,20 @@
    <form role="form" method="async" action="{{action}}">
       <div class="form-group">
          <label for="team_number">Team Number</label>
-         <input type="number" min="1" max="9999" class="form-control" id="team_number" name="team_number" placeholder="(e.g. 4534)" value="{{team_number}}" twoway="false" required {{#if id}}disabled{{/if}}>
+         <input type="number" min="1" max="9999" class="form-control" id="team_number" name="team_number" placeholder="(e.g. 4534)" value="{{team_number}}" twoway="false" required {{#if id}}disabled{{/if}} onkeyup="teamNumChange();" />
+         <script type="text/javascript">
+         function teamNumChange() {
+        	 val = document.getElementById('team_number').value;
+        	 function changeTeamName(x) {
+        		 document.getElementById('team_name').value = x;
+        	 }
+        	 getTeamName(val, changeTeamName);
+         }
+         </script>
       </div>
       <div class="form-group">
          <label for="team_name">Team Name</label>
-         <input type="text" class="form-control" id="team_name" name="team_name" placeholder="(e.g. Wired Wizards, The)" value="{{team_name}}" >
+         <input type="text" class="form-control" id="team_name" name="team_name" value="{{team_name}}" {{#if !id}}disabled{{/if}}>
       </div>
       <div class="form-group">
          <label for="summary">Summary</label>
