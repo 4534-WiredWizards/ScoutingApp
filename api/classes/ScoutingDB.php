@@ -13,7 +13,7 @@ class ScoutingDB {
       $this->user_id = $user_id;
    }
    public function getList($table, $sort_col = "id", $sort_dir = "up", $page = 0, $limit = 100, $fields = NULL, $safe_fields = false) {
-      $table_whitelist = array("team", "organization_user");
+      $table_whitelist = array("team", "organization_user", "feed_list");
       if (!in_array($table, $table_whitelist)) return array();
       if (is_null($fields)) {
          $fields = "t.*";
@@ -28,11 +28,15 @@ class ScoutingDB {
          $where["organization_domain_id"] = $this->organization_domain_id;
       }
       $where = DBHandler::createWhereString($where, "t");
+      // die("SELECT $fields FROM `$table` t WHERE {$where[0]} ORDER BY t.`$sort_col` $sort_dir LIMIT $limit");
       return $this->dbh->query("SELECT $fields FROM `$table` t WHERE {$where[0]} ORDER BY t.`$sort_col` $sort_dir LIMIT $limit", $where[1]);
    }
    public function getNumPages($table, $limit = 100) {
       $res = $this->dbh->query("SELECT COUNT(t.id) as count FROM `$table` t");
-      return ceil($res[0]["count"] / $limit);
+      if (!count($res)) {
+         $res = array(array("count"=>0));
+      }
+      return max(1, ceil($res[0]["count"] / $limit));
    }
    public function getItem($table, $where = array(), $fields = NULL, $safe_fields = false) {
       $table_whitelist = array("team", "organization_user");

@@ -74,9 +74,10 @@ CREATE TABLE feed_entry (
    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 
    name VARCHAR(255),
-   api_url VARCHAR(255),
+   url VARCHAR(255),
    entry TEXT,
 
+   organization_user_id INT UNSIGNED NOT NULL,
    use_markdown BOOLEAN NOT NULL DEFAULT 1,
    active BOOLEAN NOT NULL DEFAULT 1,
    date_added DATETIME,
