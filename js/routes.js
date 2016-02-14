@@ -22,7 +22,7 @@ ractiveMethods = ({
       params[key] = value;
       setHashParams(params);
    }),
-   setParams: setHashParams,
+   setParams: setHashParams
 });
 
 function setHashParams(params) {
@@ -43,6 +43,39 @@ function RactiveCustom(config, data, defaultParams) {
 
    return ractive;
 }
+
+function cacheable(fn, callbackArgN) {
+  function toArr(args) {
+    return Array.prototype.slice.call(args);
+  }
+  var _this = function cacheable() {
+    var args = toArr(arguments);
+    var callback = args[callbackArgN];
+    var key = args.map(JSON.stringify).join(',');
+    function resultCallback() {
+      return callback.apply(this, _this._cache[key]);
+    }
+    if (_this._cache[key] !== undefined) {
+      return resultCallback();
+    } else {
+      args[callbackArgN] = function(result) {
+        _this._cache[key] = toArr(arguments);
+        return resultCallback();
+      };
+      return fn.apply(this, args);
+    }
+  }
+  _this._cache = {};
+  return _this;
+}
+
+var getDefaultTeamFields = cacheable(function(_this, callback) {
+   console.log('getting results')
+   API.get("team/defaults", getParams(), function(res) {
+      callback(res.fields);
+   });
+}, 1);
+
 
 // Register app routes
 routes.register("/home", {
@@ -74,33 +107,28 @@ routes.register("/signin", {
       }
    }
 });
+function JSONComputed(key) {
+   return function() {
+      return JSON.stringify(this.get(key));
+   }
+}
 routes.register("/team/new", {
    template: "templates/team/form.html",
+   dataCallbacks: {
+      defaultFields: getDefaultTeamFields
+   },
    init: function(data) {
       ractive = RactiveCustom({
-         data: {
-            action: "team/new",
-            scores: {
-               "Spy": 50,
-               "Defense": 50,
-               "Assist": 50,
-               "Shoot": 50,
-            },
-            questions: {
-               "can you do this thing?": false,
-               "can you do this other thing?": true
-            },
-            score: 50
-         },
+         data: $.extend(data.defaultFields, {
+            action: "team/new"
+         }),
          computed: {
-            scores_json: function() {
-               return JSON.stringify(this.get('scores'));
-            },
-            questions_json: function() {
-               return JSON.stringify(this.get('questions'));
-            },
+            scores_json: JSONComputed('scores'),
+            questions_json: JSONComputed('questions'),
          }
       }, data);
+      delete data.scores_json;
+      delete data.questions_json;
       this.updateTitle("Add a Team");
    },
    formSuccess: function(res) {
@@ -131,12 +159,8 @@ routes.register("/team/:teamNum", {
             showChart: false
          },
          computed: {
-            scores_json: function() {
-               return JSON.stringify(this.get('scores'));
-            },
-            questions_json: function() {
-               return JSON.stringify(this.get('questions'));
-            },
+            scores_json: JSONComputed('scores'),
+            questions_json: JSONComputed('questions'),
          }
       }, data);
       delete data.team.scores_json;
@@ -228,12 +252,8 @@ routes.register("/team/:teamNum/edit", {
             action: "team/"+teamNum+"/edit"
          },
          computed: {
-            scores_json: function() {
-               return JSON.stringify(this.get('scores'));
-            },
-            questions_json: function() {
-               return JSON.stringify(this.get('questions'));
-            },
+            scores_json: JSONComputed('scores'),
+            questions_json: JSONComputed('questions'),
          }
       }, data);
       delete data.team.scores_json;
