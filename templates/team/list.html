@@ -22,6 +22,11 @@
 
 <!-- Right and Left Buttons -->
 <div>
-   <button class="btn btn-default btn-sm btn-move" onclick="teamLeft()"><img src="img/left.png" /></button>
-   <button class="btn btn-default btn-sm btn-move" onclick="teamRight()"><img src="img/right.png" /></button>
+   Page {{params.page}} of {{teams.numPages}}<br>
+   {{#if params.page > 1}}
+      <button class="btn btn-default btn-sm" on-click="setParam('page', params.page - 1)"><span class="glyphicon glyphicon-step-backward"></span> Prev. Page</button>&nbsp;
+   {{/if}}
+   {{#if params.page < teams.numPages}}
+      &nbsp;<button class="btn btn-default btn-sm" on-click="setParam('page', params.page + 1)">Next Page<span class="glyphicon glyphicon-step-forward"></span></button>
+   {{/if}}
 </div>

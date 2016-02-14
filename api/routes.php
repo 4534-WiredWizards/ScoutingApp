@@ -14,6 +14,7 @@ $pages = array(
 
    "team" => new Page("pages/team/list.php"),
    "team/new" => new Page("pages/team/new.php"),
+   "team/defaults" => new Page("pages/team/default-fields.php"),
    "team/:teamID" => new Page("pages/team/get.php"),
    "team/:teamID/edit" => new Page("pages/team/edit.php"),
 
