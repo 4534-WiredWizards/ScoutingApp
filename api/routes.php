@@ -9,6 +9,7 @@ $pages = array(
 
    "user" => new Page("pages/user/list.php"),
    "user/new" => new Page("pages/user/register.php"),
+   "user/defaults" => new Page("pages/user/default-fields.php"),
    "user/:userID" => new Page("pages/user/get.php"),
    "user/:userID/edit" => new Page("pages/user/edit.php"),
 
