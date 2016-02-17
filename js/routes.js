@@ -70,8 +70,13 @@ function cacheable(fn, callbackArgN) {
 }
 
 var getDefaultTeamFields = cacheable(function(_this, callback) {
-   console.log('getting results')
    API.get("team/defaults", getParams(), function(res) {
+      callback(res.fields);
+   });
+}, 1);
+
+var getDefaultUserFields = cacheable(function(_this, callback) {
+   API.get("user/defaults", getParams(), function(res) {
       callback(res.fields);
    });
 }, 1);
@@ -87,7 +92,15 @@ routes.register("/home", {
 });
 routes.register("/invite", {
    template: "templates/user/invite.html",
-   init: function() {
+   dataCallbacks: {
+      defaultFields: getDefaultUserFields
+   },
+   init: function(data) {
+      ractive = RactiveCustom({
+         data: $.extend(data.defaultFields, {
+            action: "invite"
+         }),
+      }, data);
       this.updateTitle("Invite");
    },
    formSuccess: function(res) {
