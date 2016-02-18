@@ -70,13 +70,13 @@ function cacheable(fn, callbackArgN) {
 }
 
 var getDefaultTeamFields = cacheable(function(_this, callback) {
-   API.get("team/defaults", getParams(), function(res) {
+   API.get("team/defaults", getParams({}), function(res) {
       callback(res.fields);
    });
 }, 1);
 
 var getDefaultUserFields = cacheable(function(_this, callback) {
-   API.get("user/defaults", getParams(), function(res) {
+   API.get("user/defaults", getParams({}), function(res) {
       callback(res.fields);
    });
 }, 1);

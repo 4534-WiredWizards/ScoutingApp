@@ -34,24 +34,45 @@
 
       {{#each questions:i}}
          <div class="form-group">
-            <label for="questions-{{i}}">{{field}}:</label>
-            {{#if type == "checkbox"}}
-               <input
-                  id="questions-{{i}}"
-                  type="{{type}}"
-                  checked="{{value}}" />
-            {{else}}
-               <input
-                  id="questions-{{i}}"
-                  type="{{type}}"
-                  value="{{value}}" />
+            {{#if before}}
+               {{{before}}}
+            {{/if}}
+            {{#if field}}
+               <label for="questions-{{i}}">
+                  {{#if type == "checkbox"}}
+                     <input
+                        id="questions-{{i}}"
+                        type="{{type}}"
+                        checked="{{value}}"
+                        {{{attr}}}
+                     />
+                  {{/if}}
+                  {{field}}
+               </label>
+            {{/if}}
+            <p>
+               {{#if type}}
+                  {{#if type == "textarea"}}
+                     <textarea id="questions-{{i}}" class="form-control" value="{{value}}"></textarea>
+                  {{elseif type != "checkbox"}}
+                     <input
+                        id="questions-{{i}}"
+                        type="{{type}}"
+                        value="{{value}}"
+                        class="form-control"
+                        {{{attr}}}
+                     />
+                  {{/if}}
+               {{/if}}
+            </p>
+            {{#if after}}
+               {{{after}}}
             {{/if}}
          </div>
       {{/each}}
 
       <input name="scores_json" value="{{scores_json}}" twoway="false" type="hidden"  />
       <input name="questions_json" value="{{questions_json}}" twoway="false" type="hidden"  />
-      Questions json: {{questions_json}}<br/>
 
       <button type="submit" class="btn btn-default btn-sm">Submit</button>
       <a class="btn btn-danger btn-sm" href="#" onclick="history.go(-1); return false">Cancel</a>
