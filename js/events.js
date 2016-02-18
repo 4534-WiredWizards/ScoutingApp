@@ -107,3 +107,27 @@ $("body").on("focus keyup", "textarea", function() {
    $(this).height(1);
    $(this).height(this.scrollHeight);
 });
+
+
+/**
+ * Gets the team name from a given number
+ *
+ * @param num
+ *            The team number
+ *
+ */
+function getTeamName(num, callback) {
+	url = "http://www.thebluealliance.com/api/v2/team/frc" + num
+			+ "?X-TBA-App-Id=frc4534:scouting-app:2";
+	return httpGetJson(url, function(result) {
+		callback(result.nickname);
+	});
+}
+
+function httpGetJson(url, callback) {
+	return $.ajax({
+		url : url,
+		dataType : "json",
+		success : callback
+	});
+}
