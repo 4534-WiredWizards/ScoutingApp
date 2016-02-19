@@ -120,5 +120,43 @@
          <b>Scores:</b>
          None
       {{/if}}
+      {{#each questions:i}}
+         <div class="form-group">
+            {{#if before}}
+               {{{before}}}
+            {{/if}}
+            {{#if field}}
+               <label for="questions-{{i}}">
+                  {{#if type == "checkbox"}}
+                     <input
+                        id="questions-{{i}}"
+                        type="{{type}}"
+                        checked="{{value}}"
+                        {{{attr}}}  
+                     />
+                  {{/if}}
+                  {{field}}
+               </label>
+            {{/if}}
+            <p>
+               {{#if type}}
+                  {{#if type == "textarea"}}
+                     <textarea id="questions-{{i}}" class="form-control" value="{{value}}" readonly></textarea>
+                  {{elseif type != "checkbox"}}
+                     <input
+                        id="questions-{{i}}"
+                        type="{{type}}"
+                        value="{{value}}"
+                        class="form-control"
+                        {{{attr}}} readonly
+                     />
+                  {{/if}}
+               {{/if}}
+            </p>
+            {{#if after}}
+               {{{after}}}
+            {{/if}}
+         </div>
+      {{/each}}
    </p>
 {{/if}}
