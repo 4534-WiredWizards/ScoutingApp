@@ -84,9 +84,19 @@ var getDefaultUserFields = cacheable(function(_this, callback) {
 
 // Register app routes
 routes.register("/home", {
-   template: "templates/index.html",
-   init: function() {
-      console.log("home");
+   template: "templates/feed.html",
+   dataCallbacks: {
+      feeds: function(_this, callback) {
+         API.get("feed", getParams({}), function(res) {
+            callback(res.data);
+         });
+      }
+   },
+   init: function(data) {
+      ractive = RactiveCustom({
+         data: data
+      }, data);
+      this.updateTitle("Home");
    },
    requireSignin: true
 });
