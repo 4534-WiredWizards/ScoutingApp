@@ -13,7 +13,7 @@ class ScoutingDB {
       $this->user_id = $user_id;
    }
    public function getList($table, $sort_col = "id", $sort_dir = "up", $page = 0, $limit = 100, $fields = NULL, $safe_fields = false) {
-      $table_whitelist = array("team", "organization_user", "feed_list");
+      $table_whitelist = array("team", "organization_user", "feed_entry");
       if (!in_array($table, $table_whitelist)) return array();
       if (is_null($fields)) {
          $fields = "t.*";

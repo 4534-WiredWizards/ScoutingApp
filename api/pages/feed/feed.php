@@ -20,7 +20,7 @@ $default_fields = array(
 $options = array_merge(array(
    "sort_col" => "date_added",
    "sort_dir" => "up",
-   "page" => 0,
+   "page" => 1,
    "limit" => 20,
    "fields" => $default_fields
 ), $get);
@@ -30,5 +30,5 @@ $safe_fields = $options["fields"] === $default_fields;
 // Output results
 $output = array(
    "data" => $sdb->getList("feed_entry", $options["sort_col"], $options["sort_dir"], $options["page"], $options["limit"], $options["fields"], $safe_fields),
-   "numPages" => $sdb->getNumPages("feed_list", $options["limit"])
+   "numPages" => $sdb->getNumPages("feed_entry", $options["limit"])
 );
