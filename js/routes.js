@@ -149,6 +149,19 @@ routes.register("/team/new", {
    },
    requireSignin: true
 });
+routes.register("/team/import", {
+   template: "templates/team/import.html",
+   init: function(data) {
+      ractive = RactiveCustom({
+         data: data
+      }, data);
+      this.updateTitle("Import");
+   },
+   formSuccess: function(res) {
+      router.setRoute("team");
+   },
+   requireSignin: true
+});
 routes.register("/team/:teamNum", {
    template: "templates/team/display.html",
    dataCallbacks: {
