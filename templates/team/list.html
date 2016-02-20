@@ -1,32 +1,50 @@
 <div class="teams-list">
-   {{#if loading}}
-      <h4>Loading...</h4>
-   {{/if}}
+	{{#if loading}}
+	<h4>Loading...</h4>
+	{{/if}}
 
-   <p><a href="#/team/new" class="btn btn-default">Add a Team</a> <a href="#/team/import" class="btn btn-default">Import From Event</a></p>
+	<p>
+		<a href="#/team/new" class="btn btn-default">Add a Team</a> <a
+			href="#/team/import" class="btn btn-default">Import From Event</a>
+	</p>
 
-   <div class="list-group">
-      {{#each teams}}
-         <a href="#/team/{{team_number}}" class="list-group-item">
-            <h4 class="list-group-item-heading">
-               Team #{{team_number}}
-               {{#if team_name}}
-                  - {{team_name}}
-               {{/if}}
-            </h4>
-            <p class="list-group-item-text">{{summary}}</p>
-         </a>
-      {{/each}}
-   </div>
-</div>
-
-<!-- Right and Left Buttons -->
-<div>
-   Page {{params.page}} of {{teams.numPages}}<br>
-   {{#if params.page > 1}}
-      <button class="btn btn-default btn-sm" on-click="setParam('page', params.page - 1)"><span class="glyphicon glyphicon-step-backward"></span> Prev. Page</button>&nbsp;
-   {{/if}}
-   {{#if params.page < teams.numPages}}
-      &nbsp;<button class="btn btn-default btn-sm" on-click="setParam('page', params.page + 1)">Next Page<span class="glyphicon glyphicon-step-forward"></span></button>
-   {{/if}}
+	<!-- Right and Left Buttons -->
+	<div>
+		Page {{params.page}} of {{teams.numPages}}<br> {{#if params.page
+		> 1}}
+		<button class="btn btn-default btn-sm"
+			on-click="setParam('page', params.page - 1)">
+			<span class="glyphicon glyphicon-step-backward"></span> Prev. Page
+		</button>
+		&nbsp; {{/if}} {{#if params.page < teams.numPages}} &nbsp;
+		<button class="btn btn-default btn-sm"
+			on-click="setParam('page', params.page + 1)">
+			Next Page<span class="glyphicon glyphicon-step-forward"></span>
+		</button>
+		{{/if}}
+	</div>
+	<br>
+	<div class="list-group">
+		{{#each teams}} <a href="#/team/{{team_number}}"
+			class="list-group-item">
+			<h4 class="list-group-item-heading">Team #{{team_number}} {{#if
+				team_name}} - {{team_name}} {{/if}}</h4>
+			<p class="list-group-item-text">{{summary}}</p>
+		</a> {{/each}}
+	</div>
+	<!-- Right and Left Buttons -->
+	<div>
+		Page {{params.page}} of {{teams.numPages}}<br> {{#if params.page
+		> 1}}
+		<button class="btn btn-default btn-sm"
+			on-click="setParam('page', params.page - 1)">
+			<span class="glyphicon glyphicon-step-backward"></span> Prev. Page
+		</button>
+		&nbsp; {{/if}} {{#if params.page < teams.numPages}} &nbsp;
+		<button class="btn btn-default btn-sm"
+			on-click="setParam('page', params.page + 1)">
+			Next Page<span class="glyphicon glyphicon-step-forward"></span>
+		</button>
+		{{/if}}
+	</div>
 </div>
