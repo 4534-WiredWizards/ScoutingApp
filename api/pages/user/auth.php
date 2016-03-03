@@ -19,7 +19,7 @@ if (is_array($post) && count($post)) {
       }
    }
    if (strlen($username) && strlen($password) && $organization_id > 0) {
-      $users = new OrgUsers($dbh, $organization_id);
+      $users = new Auth($dbh, $organization_id);
       $user = $users->authUsernamePassword($username, $password);
       if (is_array($user)) {
          if (isset($user["error"])) {
@@ -40,6 +40,7 @@ if (is_array($post) && count($post)) {
    $output["error"] = $errors;
    if (strlen($token)) {
       $output["token"] = $token;
+      $output["user"] = $user;
    }
 } else {
    $output = array("success" => false, "error" => array($required_fields_err));

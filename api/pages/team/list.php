@@ -4,7 +4,7 @@
 
 global $dbh;
 // Auth user
-$user = OrgUsers::authAPICall($dbh);
+$user = Auth::authAPICall($dbh);
 // Initialize scouting db
 $sdb = new ScoutingDB($dbh, $user["organization_id"], 1, $user["id"]);
 

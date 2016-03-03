@@ -1,7 +1,7 @@
 <?php
 
 // Helper class for handling user authentication in an organization.
-class OrgUsers {
+class Auth {
    public $organization_id = 0;
    public $dbh = NULL;
    public $default_fields = "id, firstname, lastname, username, password, active";
@@ -42,7 +42,7 @@ class OrgUsers {
    public function authUsernamePassword($username, $password) {
       global $api_dir;
       require_once("$api_dir/libs/password.php");
-      $user = $this->getByUsername($username, array("id", "active", "password"));
+      $user = $this->getByUsername($username);
       $matches = password_verify($password, $user["password"]);
       if ($matches) {
          if (!$user["active"]) {

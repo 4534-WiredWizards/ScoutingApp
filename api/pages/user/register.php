@@ -2,7 +2,7 @@
 
 global $dbh;
 // Auth user
-$user = OrgUsers::authAPICall($dbh);
+$user = Auth::authAPICall($dbh);
 
 $required_fields = array(
    "firstname" => "First Name",
@@ -42,7 +42,7 @@ if (isset($post) && count($post) && $_SERVER["REQUEST_METHOD"] == "POST") {
       $organization_id = $user["organization_id"];
 
       if ($organization_id > 0) {
-         $users = new OrgUsers($dbh, $organization_id);
+         $users = new Auth($dbh, $organization_id);
          if ($users->getByUsername($user_data["username"])) {
             $success = false;
             $errors[] = array("field" => "username", "msg" => "Username already in use");
