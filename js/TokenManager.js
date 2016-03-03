@@ -18,6 +18,7 @@ var TokenManager = (function() {
       } else {
          this.noTokenCallback();
       }
+      this.user = false;
    }
 
    /**
@@ -34,9 +35,13 @@ var TokenManager = (function() {
     *
     * @param string token The token you would like to store
     */
-   TokenManager.prototype.set = function(token) {
+   TokenManager.prototype.set = function(token, user) {
       var token = token || "";
       var curToken = this.get();
+      this.user = false;
+      if (token && user) {
+         this.user = user;
+      }
       res = localStorage.setItem(this.ns, token);
       if (curToken && !token) {
          this.noTokenCallback();
@@ -64,7 +69,7 @@ var TokenManager = (function() {
       API.post("auth", data, function(res) {
          // Save the token if the user is authenticated
          if (res.success && res.token) {
-            _this.set(res.token);
+            _this.set(res.token, res.user);
          }
          return res;
       });
