@@ -23,6 +23,8 @@ $pages = array(
    "feed" => new Page("pages/feed/feed.php"),
    "team/:teamID/feed" => new Page("pages/feed/team.php"),
    "user/:userID/feed" => new Page("pages/feed/user.php"),
+
+   "tba" => new Page("pages/tba/tba.php"),
 );
 
 $routes = array(
