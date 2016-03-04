@@ -18,6 +18,7 @@ var TokenManager = (function() {
       } else {
          this.noTokenCallback();
       }
+      this.data = false;
    }
 
    /**
@@ -46,12 +47,18 @@ var TokenManager = (function() {
       return res;
    }
 
+   TokenManager.prototype.clear = function() {
+      window.localStorage.clear();
+      this.noTokenCallback();
+   }
+
    /**
     * Make an AJAX call to the API and handle the response
     * @example https://github.com/4534-WiredWizards/ScoutingApp2016/blob/master/docs/TokenManager.md#retrieve-auth-token-from-api
     *
     * @param mixed data The data you are sending to the API
     */
+   // Not used
    TokenManager.prototype.auth = function(data) {
       var _this = this;
 
@@ -61,13 +68,25 @@ var TokenManager = (function() {
       As a string: "teamnum=4534&username=someuser&password=somepass"
       As JSON: {"teamnum":4534,"username":"someuser","password":"somepass"}
       */
+      localStorage.clear();
       API.post("auth", data, function(res) {
          // Save the token if the user is authenticated
          if (res.success && res.token) {
+            if (res.data) {
+               _this.setData(res.data);
+            }
             _this.set(res.token);
          }
          return res;
       });
+   }
+
+   TokenManager.prototype.getData = function() {
+      return JSON.parse(localStorage.getItem(this.ns+'-data')) || {};
+   }
+
+   TokenManager.prototype.setData = function(data) {
+      return localStorage.setItem(this.ns+'-data', JSON.stringify(data));
    }
 
    return TokenManager;

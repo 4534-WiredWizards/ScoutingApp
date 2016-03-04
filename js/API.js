@@ -5,7 +5,7 @@ var API = {
       if (window.token && window.token.get && (data.token === undefined || data.token === null)) {
          data.token = window.token.get();
       }
-      data.debug = "";
+      // data.debug = "";
       return $.ajax({
          url: this.baseUrl + url,
          method: method || "GET",
@@ -14,7 +14,7 @@ var API = {
       .error(function(res) {
          if (res.status == 401) {
             if (window.token && window.token.get && window.token.get()) {
-               window.token.set("");
+               window.token.clear();
             }
             router.setRoute("signin");
             return;
