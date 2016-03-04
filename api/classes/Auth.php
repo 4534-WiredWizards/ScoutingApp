@@ -1,25 +1,25 @@
 <?php
 
 // Helper class for handling user authentication in an organization.
-class OrgUsers {
+class Auth {
    public $organization_id = 0;
    public $dbh = NULL;
-   public $default_fields = "id, firstname, lastname, username, password, active";
+   public $default_fields = "id, firstname, lastname, username, roles, password, active";
 
    public function __construct($dbh, $organization_id = 0) {
       $this->dbh = $dbh;
       $this->organization_id = $organization_id;
    }
 
-   public function create($username, $password, $firstname = "", $lastname = "") {
+   public function create($username, $password, $firstname = "", $lastname = "", $roles = "default") {
       if (count($this->getByUsername($username, array()))) {
          return array("error" => "Username already in use");
       }
       $insert_q = "
          INSERT INTO organization_user
-         ( organization_id,  username,  password,  firstname,  lastname, date_added)
+         ( organization_id,  username,  password,  roles,  firstname,  lastname, date_added)
          VALUES
-         (:organization_id, :username, :password, :firstname, :lastname, NOW())";
+         (:organization_id, :username, :password, :roles, :firstname, :lastname, NOW())";
 
       global $api_dir;
       require_once("$api_dir/libs/password.php");
@@ -29,7 +29,8 @@ class OrgUsers {
          "username" => $username,
          "password" => password_hash($password, PASSWORD_BCRYPT),
          "firstname" => $firstname,
-         "lastname" => $lastname
+         "lastname" => $lastname,
+         "roles" => $roles
       ));
 
       if (isset($sth["error"]) && strlen($sth["error"])) {
@@ -42,7 +43,7 @@ class OrgUsers {
    public function authUsernamePassword($username, $password) {
       global $api_dir;
       require_once("$api_dir/libs/password.php");
-      $user = $this->getByUsername($username, array("id", "active", "password"));
+      $user = $this->getByUsername($username);
       $matches = password_verify($password, $user["password"]);
       if ($matches) {
          if (!$user["active"]) {

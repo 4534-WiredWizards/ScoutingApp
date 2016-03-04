@@ -58,7 +58,7 @@ class TBA {
       if (!count($file_contents)) {
          return FALSE;
       }
-      if (!is_integer($later_than)) {
+      if (!is_integer($later_than) && strlen($later_than)) {
          $later_than = strtotime($later_than);
       }
       if ($later_than > $file_contents["timestamp"]) {
