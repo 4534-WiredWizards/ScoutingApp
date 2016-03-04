@@ -10,16 +10,29 @@ if (is_array($post) && count($post)) {
 
    global $dbh;
    if ($team_num > 0) {
-      $organization = $dbh->query("SELECT id FROM organization WHERE organization_number = ? AND organization_type = ?", array($team_num, "FRC"));
-      $organization_id = 0;
+      $organization = $dbh->query("
+         SELECT id,
+                organization_name,
+                organization_number,
+                config_json
+         FROM organization
+         WHERE organization_number = ?
+         AND organization_type = ?
+      ", array(
+         $team_num, "FRC"
+      ));
+
       if (is_array($organization) && count($organization)) {
-         $organization_id = $organization[0]["id"];
+         $organization = $organization[0];
+         $organization["config"] = json_decode($organization["config_json"], 1);
       } else {
+         $organization = array();
          $errors[] = "Invalid team number";
       }
    }
-   if (strlen($username) && strlen($password) && $organization_id > 0) {
-      $users = new Auth($dbh, $organization_id);
+
+   if (strlen($username) && strlen($password) && count($organization)) {
+      $users = new Auth($dbh, $organization["id"]);
       $user = $users->authUsernamePassword($username, $password);
       if (is_array($user)) {
          if (isset($user["error"])) {
@@ -35,13 +48,21 @@ if (is_array($post) && count($post)) {
    } else {
       $errors[] = $required_fields_err;
    }
+
    $output = array();
    $output["success"] = $success;
    $output["error"] = $errors;
+
    if (strlen($token)) {
       $output["token"] = $token;
-      $output["user"] = $user;
+      $output["data"] = array(
+         "user" => $user,
+         "organization" => $organization
+      );
    }
 } else {
-   $output = array("success" => false, "error" => array($required_fields_err));
+   $output = array(
+      "success" => false,
+      "error" => array($required_fields_err)
+   );
 }

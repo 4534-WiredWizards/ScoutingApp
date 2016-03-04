@@ -16,7 +16,7 @@ CREATE TABLE organization (
    organization_number VARCHAR(255) NOT NULL,
    organization_name VARCHAR(255) NOT NULL,
    organization_type VARCHAR(255) NOT NULL,
-   owner_id INT UNSIGNED NOT NULL,
+   config_json TEXT NOT NULL,
 
    active BOOLEAN NOT NULL DEFAULT 1,
    date_added DATETIME,
@@ -33,6 +33,8 @@ CREATE TABLE organization_user (
    lastname VARCHAR(255) NOT NULL,
    username VARCHAR(255) NOT NULL,
    password VARCHAR(255) NOT NULL,
+
+   roles TEXT NOT NULL DEFAULT "default",
 
    active BOOLEAN NOT NULL DEFAULT 1,
    date_added DATETIME,
@@ -109,14 +111,14 @@ INSERT INTO organization (
    organization_number,
    organization_name,
    organization_type,
-   owner_id,
+   config_json,
    date_added
 ) VALUES (
    1,
    4534,
    "Wired Wizards",
    "FRC",
-   1,
+   '{"tba_event":""}',
    NOW()
 );
 
@@ -125,19 +127,22 @@ INSERT INTO organization_user (
    id,
    firstname,
    lastname,
-   username
+   username,
+   roles
 ) VALUES (
    1,
    1,
    "Daniel",
    "Wilson",
-   "daniel"
+   "daniel",
+   "default, admin"
 ), (
    1,
    2,
    "Brandon",
    "Dyer",
-   "bdn"
+   "bdn",
+   "default, admin"
 );
 
 INSERT INTO organization_domain (

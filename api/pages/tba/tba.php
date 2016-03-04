@@ -10,4 +10,9 @@ $sdb = new ScoutingDB($dbh, $user["organization_id"], 1, $user["id"]);
 
 $tba = new TBA();
 
-$output["data"] = $tba->get($_GET["url"], $_GET["later_than"]);
+$data = array_merge(array(
+   "url" => "",
+   "later_than" => ""
+), $_GET);
+
+$output["data"] = $tba->get($data["url"], $data["later_than"]);

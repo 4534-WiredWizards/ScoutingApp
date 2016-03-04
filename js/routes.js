@@ -1,20 +1,48 @@
-function setLoggedin(loggedIn) {
-   var method = loggedIn ? "addClass" : "removeClass";
+var navbarRactive = new Ractive({
+   el: ".navbar > .container",
+   template: $(".navbar > .container").html(),
+   data: {
+      token: "",
+      data: {}
+   }
+});
+
+// Initialize token manager
+var token = new TokenManager("ww-scouting", function() {
+   navbarRactive.set({
+      token: this.get(),
+      data: this.getData()
+   });
    if (document.readyState === "complete") {
-      $("body")[method]("loggedin");
+      $("body").addClass("loggedin");
    } else {
       $(document).ready(function() {
-         $("body")[method]("loggedin");
+         $("body").addClass("loggedin");
       });
    }
-}
-// Initialize token manager
-var token = new TokenManager("ww-scouting", setLoggedin.bind(this, true), setLoggedin.bind(this, false));
+}, function() {
+   navbarRactive.set({
+      token: this.get(),
+      data: this.getData()
+   });
+   if (document.readyState === "complete") {
+      $("body").removeClass("loggedin");
+   } else {
+      $(document).ready(function() {
+         $("body").removeClass("loggedin");
+      });
+   }
+});
+
+
+
 // Bootstrap .alert manager
 var messages = new MessageManager(".alerts", []);
 
 // Initialize app url route manager
 var routes = new RoutesManager([], "", "team", token);
+
+
 
 ractiveMethods = ({
    setParam: (function(key, value) {
@@ -122,9 +150,11 @@ routes.register("/signin", {
    template: "templates/signin.html",
    init: function() {
       this.updateTitle("Sign In");
+      token.clear();
    },
    formSuccess: function(res) {
       if (res.success && res.token) {
+         token.setData(res.data);
          token.set(res.token);
          router.setRoute(routes.defaultUrl);
       }
@@ -172,6 +202,55 @@ routes.register("/team/import", {
    },
    requireSignin: true
 });
+
+routes.register("/matches", {
+   template: "templates/tba/matches.html",
+   dataCallbacks: {
+      matches: function(_this, callback) {
+         var tbaConfig = token.getData().organization.config.tba;
+         API.get("tba", {
+            url: "team/"+tbaConfig.team+"/event/"+tbaConfig.event+"/matches"
+         }, callback);
+      }
+   },
+   init: function(data) {
+      console.log(data);
+      ractive = RactiveCustom({
+         data: {
+            matches: data.matches.data,
+            tbaConfig: token.getData().organization.config.tba,
+            formatDate: function(timestamp) {
+               var date = new Date(Number(timestamp)*1000);
+               var hours = date.getHours();
+               var p = (hours < 12) ? "AM" : "PM";
+               if (hours > 12) {
+                  hours -= 12;
+               }
+               var days = {
+                  "Mon": "Monday",
+                  "Tue": "Tuesday",
+                  "Wed": "Wednesday",
+                  "Thu": "Thursday",
+                  "Fri": "Friday",
+                  "Sat": "Saturday",
+                  "Sun": "Sunday",
+               };
+               var day = days[date.toString().split(' ')[0]];
+               var minutes = date.getMinutes().toString();
+               if (minutes.length < 2) {
+                  for(var i = minutes.length; i < 2; i++) {
+                     minutes = '0' + minutes;
+                  }
+               }
+               return day + " " + hours + ":" + minutes + " " + p;
+            },
+         },
+      }, data);
+      this.updateTitle("Match Schedule");
+   },
+   requireSignin: true
+});
+
 routes.register("/team/:teamNum", {
    template: "templates/team/display.html",
    dataCallbacks: {
