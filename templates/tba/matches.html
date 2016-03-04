@@ -1,0 +1,38 @@
+{{#if matches.length}}
+   <div class="list-group">
+      {{#each matches}}
+         <a href="#/match?key={{key}}" class="list-group-item">
+            <h4 class="list-group-item-heading">
+               Match #{{match_number}} -
+               {{#if alliances.blue.teams.indexOf(tbaConfig.team) > -1}}
+                  Blue Alliance
+               {{else}}
+                  Red Alliance
+               {{/if}}
+            </h4>
+            <p class="list-group-item-text">
+               <b>Time</b>: {{formatDate(time)}}<br>
+               <b>Alliances</b>:
+               {{#alliances.blue}}
+                  <p style="padding-left: 1.5em;">
+                     Blue Alliance: {{score}}<br>
+                     Teams:
+                     {{#each teams:i}}
+                        <a href="#/team/{{this.match(/\d+/)[0]}}">{{this.match(/\d+/)[0]}}</a>{{#if i < teams.length-1}},&nbsp;{{/if}}
+                     {{/each}}
+                  </p>
+               {{/}}
+               {{#alliances.red}}
+                  <p style="padding-left: 1.5em;">
+                     Red Alliance: {{score}}<br>
+                     Teams:
+                     {{#each teams:i}}
+                        <a href="#/team/{{this.match(/\d+/)[0]}}">{{this.match(/\d+/)[0]}}</a>{{#if i < teams.length-1}},&nbsp;{{/if}}
+                     {{/each}}
+                  </p>
+               {{/}}
+            </p>
+         </a>
+      {{/each}}
+   </div>
+{{/if}}
