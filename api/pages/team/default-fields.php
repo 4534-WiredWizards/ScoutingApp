@@ -53,6 +53,11 @@ $output = array(
             "type" => "checkbox",
          ),
          array(
+            "field" => "Unsportsmanlike Conduct",
+            "value" => false,
+            "type" => "checkbox",
+         ),
+         array(
             "before" => "<hr>",
          ),
          array(
