@@ -13,13 +13,72 @@
       <link rel="stylesheet" href="css/bargraph.css">
 
       <script src="lib/jquery-2.2.0.min.js"></script>
+      <script src="lib/bootstrap.min.js" async></script>
       <script src="lib/director.min.js"></script>
       <script src="lib/ractive.min.js"></script>
-      <script src="lib/bootstrap.min.js" async></script>
+      <script src="lib/moment.min.js"></script>
       <script src="lib/teampagelib.js"></script>
    </head>
 
    <body>
+      <!-- templates -->
+      <script id="prev-next-template" type="text/html">
+         <div>
+            Page {{params.page}} of {{numPages}}<br>
+            {{#if numPages > 1}}
+               <button class="btn btn-default btn-sm"
+                  on-click="setParam('page', params.page - 1)"
+                  disabled="{{params.page < 2}}">
+                  <span class="glyphicon glyphicon-step-backward"></span> Prev. Page
+               </button>
+               &nbsp;&nbsp;
+               <button class="btn btn-default btn-sm"
+                  on-click="setParam('page', params.page + 1)"
+                  disabled="{{params.page >= numPages}}">
+                  Next Page<span class="glyphicon glyphicon-step-forward"></span>
+               </button>
+            {{/if}}
+         </div>
+      </script>
+      <script id="feed-template" type="text/html">
+         <div class="row">
+           <div class="col-sm-12">
+               <div class="panel panel-default text-left">
+                  <form class="panel-body" on-submit="submit">
+                     <input type="hidden" name="url" value="{{base_url}}"/>
+                     <textarea name="entry" class="form-control" rows="1" sid="update-text"
+                        style="max-width: 100%;" placeholder="FRC Team 1234 seems nice!"></textarea>
+                     <div style="margin-top: 0.5em;">
+                        <button type="submit" class="btn btn-default btn-sm">Update</button>
+                     </div>
+                  </form>
+               </div>
+            </div>
+         </div>
+
+         <PrevNext/>
+         <br/>
+         {{#each feeds}}
+            <div class="row">
+               <div class="col-sm-3">
+                  <div class="well">
+                     {{#if url && !base_url.length}}
+                        <p><a href="#/{{url}}"><i>In {{ucfirst(url.split(/\//)[0])}} #{{url.split(/\//g)[1]}}</i></a></p>
+                     {{/if}}
+                     <p>{{organization_user}}</p>
+                     <p title="{{date_added}}">{{moment(date_added)}}</p>
+                  </div>
+               </div>
+               <div class="col-sm-9">
+                  <div class="well">
+                     <p>{{entry}}</p>
+                  </div>
+               </div>
+            </div>
+         {{/each}}
+         <PrevNext/>
+      </script>
+
       <!-- Navbar -->
       <div class="navbar navbar-default navbar-fixed-top">
          <div class="container">

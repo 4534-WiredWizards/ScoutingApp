@@ -40,8 +40,7 @@ var token = new TokenManager("ww-scouting", function() {
 var messages = new MessageManager(".alerts", []);
 
 // Initialize app url route manager
-var routes = new RoutesManager([], "", "team", token);
-
+var routes = new RoutesManager([], "", "home", token);
 
 
 ractiveMethods = ({
@@ -57,16 +56,54 @@ function setHashParams(params) {
    window.location.hash = window.location.hash.split("?").concat("")[0] + "?" + $.param(params);
 }
 
+var PrevNextComponent = Ractive.extend({
+   isolated: false,
+   template: '#prev-next-template'
+}, ractiveMethods);
+var FeedComponent = Ractive.extend({
+   isolated: false,
+   template: '#feed-template',
+   oncomplete: function() {
+      this.on("submit", function() {
+         var _this = this;
+         var $form = $(this.el).find("form");
+         var data = parseDataArray($form.serializeArray());
+         var user = token.getData().user;
+         API.post("feed/new", data, function(res) {
+            var d = new Date;
+            _this.set("feeds", [{
+               date_added: [d.getFullYear(), d.getMonth()+1, d.getDate()].join('-') + ' ' + [d.getHours(), d.getMinutes(), d.getSeconds()].join(':'),
+               organization_user_id: user.id,
+               organization_user: user.firstname + ' ' + user.lastname,
+               entry: data.entry
+            }].concat(_this.get("feeds")));
+            $form.find("[name=entry]").val();
+         });
+         return false;
+      });
+   },
+}, ractiveMethods);
+
 function RactiveCustom(config, data, defaultParams) {
    var config = $.extend({
       el: ".main",
-      template: data.template
+      template: data.template,
+      components: {
+         Feed: FeedComponent,
+         PrevNext: PrevNextComponent,
+      }
    }, ractiveMethods, config);
 
    ractive = new Ractive(config);
 
    ractive.set({
-      params: getParams(defaultParams || {}, window.location.hash)
+      params: getParams(defaultParams || {}, window.location.hash),
+      moment: function(date) {
+         return moment(date, "YYYY-MM-DD HH:mm::ss").fromNow();
+      },
+      ucfirst: function(str) {
+         return str.charAt(0).toUpperCase() + str.slice(1);
+      }
    });
 
    return ractive;
@@ -116,15 +153,23 @@ routes.register("/home", {
    dataCallbacks: {
       feeds: function(_this, callback) {
          API.get("feed", getParams({}), function(res) {
+            res.data.numPages = res.numPages;
             callback(res.data);
          });
       }
    },
    init: function(data) {
+      data.numPages = data.feeds.numPages;
       ractive = RactiveCustom({
          data: data
-      }, data);
+      }, data, {
+         page: 1,
+         limit: 20
+      });
       this.updateTitle("Home");
+   },
+   formSuccess: function(res) {
+      router.setRoute("/" + router.getRoute().join("/"));
    },
    requireSignin: true
 });
@@ -214,7 +259,6 @@ routes.register("/matches", {
       }
    },
    init: function(data) {
-      console.log(data);
       ractive = RactiveCustom({
          data: {
             matches: data.matches.data,
@@ -262,29 +306,57 @@ routes.register("/team/:teamNum", {
             res.data.weaknesses = res.data.weaknesses || "";
             callback(res.data);
          });
+      },
+      feeds: function(_this, callback, teamNum) {
+         API.get("feed", {
+            url: "team/" + teamNum
+         }, function(res) {
+            res.data.numPages = res.numPages;
+            callback(res.data);
+         });
       }
    },
    init: function(data, teamNum) {
+      console.log(data)
+      data.numPages = data.feeds.numPages;
       ractive = RactiveCustom({
          data: {
             splitLine: function(val) {
                return (val || "").split(/\s*\n\s*/g).filter(Boolean);
             },
             score: 0,
-            showChart: false
+            showChart: false,
+            stat_labels: [
+               "E_LowBar",
+               "E_LowBar",
+               "A_Portcullis",
+               "A_ChevalDeFrise",
+               "B_Moat",
+               "B_Ramparts",
+               "C_Drawbridge",
+               "C_SallyPort",
+               "D_Rockwall",
+               "D_RoughTerrain"
+            ]
          },
          computed: {
             scores_json: JSONComputed('scores'),
             questions_json: JSONComputed('questions'),
          }
-      }, data);
+      }, data, {
+         page: 1,
+         limit: 20
+      });
       delete data.team.scores_json;
       delete data.team.questions_json;
+
+      ractive.set("feeds", data.feeds);
+      ractive.set("numPages", data.feeds.numPages);
 
       ractive.set(data.team);
       if (typeof data.team.scores === "object") {
          ractive.set("showChart", true);
-         buildBarGraph('data-table');
+         // buildBarGraph('data-table');
       }
       this.updateTitle("{{team_type}} Team #{{team_number}} - {{team_name}}", data.team);
 
@@ -415,6 +487,7 @@ routes.register("/team", {
       }
    },
    init: function(data) {
+      data.numPages = data.teams.numPages;
       ractive = RactiveCustom({
          data: data
       }, data, teamParams);
@@ -440,6 +513,7 @@ routes.register("/user", {
       }
    },
    init: function(data) {
+      data.numPages = data.users.numPages;
       ractive = RactiveCustom({
          data: data
       }, data, userParams);

@@ -21,10 +21,10 @@ $pages = array(
    "team/:teamID/edit" => new Page("pages/team/edit.php"),
 
    "feed" => new Page("pages/feed/feed.php"),
-   "team/:teamID/feed" => new Page("pages/feed/team.php"),
-   "user/:userID/feed" => new Page("pages/feed/user.php"),
+   "feed/new" => new Page("pages/feed/new.php"),
 
    "tba" => new Page("pages/tba/tba.php"),
+   "tba/import-stats" => new Page("pages/tba/import-stats.php"),
 );
 
 $routes = array(

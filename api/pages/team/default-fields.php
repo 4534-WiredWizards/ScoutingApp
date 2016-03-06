@@ -66,11 +66,11 @@ $output = array(
          //    "type" => "",
          // ),
       ),
-      "scores" => array(
-         "Spy" => 50,
-         "Defense" => 50,
-         "Assist" => 50,
-         "Shoot" => 50
-      )
+      "stats" => array(),
+      "scores" => array()
    )
 );
+
+$output["fields"]["stats_json"] = json_encode($output["fields"]["stats"]);
+$output["fields"]["scores_json"] = json_encode($output["fields"]["scores"]);
+$output["fields"]["questions_json"] = json_encode($output["fields"]["questions"]);
