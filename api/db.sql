@@ -48,7 +48,7 @@ CREATE TABLE team (
    organization_domain_id INT UNSIGNED NOT NULL,
    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 
-   team_number VARCHAR(255),
+   team_number INT UNSIGNED NOT NULL,
    team_name VARCHAR(255),
    team_type VARCHAR(255),
 
@@ -60,7 +60,7 @@ CREATE TABLE team (
 
    questions_json TEXT,
    scores_json TEXT,
-
+   stats_json TEXT,
 
    use_markdown BOOLEAN NOT NULL DEFAULT 1,
    active BOOLEAN NOT NULL DEFAULT 1,
@@ -118,7 +118,7 @@ INSERT INTO organization (
    4534,
    "Wired Wizards",
    "FRC",
-   '{"tba_event":""}',
+   '{"tba":{"team":"","event":""}}',
    NOW()
 );
 

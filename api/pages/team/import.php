@@ -48,10 +48,6 @@ if (isset($post) && count($post) && $_SERVER["REQUEST_METHOD"] == "POST") {
                "team_number" => $team["team_number"]
             ), array("id"));
             if (!$existing) {
-               die(print_r(array_merge($default_fields, array(
-                  "team_number" => $team["team_number"],
-                  "team_name" => $team["nickname"]
-               ))));
                $sdb->addTeam(array_merge($default_fields, array(
                   "team_number" => $team["team_number"],
                   "team_name" => $team["nickname"]

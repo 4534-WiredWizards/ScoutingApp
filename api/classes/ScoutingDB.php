@@ -12,7 +12,7 @@ class ScoutingDB {
       $this->organization_domain_id = $organization_domain_id;
       $this->user_id = $user_id;
    }
-   public function getList($table, $sort_col = "id", $sort_dir = "up", $page = 0, $limit = 100, $fields = NULL, $safe_fields = false) {
+   public function getList($table, $sort_col = "id", $sort_dir = "up", $page = 0, $limit = 100, $fields = NULL, $safe_fields = false, $where = array()) {
       $table_whitelist = array("team", "organization_user", "feed_entry");
       if (!in_array($table, $table_whitelist)) return array();
       if (is_null($fields)) {
@@ -22,7 +22,6 @@ class ScoutingDB {
       $fields = DBHandler::createFieldString($fields, "t", $safe_fields);
       $sort_dir = ($sort_dir == "up") ? "ASC" : "DESC";
       $limit = DBHandler::createLimitString($page, $limit);
-      $where = array();
       $where["organization_id"] = $this->organization_id;
       if ($table !== "organization_user") {
          $where["organization_domain_id"] = $this->organization_domain_id;
@@ -66,6 +65,7 @@ class ScoutingDB {
          "score" => 50,
          "scores_json" => "{}",
          "questions_json" => "[]",
+         "stats_json" => "{}",
       );
       $team_data = array_merge($default_fields, $data);
       if (!$team_data["team_number"]) {
@@ -88,6 +88,7 @@ class ScoutingDB {
             weaknesses,
             questions_json,
             scores_json,
+            stats_json,
             use_markdown,
             active,
             date_added
@@ -103,6 +104,7 @@ class ScoutingDB {
             :weaknesses,
             :questions_json,
             :scores_json,
+            :stats_json,
             TRUE,
             TRUE,
             NOW()
@@ -135,6 +137,7 @@ class ScoutingDB {
          "score",
          "questions_json",
          "scores_json",
+         "stats_json",
          "use_markdown",
       );
       $set_data = array();
@@ -149,5 +152,58 @@ class ScoutingDB {
       return $this->getItem("team", array(
          "team_number" => $team_number
       ));
+   }
+
+   public function addFeedEntry($data) {
+      /*
+      name VARCHAR(255),
+      url VARCHAR(255),
+      entry TEXT,
+
+      organization_user_id INT UNSIGNED NOT NULL,
+      use_markdown BOOLEAN NOT NULL DEFAULT 1,
+      active BOOLEAN NOT NULL DEFAULT 1,
+      date_added
+      */
+      $default_fields = array(
+         "name" => "",
+         "url" => "",
+         "entry" => "",
+         "organization_user_id" => 0,
+      );
+      $entry_data = array_merge($default_fields, $data);
+      $data = array();
+      foreach(array_keys($default_fields) as $field) {
+         $data[$field] = $entry_data[$field];
+      }
+      $query = "
+         INSERT INTO feed_entry (
+            organization_id,
+            organization_domain_id,
+            name,
+            url,
+            entry,
+            organization_user_id,
+            use_markdown,
+            active,
+            date_added
+         ) VALUES (
+            :organization_id,
+            :organization_domain_id,
+            :name,
+            :url,
+            :entry,
+            :organization_user_id,
+            TRUE,
+            TRUE,
+            NOW()
+         )
+      ";
+      $data["organization_id"] = $this->organization_id;
+      $data["organization_domain_id"] = $this->organization_domain_id;
+      $res = $this->dbh->query($query, $data);
+      if ($res) {
+         return $this->dbh->lastInsertId();
+      }
    }
 }

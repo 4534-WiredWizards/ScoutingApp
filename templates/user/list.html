@@ -17,13 +17,4 @@
    </div>
 </div>
 
-<!-- Right and Left Buttons -->
-<div>
-   Page {{params.page}} of {{users.numPages}}<br>
-   {{#if params.page > 1}}
-      <button class="btn btn-default btn-sm" on-click="setParam('page', params.page - 1)"><span class="glyphicon glyphicon-step-backward"></span> Prev. Page</button>&nbsp;
-   {{/if}}
-   {{#if params.page < users.numPages}}
-      &nbsp;<button class="btn btn-default btn-sm" on-click="setParam('page', params.page + 1)">Next Page<span class="glyphicon glyphicon-step-forward"></span></button>
-   {{/if}}
-</div>
+<PrevNext/>

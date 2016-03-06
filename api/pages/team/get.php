@@ -20,6 +20,7 @@ $default_fields = array(
    "weaknesses",
    "questions_json",
    "scores_json",
+   "stats_json",
    "use_markdown",
    "date_added"
 );

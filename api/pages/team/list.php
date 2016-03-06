@@ -21,7 +21,6 @@ $default_fields = array(
    "date_added"
 );
 
-
 $options = array_merge(array(
    "sort_col" => "team_number",
    "sort_dir" => "up",
