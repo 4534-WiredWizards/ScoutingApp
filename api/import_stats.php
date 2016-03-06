@@ -23,9 +23,10 @@ if (!file_exists($file)) {
    die("$file does not exist");
 }
 
+$file_contents = file_get_contents($file);
 $data = array(
    "stats" => array(
-      "defenses" => json_decode(file_get_contents($file), 1)
+      "defenses" => json_decode($file_contents, 1)
    )
 );
 

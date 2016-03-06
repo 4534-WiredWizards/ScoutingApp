@@ -49,7 +49,7 @@ $output = array(
          ),
          array(
             "field" => "Can go through Low Bar",
-            "value" => true,
+            "value" => false,
             "type" => "checkbox",
          ),
          array(

@@ -327,16 +327,16 @@ routes.register("/team/:teamNum", {
             score: 0,
             showChart: false,
             stat_labels: [
-               "E_LowBar",
-               "E_LowBar",
-               "A_Portcullis",
-               "A_ChevalDeFrise",
-               "B_Moat",
-               "B_Ramparts",
-               "C_Drawbridge",
-               "C_SallyPort",
-               "D_Rockwall",
-               "D_RoughTerrain"
+               "Average Error",
+               "E - LowBar",
+               "A - Portcullis",
+               "A - ChevalDeFrise",
+               "B - Moat",
+               "B - Ramparts",
+               "C - Drawbridge",
+               "C - SallyPort",
+               "D - Rockwall",
+               "D - RoughTerrain"
             ]
          },
          computed: {
