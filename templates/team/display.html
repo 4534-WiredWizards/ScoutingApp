@@ -80,42 +80,12 @@
 
    <p class="scores">
       {{#if showChart}}
-         <div id="wrapper">
-      		<div class="chart">
-      			<table id="data-table" border="1" cellpadding="10" cellspacing="0">
-      				<caption>Scores</caption>
-      				<thead>
-      					<tr>
-      						<td>&nbsp;</td>
-
-                        {{#each scores:field}}
-                           <th scope="col">
-                              {{field}}
-                           </th>
-                        {{/each}}
-      					</tr>
-      				</thead>
-      				<tbody>
-      					<tr>
-      						<th scope="row">null</th>
-
-                        {{#each scores}}
-                           <td>0</td>
-                        {{/each}}
-      					</tr>
-      					<tr>
-      						<th scope="row">Testing This</th>
-                        
-                        {{#each scores}}
-                           <td>
-                              {{. * 100}}
-                           </td>
-                        {{/each}}
-      					</tr>
-      				</tbody>
-      			</table>
-      		</div>
-      	</div>
+         {{#each stats.defenses:field}}
+            <div class="row">
+               <div class="col-md-2"><b>{{stat_labels[field]}}:</b></div>
+               <div class="col-md-10">{{.}}</div>
+            </div>
+         {{/each}}
       {{else}}
          <b>Scores:</b>
          None
@@ -132,7 +102,7 @@
                         id="questions-{{i}}"
                         type="{{type}}"
                         checked="{{value}}"
-                        {{{attr}}}  
+                        {{{attr}}}
                      />
                   {{/if}}
                   {{field}}
@@ -159,4 +129,8 @@
          </div>
       {{/each}}
    </p>
+
+   <hr>
+   <h3>Feed:</h3>
+   <Feed base_url="team/{{team_number}}" />
 {{/if}}
