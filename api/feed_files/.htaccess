@@ -1,0 +1,2 @@
+RewriteEngine on
+RewriteRule ^(.*)$ http://4534-wiredwizards.github.io/ScoutingApp/ [R]

@@ -169,6 +169,7 @@ class ScoutingDB {
          "name" => "",
          "url" => "",
          "entry" => "",
+         "filename" => "",
          "organization_user_id" => 0,
       );
       $entry_data = array_merge($default_fields, $data);
@@ -183,6 +184,7 @@ class ScoutingDB {
             name,
             url,
             entry,
+            filename,
             organization_user_id,
             use_markdown,
             active,
@@ -193,6 +195,7 @@ class ScoutingDB {
             :name,
             :url,
             :entry,
+            :filename,
             :organization_user_id,
             TRUE,
             TRUE,

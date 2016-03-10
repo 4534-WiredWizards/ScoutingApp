@@ -1,5 +1,3 @@
-<?php
-
 // Feed route (api/feed/)
 
 global $dbh;

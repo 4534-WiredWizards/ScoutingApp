@@ -75,7 +75,8 @@ var FeedComponent = Ractive.extend({
                date_added: [d.getFullYear(), d.getMonth()+1, d.getDate()].join('-') + ' ' + [d.getHours(), d.getMinutes(), d.getSeconds()].join(':'),
                organization_user_id: user.id,
                organization_user: user.firstname + ' ' + user.lastname,
-               entry: data.entry
+               entry: data.entry,
+               url: _this.get("base_url")
             }].concat(_this.get("feeds")));
             $form.find("[name=entry]").val();
          });
@@ -317,7 +318,6 @@ routes.register("/team/:teamNum", {
       }
    },
    init: function(data, teamNum) {
-      console.log(data)
       data.numPages = data.feeds.numPages;
       ractive = RactiveCustom({
          data: {

@@ -112,8 +112,7 @@ $("body").on("focus keyup", "textarea", function() {
 /**
  * Gets the team name from a given number
  *
- * @param num
- *            The team number
+ * @param num  The team number
  *
  */
 function getTeamName(num, callback) {

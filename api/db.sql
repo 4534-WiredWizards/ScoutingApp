@@ -78,6 +78,7 @@ CREATE TABLE feed_entry (
    name VARCHAR(255),
    url VARCHAR(255),
    entry TEXT,
+   filename VARCHAR(255),
 
    organization_user_id INT UNSIGNED NOT NULL,
    use_markdown BOOLEAN NOT NULL DEFAULT 1,
