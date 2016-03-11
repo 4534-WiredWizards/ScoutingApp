@@ -1,3 +1,5 @@
+Ractive.DEBUG = false;
+
 var navbarRactive = new Ractive({
    el: ".navbar > .container",
    template: $(".navbar > .container").html(),
@@ -60,30 +62,75 @@ var PrevNextComponent = Ractive.extend({
    isolated: false,
    template: '#prev-next-template'
 }, ractiveMethods);
+
 var FeedComponent = Ractive.extend({
    isolated: false,
    template: '#feed-template',
+   data: function() {
+      return {
+         mode: "feed"
+      };
+   },
    oncomplete: function() {
+      this.on("setModeFeed", function(mode) {
+         this.set("mode", "feed");
+         return false;
+      });
+      this.on("setModeUpload", function(mode) {
+         this.set("mode", "file");
+         return false;
+      });
+      function form(el) {
+         return $(el).find("form");
+      }
       this.on("submit", function() {
          var _this = this;
-         var $form = $(this.el).find("form");
-         var data = parseDataArray($form.serializeArray());
-         var user = token.getData().user;
-         API.post("feed/new", data, function(res) {
-            var d = new Date;
-            _this.set("feeds", [{
-               date_added: [d.getFullYear(), d.getMonth()+1, d.getDate()].join('-') + ' ' + [d.getHours(), d.getMinutes(), d.getSeconds()].join(':'),
-               organization_user_id: user.id,
-               organization_user: user.firstname + ' ' + user.lastname,
-               entry: data.entry,
-               url: _this.get("base_url")
-            }].concat(_this.get("feeds")));
-            $form.find("[name=entry]").val();
+         var el = this.el;
+         var data = new FormData(form(el)[0]);
+         $.ajax({
+            url: API.baseUrl+'feed/new?token='+token.get(),
+            method: "POST",
+            data: data,
+            contentType: false,
+            processData: false,
+            success: function(res) {
+               console.log(res)
+               _this.set("feeds", [res.data].concat(_this.get("feeds")));
+               form(el).find(":input").val('');
+            },
          });
          return false;
       });
    },
 }, ractiveMethods);
+
+var FeedFileComponent = Ractive.extend({
+   isolated: false,
+   template: '#feed-file',
+   data: function() {
+      return {
+         imageExtensions: [
+            "png",
+            "jpg",
+            "jpeg",
+            "gif",
+         ]
+      }
+   },
+   computed: {
+      extension: function() {
+         var filename = this.get("filename");
+         var filenameParts = filename.split(/\./g);
+         return filenameParts[filenameParts.length-1];
+      },
+      isImage: function() {
+         return this.get("imageExtensions").indexOf(this.get("extension")) > -1;
+      },
+      fileUrl: function() {
+         return API.baseUrl + "feed/file?token=" + token.get() + "&id=" + this.get("id");
+      }
+   }
+});
 
 function RactiveCustom(config, data, defaultParams) {
    var config = $.extend({
@@ -91,6 +138,7 @@ function RactiveCustom(config, data, defaultParams) {
       template: data.template,
       components: {
          Feed: FeedComponent,
+         FeedFile: FeedFileComponent,
          PrevNext: PrevNextComponent,
       }
    }, ractiveMethods, config);
