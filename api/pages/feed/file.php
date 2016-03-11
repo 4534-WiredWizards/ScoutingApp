@@ -1,3 +1,5 @@
+<?php
+
 // Feed route (api/feed/)
 
 global $dbh;
@@ -5,45 +7,52 @@ global $dbh;
 $user = Auth::authAPICall($dbh);
 $sdb = new ScoutingDB($dbh, $user["organization_id"], 1, $user["id"]);
 
-$default_fields = array(
-   "id",
-   "organization_user_id",
-   "name",
-   "url",
-   "entry",
-   "filename",
-   "use_markdown",
-   "date_added"
-);
-
 $options = array_merge(array(
-   "sort_col" => "date_added",
-   "sort_dir" => "down",
-   "page" => 1,
-   "limit" => 20,
-   "fields" => $default_fields,
-   "url" => ""
+   "id" => 0,
+   "down" => 0
 ), $get);
 
-$safe_fields = $options["fields"] === $default_fields;
-
-$where = array();
-if (strlen($options["url"])) {
-   $where["url"] = $options["url"];
-}
-
-// Output results
-$output = array(
-   "data" => $sdb->getList("feed_entry", $options["sort_col"], $options["sort_dir"], $options["page"], $options["limit"], $options["fields"], $safe_fields, $where),
-   "numPages" => $sdb->getNumPages("feed_entry", $options["limit"])
+$where = array(
+   "id" => $options["id"]
 );
 
-foreach($output["data"] as &$row) {
-   $user = $sdb->getItem("organization_user", array(
-      "id" => $row["organization_user_id"]
-   ), array(
-      "firstname",
-      "lastname"
-   ));
-   $row["organization_user"] = $user["firstname"] . " " . $user["lastname"];
+$feed_entry = $sdb->getItem("feed_entry", array(
+   "id" => $options["id"]
+), array(
+   "id",
+   "entry",
+   "filename"
+), true);
+
+if (is_array($feed_entry) && isset($feed_entry["id"]) && $feed_entry["id"] > 0 && isset($feed_entry["filename"]) && strlen($feed_entry["filename"])) {
+   global $api_dir;
+   $filepath = "$api_dir/feed_files/files/{$feed_entry["id"]}-{$feed_entry["filename"]}";
+   if (file_exists($filepath)) {
+      $file_info = new SplFileInfo($filepath);
+      $extension = strtolower($file_info->getExtension());
+
+      $image_extensions = array(
+         "jpg",
+         "jpeg",
+         "png",
+         "gif",
+      );
+
+      if (in_array($extension, $image_extensions)) {
+         $type = "image/$extension";
+         header("Content-Type: $type");
+         header("Content-Length: " . filesize($filepath));
+      } else {
+         header('Content-Description: File Transfer');
+         header('Content-Type: application/octet-stream');
+         header('Content-Disposition: attachment; filename="'.basename($filepath).'"');
+         header('Expires: 0');
+         header('Cache-Control: must-revalidate');
+         header('Pragma: public');
+         header('Content-Length: ' . filesize($filepath));
+      }
+      
+      readfile($filepath);
+      exit;
+   }
 }

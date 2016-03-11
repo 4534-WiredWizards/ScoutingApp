@@ -22,6 +22,7 @@ $pages = array(
 
    "feed" => new Page("pages/feed/feed.php"),
    "feed/new" => new Page("pages/feed/new.php"),
+   "feed/file" => new Page("pages/feed/file.php"),
 
    "tba" => new Page("pages/tba/tba.php"),
    "tba/import-stats" => new Page("pages/tba/import-stats.php"),

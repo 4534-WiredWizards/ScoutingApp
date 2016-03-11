@@ -38,7 +38,7 @@ class ScoutingDB {
       return max(1, ceil($res[0]["count"] / $limit));
    }
    public function getItem($table, $where = array(), $fields = NULL, $safe_fields = false) {
-      $table_whitelist = array("team", "organization_user");
+      $table_whitelist = array("team", "organization_user", "feed_entry");
       if (!in_array($table, $table_whitelist)) return array();
       if (is_null($fields)) {
          $fields = "t.*";
@@ -51,6 +51,7 @@ class ScoutingDB {
       $fields = DBHandler::createFieldString($fields, "t", $safe_fields);
       $where = DBHandler::createWhereString($where, "t");
       $query = "SELECT $fields FROM $table WHERE $where";
+      // die(print_r($where));
       $res = $this->dbh->query("SELECT $fields FROM `$table` t WHERE {$where[0]}", $where[1]);
       return isset($res[0]) ? $res[0] : array();
    }

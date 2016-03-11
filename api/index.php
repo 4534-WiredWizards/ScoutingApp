@@ -1,6 +1,6 @@
 <?php
 
-global $base_dir;
+global $base_dir, $api_dir;
 $api_dir = __DIR__;
 
 if (isset($_GET['debug'])) {
