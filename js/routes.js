@@ -304,7 +304,12 @@ routes.register("/matches", {
          var tbaConfig = token.getData().organization.config.tba;
          API.get("tba", {
             url: "team/"+tbaConfig.team+"/event/"+tbaConfig.event+"/matches"
-         }, callback);
+         }, function(res) {
+            res.data = res.data.sort(function(a, b) {
+               return a.match_number > b.match_number;
+            });
+            callback(res);
+         });
       }
    },
    init: function(data) {
