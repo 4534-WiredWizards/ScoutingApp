@@ -24,7 +24,7 @@
       <!-- templates -->
       <script id="prev-next-template" type="text/html">
          <div>
-            Page {{params.page}} of {{numPages}}<br>
+            Page {{params.page}} of {{numPages}}
             {{#if numPages > 1}}
                <button class="btn btn-default btn-sm"
                   on-click="setParam('page', params.page - 1)"
@@ -46,18 +46,42 @@
                <div class="panel panel-default text-left">
                   <form class="panel-body" on-submit="submit">
                      <input type="hidden" name="url" value="{{base_url}}"/>
-                     <textarea name="entry" class="form-control" rows="1" sid="update-text"
-                        style="max-width: 100%;" placeholder="FRC Team 1234 seems nice!"></textarea>
-                     <div style="margin-top: 0.5em;">
-                        <button type="submit" class="btn btn-default btn-sm">Update</button>
-                     </div>
+                     {{#if mode == "file"}}
+                        <button class="btn btn-default btn-sm" on-click="setModeFeed">Add Entry Instead</button>
+                        <hr style="margin: .5em">
+                        <label for="entry">
+                           Caption
+                        </label><br/>
+                        <textarea id="entry" name="entry" class="form-control" rows="1" sid="update-text"
+                           style="max-width: 100%;" placeholder="FRC Team 1234 seems nice!"></textarea>
+                        <br/>
+                        <label>File <input type="file" name="filename" /></label>
+                        <div style="margin-top: 0.5em;">
+                           <button type="submit" class="btn btn-default btn-sm">
+                              Upload
+                           </button>
+                        </div>
+                     {{else}}
+                        <button class="btn btn-default btn-sm" on-click="setModeUpload">Upload File</button>
+                        <hr style="margin: .5em">
+                        <label for="entry">
+                           Entry
+                        </label><br/>
+                        <textarea id="entry" name="entry" class="form-control" rows="1" sid="update-text"
+                           style="max-width: 100%;" placeholder="FRC Team 1234 seems nice!"></textarea>
+                        <div style="margin-top: 0.5em;">
+                           <button type="submit" class="btn btn-default btn-sm">
+                              Update
+                           </button>
+                        </div>
+                     {{/if}}
                   </form>
                </div>
             </div>
          </div>
 
          <PrevNext/>
-         <br/>
+         <hr>
          {{#each feeds}}
             <div class="row">
                <div class="col-sm-3">
@@ -72,11 +96,23 @@
                <div class="col-sm-9">
                   <div class="well">
                      <p>{{entry}}</p>
+                     {{#if filename}}
+                        <FeedFile id="{{id}}" filename="{{filename}}"/>
+                     {{/if}}
                   </div>
                </div>
             </div>
+            <hr style="margin-top: 0">
          {{/each}}
          <PrevNext/>
+      </script>
+
+      <script id="feed-file" type="text/html">
+         {{#if isImage}}
+            <img src="{{fileUrl}}" alt="{{filename}}" />
+         {{else}}
+            <a href="{{fileUrl}}">Download {{filename}}</a>
+         {{/if}}
       </script>
 
       <!-- Navbar -->

@@ -155,7 +155,7 @@ class ScoutingDB {
       ));
    }
 
-   public function addFeedEntry($data) {
+   public function addFeedEntry($data, $files = array()) {
       /*
       name VARCHAR(255),
       url VARCHAR(255),
@@ -170,7 +170,6 @@ class ScoutingDB {
          "name" => "",
          "url" => "",
          "entry" => "",
-         "filename" => "",
          "organization_user_id" => 0,
       );
       $entry_data = array_merge($default_fields, $data);
@@ -178,6 +177,17 @@ class ScoutingDB {
       foreach(array_keys($default_fields) as $field) {
          $data[$field] = $entry_data[$field];
       }
+
+      $data["filename"] = "";
+      
+      global $_FILES;
+      if (isset($_FILES["filename"])) {
+         global $api_dir;
+         if (move_uploaded_file($_FILES["filename"]["tmp_name"], "$api_dir/feed_files/files/last-{$_FILES["filename"]["name"]}")) {
+            $data["filename"] = $_FILES["filename"]["name"];
+         }
+      }
+
       $query = "
          INSERT INTO feed_entry (
             organization_id,
@@ -205,9 +215,19 @@ class ScoutingDB {
       ";
       $data["organization_id"] = $this->organization_id;
       $data["organization_domain_id"] = $this->organization_domain_id;
-      $res = $this->dbh->query($query, $data);
-      if ($res) {
-         return $this->dbh->lastInsertId();
+      $this->dbh->query($query, $data);
+      return $this->getLastInsertID("feed_entry");
+   }
+   public function getLastInsertID($table, $where = array()) {
+      $table_whitelist = array("team", "organization_user", "feed_entry");
+      if (!in_array($table, $table_whitelist)) return array();
+      $where["organization_id"] = $this->organization_id;
+      if ($table !== "organization_user") {
+         $where["organization_domain_id"] = $this->organization_domain_id;
       }
+      $fields = DBHandler::createFieldString($fields, "t", $safe_fields);
+      $where = DBHandler::createWhereString($where, "t");
+      $res = $this->dbh->query("SELECT MAX(t.`id`) as id FROM `$table` t WHERE {$where[0]}", $where[1]);
+      return isset($res[0]) ? $res[0]['id'] : 0;
    }
 }
