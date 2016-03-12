@@ -6,7 +6,7 @@ function parseDataArray(arr) {
    return result;
 }
 
-$(".navbar").on("click", "a[href]", function() {
+$(".navbar").on("click", "a[href][href!='#']", function() {
    if ($('.collapse.in').length > 0) {
       $('.navbar-toggle').click();
    }
