@@ -26,13 +26,18 @@ $options = array_merge(array(
    "sort_dir" => "up",
    "page" => 0,
    "limit" => 100,
-   "fields" => $default_fields
+   "fields" => $default_fields,
+   "search" => ""
 ), $get);
 
 $safe_fields = $options["fields"] === $default_fields;
 
+$options["search"] = urldecode($options["search"]);
+
+$where = array();
+
 // Output results
 $output = array(
-   "data" => $sdb->getList("team", $options["sort_col"], $options["sort_dir"], $options["page"], $options["limit"], $options["fields"], $safe_fields),
-   "numPages" => $sdb->getNumPages("team", $options["limit"])
+   "data" => $sdb->getList("team", $options["sort_col"], $options["sort_dir"], $options["page"], $options["limit"], $options["fields"], $safe_fields, $where, $options["search"]),
+   "numPages" => $sdb->getNumPages("team", $options["limit"], $where, $options["search"], $options["fields"])
 );

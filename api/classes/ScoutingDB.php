@@ -12,14 +12,14 @@ class ScoutingDB {
       $this->organization_domain_id = $organization_domain_id;
       $this->user_id = $user_id;
    }
-   public function getList($table, $sort_col = "id", $sort_dir = "up", $page = 0, $limit = 100, $fields = NULL, $safe_fields = false, $where = array()) {
+   public function getList($table, $sort_col = "id", $sort_dir = "up", $page = 0, $limit = 100, $fields = NULL, $safe_fields = false, $where = array(), $search = "") {
       $table_whitelist = array("team", "organization_user", "feed_entry");
       if (!in_array($table, $table_whitelist)) return array();
       if (is_null($fields)) {
          $fields = "t.*";
          $safe_fields = true;
       }
-      $fields = DBHandler::createFieldString($fields, "t", $safe_fields);
+      $fields_q = DBHandler::createFieldString($fields, "t", $safe_fields);
       $sort_dir = ($sort_dir == "up") ? "ASC" : "DESC";
       $limit = DBHandler::createLimitString($page, $limit);
       $where["organization_id"] = $this->organization_id;
@@ -27,16 +27,21 @@ class ScoutingDB {
          $where["organization_domain_id"] = $this->organization_domain_id;
       }
       $where = DBHandler::createWhereString($where, "t");
-      // die("SELECT $fields FROM `$table` t WHERE {$where[0]} ORDER BY t.`$sort_col` $sort_dir LIMIT $limit");
-      return $this->dbh->query("SELECT $fields FROM `$table` t WHERE {$where[0]} ORDER BY t.`$sort_col` $sort_dir LIMIT $limit", $where[1]);
+      if (strlen($search)) {
+         $where = DBHandler::addSearchToWhere($where, "t", $fields, $search);
+      }
+      return $this->dbh->query("SELECT $fields_q FROM `$table` t WHERE {$where[0]} ORDER BY t.`$sort_col` $sort_dir LIMIT $limit", $where[1]);
    }
-   public function getNumPages($table, $limit = 100, $where = array()) {
+   public function getNumPages($table, $limit = 100, $where = array(), $search = "", $fields = array()) {
       $table_whitelist = array("team", "organization_user", "feed_entry");
       $where["organization_id"] = $this->organization_id;
       if ($table !== "organization_user") {
          $where["organization_domain_id"] = $this->organization_domain_id;
       }
       $where = DBHandler::createWhereString($where, "t");
+      if (strlen($search)) {
+         $where = DBHandler::addSearchToWhere($where, "t", $fields, $search);
+      }
       $res = $this->dbh->query("SELECT COUNT(t.id) as count FROM `$table` t WHERE {$where[0]}", $where[1]);
       if (!count($res)) {
          $res = array(array("count"=>0));

@@ -100,6 +100,17 @@ class DBHandler extends PDO {
       return array("($where_q)", $fields);
    }
 
+   static function addSearchToWhere($where = array(), $table_prefix = "", $fields = array(), $search = "") {
+      $fields_q = "''";
+      foreach($fields as $field) {
+         $fields_q .= ", `$table_prefix`.`$field`, ' '";
+      }
+      $where[0] .= " AND LOWER(CONCAT($fields_q)) LIKE ?";
+      $where[1][] = "%$search%";
+      // die(print_r($where));
+      return $where;
+   }
+
    static function createSetString($data = array(), $table_prefix = "") {
       if (!is_array($data)) {
          return "";
