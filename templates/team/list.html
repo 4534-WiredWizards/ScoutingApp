@@ -8,6 +8,18 @@
 			href="#/team/import" class="btn btn-default">Import From Event</a>
 	</p>
 
+   <form on-submit="search">
+      <div class="form-group input-group">
+         <input type="search" class="form-control" placeholder="Search Teams.." name="search" value="{{searchDecoded}}" twoway="false">
+         <span class="input-group-btn">
+            <button class="btn btn-default" type="submit">
+               <span class="glyphicon glyphicon-search"></span>
+            </button>
+         </span>
+      </div>
+   </form>
+
+
    {{#if teams.length}}
    	<PrevNext/>
    	<br>

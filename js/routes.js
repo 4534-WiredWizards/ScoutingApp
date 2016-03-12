@@ -1,4 +1,4 @@
-Ractive.DEBUG = false;
+// Ractive.DEBUG = false;
 
 var navbarRactive = new Ractive({
    el: ".navbar > .container",
@@ -529,7 +529,7 @@ function getParams(params, str) {
 var teamParams = ({
    page: 1,
    limit: 10,
-   // q: ""
+   search: ""
 });
 routes.register("/team", {
    template: "templates/team/list.html",
@@ -544,10 +544,23 @@ routes.register("/team", {
    },
    init: function(data) {
       data.numPages = data.teams.numPages;
+
       ractive = RactiveCustom({
-         data: data
+         data: data,
+         computed: {
+            searchDecoded: function() {
+               var search = getParams(teamParams).search;
+               return search ? decodeURIComponent(search).replace(/\+/g, ' ') : '';
+            }
+         }
       }, data, teamParams);
+
       this.updateTitle("Teams");
+
+      ractive.on("search", function() {
+         this.setParam("search", $(this.el).find("[name=search]").val());
+         return false;
+      });
    },
    requireSignin: true
 });
