@@ -37,7 +37,7 @@ if (strlen($options["url"])) {
 // Output results
 $output = array(
    "data" => $sdb->getList("feed_entry", $options["sort_col"], $options["sort_dir"], $options["page"], $options["limit"], $options["fields"], $safe_fields, $where),
-   "numPages" => $sdb->getNumPages("feed_entry", $options["limit"])
+   "numPages" => $sdb->getNumPages("feed_entry", $options["limit"], $where)
 );
 
 foreach($output["data"] as &$row) {

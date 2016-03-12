@@ -81,8 +81,8 @@
          </div>
 
          <PrevNext/>
-         <hr>
          {{#each feeds}}
+            <hr style="margin-bottom: 0">
             <div class="row">
                <div class="col-sm-3">
                   <div class="well">
@@ -102,9 +102,11 @@
                   </div>
                </div>
             </div>
-            <hr style="margin-top: 0">
          {{/each}}
-         <PrevNext/>
+         {{#if numPages > 1}}
+            <hr style="margin-top: 0">
+            <PrevNext/>
+         {{/if}}
       </script>
 
       <script id="feed-file" type="text/html">
@@ -137,6 +139,7 @@
                   <li><a href="#/team">Teams</a></li>
                   <li><a href="#/user">Admin</a></li>
                   <li><a href="#/matches">Matches</a></li>
+                  <li><a href="https://www.thebluealliance.com/event/{{data.organization.config.tba.event}}" target="_blank">Event on TBA</a></li>
                </ul>
                <ul class="nav navbar-nav navbar-right">
                   <li><a href="#/signin" onclick="token.clear()">Log Out</a></li>

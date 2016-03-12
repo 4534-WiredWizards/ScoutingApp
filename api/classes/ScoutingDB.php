@@ -30,8 +30,14 @@ class ScoutingDB {
       // die("SELECT $fields FROM `$table` t WHERE {$where[0]} ORDER BY t.`$sort_col` $sort_dir LIMIT $limit");
       return $this->dbh->query("SELECT $fields FROM `$table` t WHERE {$where[0]} ORDER BY t.`$sort_col` $sort_dir LIMIT $limit", $where[1]);
    }
-   public function getNumPages($table, $limit = 100) {
-      $res = $this->dbh->query("SELECT COUNT(t.id) as count FROM `$table` t");
+   public function getNumPages($table, $limit = 100, $where = array()) {
+      $table_whitelist = array("team", "organization_user", "feed_entry");
+      $where["organization_id"] = $this->organization_id;
+      if ($table !== "organization_user") {
+         $where["organization_domain_id"] = $this->organization_domain_id;
+      }
+      $where = DBHandler::createWhereString($where, "t");
+      $res = $this->dbh->query("SELECT COUNT(t.id) as count FROM `$table` t WHERE {$where[0]}", $where[1]);
       if (!count($res)) {
          $res = array(array("count"=>0));
       }
@@ -179,7 +185,7 @@ class ScoutingDB {
       }
 
       $data["filename"] = "";
-      
+
       global $_FILES;
       if (isset($_FILES["filename"])) {
          global $api_dir;

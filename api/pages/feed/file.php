@@ -45,13 +45,13 @@ if (is_array($feed_entry) && isset($feed_entry["id"]) && $feed_entry["id"] > 0 &
       } else {
          header('Content-Description: File Transfer');
          header('Content-Type: application/octet-stream');
-         header('Content-Disposition: attachment; filename="'.basename($filepath).'"');
+         header('Content-Disposition: attachment; filename="'.basename($feed_entry["filename"]).'"');
          header('Expires: 0');
          header('Cache-Control: must-revalidate');
          header('Pragma: public');
          header('Content-Length: ' . filesize($filepath));
       }
-      
+
       readfile($filepath);
       exit;
    }
