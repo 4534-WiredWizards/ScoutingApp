@@ -26,6 +26,7 @@
          <div>
             Page {{params.page}} of {{numPages}}
             {{#if numPages > 1}}
+               <br/>
                <button class="btn btn-default btn-sm"
                   on-click="setParam('page', params.page - 1)"
                   disabled="{{params.page < 2}}">
@@ -158,19 +159,9 @@
 
                </ul>
                <ul class="nav navbar-nav navbar-right">
+                  <li><a href="#/account">Account</a></li>
                   <li><a href="#/signin" onclick="token.clear()">Log Out</a></li>
                </ul>
-               <form class="navbar-form navbar-right" role="search" method="redirect"
-                  action="team/search/{{query}}">
-                  <div class="form-group input-group">
-                     <input type="search" class="form-control"
-                        placeholder="Search Teams.." name="query"> <span class="input-group-btn">
-                        <button class="btn btn-default" type="submit">
-                           <span class="glyphicon glyphicon-search"></span>
-                        </button>
-                     </span>
-                  </div>
-               </form>
             </div>
          </div>
       </div>
