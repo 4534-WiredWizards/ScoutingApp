@@ -96,7 +96,7 @@ var FeedComponent = Ractive.extend({
             success: function(res) {
                console.log(res)
                _this.set("feeds", [res.data].concat(_this.get("feeds")));
-               form(el).find(":input").val('');
+               form(el).find(":input:not([type=hidden])").val('');
             },
          });
          return false;
@@ -353,7 +353,10 @@ routes.register("/team/:teamNum", {
    template: "templates/team/display.html",
    dataCallbacks: {
       team: function(_this, callback, teamNum) {
-         API.get("team/"+teamNum, {}, function(res) {
+         API.get("team/"+teamNum, getParams({
+            page: 1,
+            limit: 20
+         }), function(res) {
             res.data = res.data || {};
             res.data.summary = res.data.summary || "";
             res.data.strengths = res.data.strengths || "";
