@@ -82,8 +82,12 @@
          </div>
 
          <PrevNext/>
-         {{#each feeds}}
-            <hr style="margin-bottom: 0">
+         {{#each feeds:i}}
+            {{#if i > 0}}
+               <hr style="margin-top: 0">
+            {{else}}
+               <br>
+            {{/if}}
             <div class="row">
                <div class="col-sm-3">
                   <div class="well">
