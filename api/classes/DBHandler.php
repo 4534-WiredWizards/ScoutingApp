@@ -106,6 +106,7 @@ class DBHandler extends PDO {
          $fields_q .= ", `$table_prefix`.`$field`, ' '";
       }
       $where[0] .= " AND LOWER(CONCAT($fields_q)) LIKE ?";
+      $search = strtolower($search);
       $where[1][] = "%$search%";
       // die(print_r($where));
       return $where;
