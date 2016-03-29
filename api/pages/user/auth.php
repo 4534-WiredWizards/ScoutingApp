@@ -41,7 +41,13 @@ if (is_array($post) && count($post)) {
          } else {
             $success = true;
             $token = Token::create($dbh, $user["id"]);
+
+            $sdb = new ScoutingDB($dbh, $organization["id"], 1, $user["id"]);
+            $organization["team_numbers"] = array_map((function($team) {
+               return $team["team_number"];
+            }), $sdb->getList("team", "team_number", "up", 1, 10000, $fields = array("team_number"), 1));
          }
+
       } else {
          $errors[] = "Invalid username/password";
       }
