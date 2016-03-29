@@ -114,6 +114,13 @@ var RoutesManager = (function() {
                      }).join(" "));
                   }
                }
+               var params = getParams({
+                  modalTitle: "",
+                  modalBody: ""
+               });
+               if (params.modalBody.length) {
+                  modal.show(decodeURIComponent(params.modalTitle), decodeURIComponent(params.modalBody));
+               }
             });
          }
       });

@@ -36,7 +36,21 @@ var token = new TokenManager("ww-scouting", function() {
    }
 });
 
-
+var modal = {
+   el: "#modal",
+   text: "",
+   show: function(title, text) {
+      var title = title ? String(title) : "";
+      var text = text ? String(text) : "";
+      $(this.el).find(".modal-title").text(title);
+      $(this.el).find(".modal-body").text(text);
+      this.fn("show");
+   },
+   fn: function() {
+      var $el = $(this.el);
+      $el.modal.apply($el, arguments);
+   }
+};
 
 // Bootstrap .alert manager
 var messages = new MessageManager(".alerts", []);
