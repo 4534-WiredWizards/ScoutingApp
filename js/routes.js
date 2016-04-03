@@ -396,7 +396,7 @@ routes.register("/team/:teamNum", {
             },
             score: 0,
             showChart: false,
-            stat_labels: [
+            defense_labels: [
                "Average Error",
                "E - LowBar",
                "A - Portcullis",
@@ -407,7 +407,13 @@ routes.register("/team/:teamNum", {
                "C - SallyPort",
                "D - Rockwall",
                "D - RoughTerrain"
-            ]
+            ],
+            goal_labels: [
+               "Auto Low",
+               "Auto High",
+               "Teleop Low",
+               "Teleop High",
+            ],
          },
          computed: {
             scores_json: JSONComputed('scores'),

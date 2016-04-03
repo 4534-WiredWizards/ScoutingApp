@@ -81,9 +81,21 @@
 
    <p class="scores">
       {{#if showChart}}
+         <div class="row">
+            <div class="col-md-2"><b>Predicted RP:</b></div>
+            <div class="col-md-10">{{stats.rp}}</div>
+         </div>
+         <br>
          {{#each stats.defenses:field}}
             <div class="row">
-               <div class="col-md-2"><b>{{stat_labels[field]}}:</b></div>
+               <div class="col-md-2"><b>{{defense_labels[field]}}:</b></div>
+               <div class="col-md-10">{{.}}</div>
+            </div>
+         {{/each}}
+         <br>
+         {{#each stats.goals:field}}
+            <div class="row">
+               <div class="col-md-2"><b>{{goal_labels[field]}}:</b></div>
                <div class="col-md-10">{{.}}</div>
             </div>
          {{/each}}
