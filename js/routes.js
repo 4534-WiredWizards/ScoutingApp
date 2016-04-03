@@ -397,7 +397,6 @@ routes.register("/team/:teamNum", {
             score: 0,
             showChart: false,
             defense_labels: [
-               "Average Error",
                "E - LowBar",
                "A - Portcullis",
                "A - ChevalDeFrise",
