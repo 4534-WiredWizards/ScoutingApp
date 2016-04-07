@@ -139,16 +139,6 @@
             </div>
 
             <div class="collapse navbar-collapse" id="myNavbar">
-               <ul class="nav navbar-nav">
-                  <li class="dropdown">
-                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Leave Feedback <span class="caret"></span></a>
-                     <ul class="dropdown-menu">
-                        <li><a href="mailto:danielrw7@gmail.com">Email an Admin</a></li>
-                        <li><a href="https://github.com/4534-WiredWizards/ScoutingApp/issues/new" target="_blank">Add an Issue on GitHub</a></li>
-                     </ul>
-                  </li>
-               </ul>
-
                <ul class="nav navbar-nav user-only">
                   <!-- <li><a href="#/home">Home</a></li> --> <!-- Redundant buttons -->
                   <li><a href="#/team">Teams</a></li>
@@ -174,7 +164,15 @@
                </ul>
                <ul class="nav navbar-nav navbar-right">
                   <!-- <li><a href="#/account">Account</a></li> -->
-                  <li><a href="#/signin" onclick="token.clear()">Log Out</a></li>
+                  <li class="dropdown">
+                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Leave Feedback <span class="caret"></span></a>
+                     <ul class="dropdown-menu">
+                        <li><a href="mailto:WW Scouting App <danielrw7+ww@gmail.com>">Email an Admin</a></li>
+                        <li><a href="https://github.com/4534-WiredWizards/ScoutingApp/issues/new" target="_blank">Add an Issue on GitHub</a></li>
+                     </ul>
+                  </li>
+
+                  <li class="user-only"><a href="#/signin" onclick="token.clear()">Log Out</a></li>
                </ul>
             </div>
          </div>
