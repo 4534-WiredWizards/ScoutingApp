@@ -320,7 +320,7 @@ routes.register("/matches", {
             url: "team/"+tbaConfig.team+"/event/"+tbaConfig.event+"/matches"
          }, function(res) {
             res.data = res.data.sort(function(a, b) {
-               return a.match_number > b.match_number;
+               return a.time - b.time;
             });
             callback(res);
          });
