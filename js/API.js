@@ -1,5 +1,5 @@
 var API = {
-   baseUrl: 'http://maj-daniel.majanit.com/projects/ScoutingAPI/',
+   baseUrl: 'http://scoutfrc.io/',
    ajax: function(url, method, data, callback) {
       var data = data || {};
       if (window.token && window.token.get && (data.token === undefined || data.token === null)) {
