@@ -473,7 +473,13 @@ routes.register("/user/:userID", {
             splitLine: function(val) {
                return (val || "").split(/\s*\n\s*/g).filter(Boolean);
             },
-            score: 0
+            score: 0,
+         },
+         computed: {
+            canEdit: function() {
+               var user = token.getData().user || {id:0,roles:""}
+               return user.roles == "admin" || userID == user.id;
+            }
          }
       }, data);
       ractive.set(data.user);
