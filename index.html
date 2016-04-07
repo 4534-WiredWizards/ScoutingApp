@@ -153,7 +153,6 @@
                   <li><a href="#/team">Teams</a></li>
                   <li><a href="#/matches">Match Schedule</a></li>
 
-
                   <li class="dropdown">
                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">TBA <span class="caret"></span></a>
                      <ul class="dropdown-menu">
@@ -161,18 +160,13 @@
                         <li><a href="https://www.thebluealliance.com/team/{{data.organization.organization_number}}" target="_blank">Team</a></li>
                      </ul>
                   </li>
-
-                  <li class="dropdown">
-                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin <span class="caret"></span></a>
-                     <ul class="dropdown-menu">
-                        <li><a href="#/user">Users</a></li>
-                        <li><a href="#/invite">Add a User</a></li>
-                     </ul>
-                  </li>
-
                </ul>
                <ul class="nav navbar-nav navbar-right">
                   <!-- <li><a href="#/account">Account</a></li> -->
+                  {{#if data.user.roles != "admin"}}
+                     <li class="user-only"><a href="#/user">Users</a></li>
+                  {{/if}}
+
                   <li class="dropdown">
                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Leave Feedback <span class="caret"></span></a>
                      <ul class="dropdown-menu">
@@ -180,6 +174,17 @@
                         <li><a href="https://github.com/4534-WiredWizards/ScoutingApp/issues/new" target="_blank">Add an Issue on GitHub</a></li>
                      </ul>
                   </li>
+
+                  {{#if data.user.roles == "admin"}}
+                     <li class="user-only" class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                           <li><a href="#/invite">Add a User</a></li>
+                           <li><a href="#/user">Users</a></li>
+                        </ul>
+                     </li>
+                  {{/if}}
+
 
                   <li class="user-only"><a href="#/signin" onclick="token.clear()">Log Out</a></li>
                </ul>
@@ -208,7 +213,7 @@
       <br/>
 
       <footer class="container-fluid text-center">
-	     <p>This app was created by the Epsilon Battalion from <a href="http://wiredwizards.org" target="_blank">The Wired Wizards</a> (<a href="https://github.com/4534-WiredWizards/ScoutingApp" target="_blank">Source Code</a>)</p>
+	     <p>This app was created by the Epsilon Battalion from <a href="https://www.wiredwizards.org" target="_blank">The Wired Wizards</a> (<a href="https://github.com/4534-WiredWizards/ScoutingApp" target="_blank">Source Code</a>)</p>
       </footer>
 
       <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
@@ -218,12 +223,9 @@
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                   <h4 class="modal-title" id="modalLabel">Modal title</h4>
                </div>
-               <div class="modal-body">
-                  Testing this!
-               </div>
+               <div class="modal-body"></div>
                <div class="modal-footer">
                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
                </div>
             </div>
          </div>

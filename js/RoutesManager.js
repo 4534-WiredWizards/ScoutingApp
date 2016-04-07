@@ -40,6 +40,9 @@ var RoutesManager = (function() {
          route.titleElem = route.titleElem || ".main-title";
          route.elem = route.elem || ".main";
          route.dataCallbacks = route.dataCallbacks || {};
+         route.authCallback = route.authCallback || function(router, done) {
+            return done(1);
+         };
          route.contentMethod = route.contentMethod || "html";
          route.data = route.data || {};
 
@@ -102,26 +105,31 @@ var RoutesManager = (function() {
                return router.setRoute("signin");
             }
 
-            route.dataCallback(args, function(data) {
-               data.template = data.template || "";
-               $(route.elem)[route.contentMethod](route.templateHTML);
-               if (typeof route.init == "function") {
-                  route.init.apply(route, [data].concat(args));
-                  route.initialized = true;
-                  if ($(route.titleElem).html() == "Loading...") {
-                     route.updateTitle(route.url.split("/").map(function(word) {
-                        return word.charAt(0).toUpperCase() + word.slice(1);
-                     }).join(" "));
+            route.authCallback.apply(route.authCallback, [route, function(auth) {
+               if (!auth) {
+                  return router.setRoute(_this.defaultUrl);
+               }
+               route.dataCallback(args, function(data) {
+                  data.template = data.template || "";
+                  $(route.elem)[route.contentMethod](route.templateHTML);
+                  if (typeof route.init == "function") {
+                     route.init.apply(route, [data].concat(args));
+                     route.initialized = true;
+                     if ($(route.titleElem).html() == "Loading...") {
+                        route.updateTitle(route.url.split("/").map(function(word) {
+                           return word.charAt(0).toUpperCase() + word.slice(1);
+                        }).join(" "));
+                     }
                   }
-               }
-               var params = getParams({
-                  modalTitle: "",
-                  modalBody: ""
+                  var params = getParams({
+                     modalTitle: "",
+                     modalBody: ""
+                  });
+                  if (params.modalBody.length) {
+                     modal.show(decodeURIComponent(params.modalTitle), decodeURIComponent(params.modalBody));
+                  }
                });
-               if (params.modalBody.length) {
-                  modal.show(decodeURIComponent(params.modalTitle), decodeURIComponent(params.modalBody));
-               }
-            });
+            }].concat(args));
          }
       });
       return res;

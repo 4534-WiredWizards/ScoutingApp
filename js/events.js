@@ -13,6 +13,7 @@ $(".navbar").on("click", "a[href][href!='#']", function() {
 });
 
 $("body").on("submit", "form[method=async][action]", function() {
+   console.log("submitted")
    var route = routes.routes.filter(function(route) {
       return route.initialized
    })[0] || {};
@@ -51,21 +52,29 @@ $("body").on("submit", "form[method=async][action]", function() {
    }
 
    API.post($form.attr("action").trim(), data, function(res) {
+      console.log(res);
       messages.reset();
+      console.log("reset")
       if (typeof res.error == "object" && res.error.filter) {
+         console.log("errors")
          messages.addMessages(res.error.map(getErrorMessageObj));
       }
       if (typeof res.errors == "object" && res.errors.filter) {
+         console.log("errors2")
          messages.addMessages(res.errors.map(getErrorMessageObj));
       }
       if (messages.messages.length) {
+         console.log("errors 3")
          route.formError(res);
       } else {
+         console.log("errors updated")
          messages.addMessages([{
             text: "Your information has been updated!",
             type: "success"
          }]);
+         console.log("form success")
          route.formSuccess(res);
+         console.log("after form success")
       }
       messages.render();
    });

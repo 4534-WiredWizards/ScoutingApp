@@ -1,7 +1,9 @@
 {{#if loading}}
    <h4>Loading...</h4>
 {{else}}
-   <p intro="fade"><a class="btn btn-default" href="#/user/{{id}}/edit">Edit</a></p>
+   {{#if isAdmin()}}
+      <p intro="fade"><a class="btn btn-default" href="#/user/{{id}}/edit">Edit</a></p>
+   {{/if}}
 	<p>
 		<b>First Name:</b>
 		{{firstname || "None"}}

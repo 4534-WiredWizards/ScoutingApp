@@ -1,4 +1,4 @@
-Ractive.DEBUG = false;
+// Ractive.DEBUG = false;
 
 var navbarRactive = new Ractive({
    el: ".navbar > .container",
@@ -6,7 +6,7 @@ var navbarRactive = new Ractive({
    data: {
       token: "",
       data: {}
-   }
+   },
 });
 
 // Initialize token manager
@@ -65,7 +65,7 @@ ractiveMethods = ({
       params[key] = value;
       setHashParams(params);
    }),
-   setParams: setHashParams
+   setParams: setHashParams,
 });
 
 function setHashParams(params) {
@@ -168,7 +168,11 @@ function RactiveCustom(config, data, defaultParams) {
       },
       ucfirst: function(str) {
          return str.charAt(0).toUpperCase() + str.slice(1);
-      }
+      },
+      isAdmin: function() {
+         var user = token.getData().user || {};
+         return user.roles == "admin";
+      },
    });
 
    return ractive;
@@ -240,6 +244,10 @@ routes.register("/home", {
 });
 routes.register("/invite", {
    template: "templates/user/invite.html",
+   authCallback: function(_this, done, userID) {
+      var user = token.getData().user || {id:0,roles:""};
+      return done(user.id && user.roles == "admin");
+   },
    dataCallbacks: {
       defaultFields: getDefaultUserFields
    },
@@ -263,7 +271,9 @@ routes.register("/signin", {
       token.clear();
    },
    formSuccess: function(res) {
+      console.log(res)
       if (res.success && res.token) {
+         console.log("success!")
          token.setData(res.data);
          token.set(res.token);
          router.setRoute(routes.defaultUrl);
@@ -473,6 +483,10 @@ routes.register("/user/:userID", {
 });
 routes.register("/user/:userID/edit", {
    template: "templates/user/edit.html",
+   authCallback: function(_this, done, userID) {
+      var user = token.getData().user || {id:0,roles:""};
+      return done(user.id && (user.roles == "admin" || userID == user.id));
+   },
    dataCallbacks: {
       user: function(_this, callback, userID) {
          API.get("user/"+userID, {}, function(res) {

@@ -3,7 +3,9 @@
       <h4>Loading...</h4>
    {{/if}}
 
-   <p><a href="#/invite" class="btn btn-default">Invite a user</a></p>
+   {{#if isAdmin()}}
+      <p><a href="#/invite" class="btn btn-default">Invite a user</a></p>
+   {{/if}}
 
    <div class="list-group">
       {{#each users}}
