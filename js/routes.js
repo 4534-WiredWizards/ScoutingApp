@@ -56,7 +56,7 @@ var modal = {
 var messages = new MessageManager(".alerts", []);
 
 // Initialize app url route manager
-var routes = new RoutesManager([], "", "home", token);
+var routes = new RoutesManager([], "", "team", token);
 
 
 ractiveMethods = ({
