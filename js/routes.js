@@ -1,4 +1,4 @@
-// Ractive.DEBUG = false;
+Ractive.DEBUG = false;
 
 var navbarRactive = new Ractive({
    el: ".navbar > .container",
