@@ -82,7 +82,8 @@ var FeedComponent = Ractive.extend({
    template: '#feed-template',
    data: function() {
       return {
-         mode: "feed"
+         mode: "feed",
+         uploading: 0
       };
    },
    oncomplete: function() {
@@ -101,6 +102,7 @@ var FeedComponent = Ractive.extend({
          var _this = this;
          var el = this.el;
          var data = new FormData(form(el)[0]);
+         this.set("uploading", 1);
          $.ajax({
             url: API.baseUrl+'feed/new?token='+token.get(),
             method: "POST",
@@ -108,7 +110,7 @@ var FeedComponent = Ractive.extend({
             contentType: false,
             processData: false,
             success: function(res) {
-               console.log(res)
+               _this.set("uploading", 0);
                _this.set("feeds", [res.data].concat(_this.get("feeds")));
                form(el).find(":input:not([type=hidden])").val('');
             },
