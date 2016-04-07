@@ -11,13 +11,19 @@
       <label for="username">Username</label>
       <input id="username" name="username" value="{{username}}" type="text" placeholder="Username" spellchecking="false" class="form-control" autofocus>
    </div>
+   {{#if !(isAdmin && id != tokenUser.id)}}
+      <div class="form-group">
+         <label for="current_password">Current Password</label>
+         <input id="current_password" name="current_password" type="password" placeholder="Current Password" spellchecking="false" class="form-control">
+      </div>
+   {{/if}}
    <div class="form-group">
-      <label for="password">Password</label>
-      <input id="password" name="password" value="{{password}}" type="password" placeholder="Password" spellchecking="false" class="form-control">
+      <label for="password">New Password</label>
+      <input id="password" name="password" type="password" placeholder="New Password" spellchecking="false" class="form-control">
    </div>
    <div class="form-group">
-      <label for="passconf">Confirm Password</label>
-      <input id="passconf" name="passconf" value="{{passconf}}" type="password" placeholder="Confirm Password" spellchecking="false" class="form-control">
+      <label for="passconf">Confirm New Password</label>
+      <input id="passconf" name="passconf" type="password" placeholder="Confirm Password" spellchecking="false" class="form-control">
    </div>
    <div style="margin-top: 0.5em;">
       <button type="submit" class="btn btn-default">Save</button>

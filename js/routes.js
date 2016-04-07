@@ -156,6 +156,12 @@ function RactiveCustom(config, data, defaultParams) {
          Feed: FeedComponent,
          FeedFile: FeedFileComponent,
          PrevNext: PrevNextComponent,
+      },
+      computed: {
+         isAdmin: function() {
+            var user = token.getData().user || {};
+            return user.roles == "admin";
+         },
       }
    }, ractiveMethods, config);
 
@@ -169,10 +175,7 @@ function RactiveCustom(config, data, defaultParams) {
       ucfirst: function(str) {
          return str.charAt(0).toUpperCase() + str.slice(1);
       },
-      isAdmin: function() {
-         var user = token.getData().user || {};
-         return user.roles == "admin";
-      },
+      tokenUser: token.getData().user,
    });
 
    return ractive;
@@ -538,7 +541,7 @@ routes.register("/team/:teamNum/edit", {
          computed: {
             scores_json: JSONComputed('scores'),
             questions_json: JSONComputed('questions'),
-         }
+         },
       }, data);
       delete data.team.scores_json;
       delete data.team.questions_json;
