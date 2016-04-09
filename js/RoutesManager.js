@@ -53,9 +53,9 @@ var RoutesManager = (function() {
                data: (data || {})
             })).toHTML();
             if (template.toLowerCase().search("loading") === -1 && contents.length > 0) {
-               $("title").html("Scouting App - " + contents);
+               $("title").html("ScoutFRC - " + contents);
             } else {
-               $("title").html("Scouting App");
+               $("title").html("ScoutFRC");
             }
             $(this.titleElem).html(contents);
             return contents;
