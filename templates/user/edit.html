@@ -11,12 +11,6 @@
       <label for="username">Username</label>
       <input id="username" name="username" value="{{username}}" type="text" placeholder="Username" spellchecking="false" class="form-control" autofocus>
    </div>
-   {{#if !(isAdmin && id != tokenUser.id)}}
-      <div class="form-group">
-         <label for="current_password">Current Password</label>
-         <input id="current_password" name="current_password" type="password" placeholder="Current Password" spellchecking="false" class="form-control">
-      </div>
-   {{/if}}
    <div class="form-group">
       <label for="password">New Password</label>
       <input id="password" name="password" type="password" placeholder="New Password" spellchecking="false" class="form-control">
@@ -25,6 +19,18 @@
       <label for="passconf">Confirm New Password</label>
       <input id="passconf" name="passconf" type="password" placeholder="Confirm Password" spellchecking="false" class="form-control">
    </div>
+   {{#if isAdmin}}
+      <div class="form-group">
+         <input id="admin" name="admin" checked="{{roles == 'admin'}}" twoway="false" type="checkbox">
+         <label for="admin">&nbsp;Admin</label>
+      </div>
+   {{/if}}
+   {{#if isAdmin || id == tokenUser.id}}
+      <div class="form-group">
+         <input id="active" name="active" checked="{{JSON.parse(active)}}" type="checkbox">
+         <label for="active">&nbsp;Active</label>
+      </div>
+   {{/if}}
    <div style="margin-top: 0.5em;">
       <button type="submit" class="btn btn-default">Save</button>
    </div>

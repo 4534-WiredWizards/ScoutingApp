@@ -16,4 +16,12 @@
 		<b>Username:</b>
 		{{username || "None"}}
 	</p>
+	<p>
+		<b>User Level:</b>
+		{{ucfirst(roles || "default")}}
+	</p>
+	<p>
+		<b>Active:</b>
+		{{active ? "Yes" : "No"}}
+	</p>
 {{/if}}

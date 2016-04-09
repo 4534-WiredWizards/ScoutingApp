@@ -19,6 +19,14 @@
       <label for="passconf">Confirm Password</label>
       <input id="passconf" name="passconf" value="{{passconf}}" type="password" placeholder="Confirm Password" spellchecking="false" class="form-control">
    </div>
+   <div class="form-group">
+      <input id="admin" name="admin" checked="{{roles == 'admin'}}" twoway="false" type="checkbox">
+      <label for="admin">&nbsp;Admin</label>
+   </div>
+   <div class="form-group">
+      <input id="active" name="active" checked="{{JSON.parse(active)}}" type="checkbox">
+      <label for="active">&nbsp;Active</label>
+   </div>
    <div style="margin-top: 0.5em;">
       <button type="submit" class="btn btn-default">Invite</button>
    </div>
